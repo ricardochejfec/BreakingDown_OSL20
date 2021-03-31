@@ -2,7 +2,9 @@
 title: "Breakdown of the Ontario Sunshine List"
 author: "Ricardo Chejfec"
 date: "25/03/2021"
-output: html_document
+output: 
+    md_document:
+    variant: markdown_github
 editor_options: 
   chunk_output_type: console
 ---
