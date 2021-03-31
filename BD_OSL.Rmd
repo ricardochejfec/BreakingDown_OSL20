@@ -311,7 +311,7 @@ grid.arrange(
 
 ### Summary Across Time  
 
-```{r timesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r timesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE}
 # Long Summary 
 p_longsum <- ggplot(master, 
        aes(x=year)) +
