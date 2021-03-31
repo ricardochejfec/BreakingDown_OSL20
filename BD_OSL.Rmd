@@ -62,6 +62,9 @@ master <- data.table::fread(file = "data/master.csv")
 master <- as_tibble(master)
 master = mutate(master, calendar_year = calendar_year-1996)
 
+master = mutate(master,taxable_benefits = ifelse( is.na(taxable_benefits), 0, taxable_benefits))
+master = drop_na(master)
+   
 master = master %>% 
   mutate(salary_paid = 
            ifelse(salary_paid>3000000,
@@ -132,7 +135,7 @@ waf <- ggplot(
 waf + geom_waffle(
     n_rows = 10, 
     size = .5, 
-    colour = "black", 
+    colour = "#09316b", 
     make_proportional = TRUE,
     flip= TRUE,
     radius = unit(4, "pt")) +
@@ -148,7 +151,7 @@ waf + geom_waffle(
     legend.title = element_blank(),
     legend.margin=margin(-20,0,40,0),
     legend.box.margin=margin(-10,-10,-10,-10)) +
-  scale_fill_brewer(palette="RdGy") +
+  scale_fill_brewer(cbp1) +
   guides(fill = guide_legend(nrow = 3))
 
 
@@ -158,7 +161,7 @@ p_secsum_d_20 <- ggplot(secsum_20,
            x=money, 
            fill=reorder(factor(sector),
                         rank))) + 
-  geom_bar(stat="identity", color="black") +
+  geom_bar(stat="identity", color="#09316b") +
   ggtitle("Average Earnings by Sector in 2020") +
   xlab("Avg Earnings")+
   ylab(element_blank())+
@@ -175,7 +178,7 @@ theme_ric(p_secsum_d_20, "bar")
 
 ### Change from 2019 to 2020
 
-```{r delta20, echo=FALSE, fig.height=7, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r delta20, echo=FALSE, fig.height=7, fig.width=14, message=FALSE, warning=FALSE}
 # Sector change from last year 
 
 #Get 19
@@ -201,7 +204,7 @@ p_change_1920 <- ggplot(change_1920,
                               rank.x)),
              stat="identity",
              size=8,
-             colour="black",
+             colour="#09316b",
              pch=21) + 
   geom_segment(aes(y=0,
                    x=sector,
@@ -232,7 +235,7 @@ p_change_1920_d <- ggplot(change_1920,
                               rank.x)),
              stat="identity", 
              size=8,
-             colour="black",
+             colour="#09316b",
              pch=21) + 
   geom_segment(aes(y=0,
                    x=sector,
@@ -259,7 +262,7 @@ theme_ric(p_change_1920_d, "bar")
 
 ### What About Job Titles 
 
-```{r jobtitles, echo=FALSE, fig.height=7, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r jobtitles, echo=FALSE, fig.height=7, fig.width=14, message=FALSE, warning=FALSE}
 
 jobs20 = master_20 %>% 
   group_by(sector) %>% 
@@ -316,19 +319,20 @@ grid.arrange(
 p_longsum <- ggplot(master, 
        aes(x=year)) +
   scale_y_continuous(labels=scales::number_format())+
-  geom_bar() +
+  geom_bar(fill="#2270b5") +
   ggtitle("Count Across Time")+
   ylab("Count")+
-  xlab("Year")
+  xlab("Year")+
   theme_bw() 
 
 p_longsum_d <- ggplot(master, 
        aes(y=total_income, x=year)) + 
-  geom_bar(stat="summary") +
+  geom_bar(stat="summary",
+           fill="#6bafd6") +
   scale_y_continuous(labels=scales::dollar_format()) +
   ggtitle("Avg Earnings Across Time")+
   ylab("Avg Earnings")+
-  xlab("Year")
+  xlab("Year") +
   theme_bw()
 
 grid.arrange(theme_ric(p_longsum, "bar"), theme_ric(p_longsum_d,"bar"), nrow=2)
@@ -336,7 +340,7 @@ grid.arrange(theme_ric(p_longsum, "bar"), theme_ric(p_longsum_d,"bar"), nrow=2)
 
 ### Sector Summary Across Time
 
-```{r sectimesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r sectimesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE}
 # Long Sector Summary 
 
 longsecsum_d = master %>% 
@@ -352,19 +356,21 @@ p_longsecsum <- ggplot(master,aes(x=year)) +
     ylab("Count")+
     theme_bw() +
     theme(legend.title = element_blank(),
-          legend.position = "bottom")
+          legend.position = "bottom",
+          panel.background = element_rect(fill = "#dadada"))
 
 p_longsecsum_d <- ggplot(longsecsum_d, 
                          aes(x=year,
                              y=avg_income)) + 
-    geom_line(aes(color=factor(sector))) + 
+    geom_line(aes(color=factor(sector)),lwd=1.5) + 
     scale_y_continuous(labels=scales::dollar_format(),
                        limits = c(100000, 175000)) +
     ggtitle("Sector Avg Earnings Through Time")+
     xlab("Avg Earnings")+
     ylab("Count")+
     theme_bw() + 
-    theme(legend.position = "none") 
+    theme(legend.position = "none",
+          panel.background = element_rect(fill = "#dadada")) 
 
 grid.arrange(theme_ric(p_longsecsum, "bar"), theme_ric(p_longsecsum_d, "bar"), nrow=2)
 
@@ -372,7 +378,7 @@ grid.arrange(theme_ric(p_longsecsum, "bar"), theme_ric(p_longsecsum_d, "bar"), n
 
 ## What About Inflation
 
-```{r infl_setup, echo=FALSE, fig.height=8, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r infl_setup, echo=FALSE, fig.height=8, fig.width=14, message=FALSE, warning=FALSE}
 inflation <- readr::read_csv("data/inflation.csv")
 inflation = head(inflation, 1)
 inflation = pivot_longer(inflation, 2:26, names_to = "year",
@@ -386,12 +392,15 @@ master_inf = left_join(x=master, y=inflation) %>%
            salary_inf = salary / indexed,
            benefits_inf = benefits / indexed)
 
-violins <- ggplot(master_inf, aes(x=factor(year), y=income_inf)) +
-  geom_violin() + 
-  geom_hline(yintercept = 100000, color="red") + 
-  scale_y_continuous(labels=scales::dollar_format(),
-                     limits = c(50000,500000)) +
-  theme_bw()
+violins <- ggplot(master_inf, aes(x=factor(year), y=salary_inf)) +
+    geom_violin() + 
+    geom_hline(yintercept = 100000, color="#2270b5") + 
+    ggtitle("Distribution of the OSL through time in real numbers")+
+    xlab("Year") +
+    ylab("Salary in Real Dollars (1996)") +
+    scale_y_continuous(labels=scales::dollar_format(),
+                       limits = c(50000,500000)) +
+    theme_bw()
 
 theme_ric(violins, "bar")
 
@@ -399,7 +408,7 @@ theme_ric(violins, "bar")
 
 ### 2020 Adjusted
 
-```{r infl_2020, echo=FALSE, fig.height=8, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r infl_2020, echo=FALSE, fig.height=8, fig.width=14, message=FALSE, warning=FALSE}
 master_adj = master_inf %>% filter(salary_inf>=100000)
 
 master_20_adj = master_adj %>% filter(year==24)
@@ -549,7 +558,7 @@ grid.arrange(alljobs20,alljobs20_adj, ncol=2)
 
 ### Change from 2019 to 2020 - Adjusted
 
-```{r infl_delta_20, echo=FALSE, fig.height=8, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r infl_delta_20, echo=FALSE, fig.height=8, fig.width=14, message=FALSE, warning=FALSE}
 
 master_19_adj = master_adj %>% filter(year==23)
 
@@ -593,7 +602,7 @@ p_change_1920_d_adj + scale_fill_brewer(palette="RdGy")
 
 ### Adjusted Job Titles 
 
-```{r inf_jobtitles, echo=FALSE, fig.height=7, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r inf_jobtitles, echo=FALSE, fig.height=7, fig.width=14, message=FALSE, warning=FALSE}
 jobs20_adj = master_20_adj %>% 
   group_by(sector) %>% 
   count(job_title, sort=TRUE) %>% 
@@ -611,7 +620,7 @@ jobs19_adj = master_19_adj %>%
 
 ### Summary Across Time - Adjusted
 
-```{r inf_timesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r inf_timesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE}
 # Long Summary 
 
 p_longsum_adj <- ggplot(master_adj, 
@@ -632,7 +641,7 @@ grid.arrange(p_longsum_adj, p_longsum_d_adj, nrow=2)
 
 ### Sector Summary Across Time - Adjusted
 
-```{r inf_sectimesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE, , echo=FALSE}
+```{r inf_sectimesum, echo=FALSE, fig.height=14, fig.width=14, message=FALSE, warning=FALSE}
 # Long Sector Summary 
 
 longsecsum_d_adj = master_adj %>% 
