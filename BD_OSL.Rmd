@@ -26,25 +26,36 @@ library(ggpubr)
 library(kableExtra)
 library(remotes)
 library(waffle)
+library(ggpubr)
 
 
-cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
-          "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+colpal <- c('#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b') #Blue
+# colpal <- c('#fff7fb','#ece2f0','#d0d1e6','#a6bddb','#67a9cf','#3690c0','#02818a','#016c59','#014636') #green
+# colpal <- c('#fff7f3','#fde0dd','#fcc5c0','#fa9fb5','#f768a1','#dd3497','#ae017e','#7a0177','#49006a') # pinks
 
 theme_ric <- function(plt, plot.case) {
-  x <- plt + theme(
-    legend.text = element_text(size=18),
-    axis.text=element_text(size=16),
-    axis.title=element_text(size=14),
-    title = element_text(size=18)
-  )
-  if (plot.case == "bar") {
-    x = x + scale_fill_brewer(cbp1) + scale_color_brewer(cbp1)
-  } else {
-    x = x + scale_color_brewer(palette="RdGy")
-  }
-  return(x)
+    x <- plt + 
+        theme(
+            legend.text = element_text(size=18),
+            axis.text=element_text(size=16),
+            axis.title=element_text(size=14),
+            title = element_text(size=18)) +
+            theme_wsj(base_size = 16)
+        # scale_color_tableau(palette = "Tableau 10") +
+        # scale_fill_tableau(palette = "Nuriel Stone") 
+    # +
+        # scale_color_wsj(palette = "red_green") +
+        # scale_fill_wsj(palette = "red_green") 
+    if (plot.case == "bar") {
+        x = x + theme(legend.position = "none")
+    } else {
+        x = x 
+    }
+    return(x)
 }
+
+# theme_ric(p_secsum_d_20, "bar")
+
 
 ```
 
@@ -104,7 +115,7 @@ master = master %>%
 ### 2020 in Summary 
 
 
-```{r sum20, echo=FALSE, fig.height=10, fig.width=14, message=FALSE, warning=FALSE}
+```{r sum20, echo=FALSE, fig.height=12, fig.width=20, message=FALSE, warning=FALSE}
 # 2020 
 master_20 = filter(master, year == 24)
 master_19 = filter(master, year == 23)
@@ -151,7 +162,7 @@ waf + geom_waffle(
     legend.title = element_blank(),
     legend.margin=margin(-20,0,40,0),
     legend.box.margin=margin(-10,-10,-10,-10)) +
-  scale_fill_brewer(cbp1) +
+  scale_fill_manual(values=colpal) +
   guides(fill = guide_legend(nrow = 3))
 
 
@@ -161,15 +172,22 @@ p_secsum_d_20 <- ggplot(secsum_20,
            x=money, 
            fill=reorder(factor(sector),
                         rank))) + 
-  geom_bar(stat="identity", color="#09316b") +
+  geom_bar(stat="identity") +
   ggtitle("Average Earnings by Sector in 2020") +
   xlab("Avg Earnings")+
   ylab(element_blank())+
-  scale_x_continuous(labels=scales::dollar_format()) +
-  theme_bw() +
-  theme(legend.position = "none") 
+  scale_x_continuous(labels=scales::dollar_format()) 
+   
 
 theme_ric(p_secsum_d_20, "bar")
+ggsave("p_secsum_d_20", 
+       plot = theme_ric(p_secsum_d_20, "bar"),
+       device = "png",
+       scale=1,
+       width = 20,
+       path = "plots/"
+       )
+
 
 # grid.arrange(p_secsum_20, p_secsum_d_20, ncol=2)
 
