@@ -17,8 +17,9 @@ theme_ric <- function(plt, plot.case) {
     x <- plt 
     if (plot.case == "nl") {
         x = x + theme_wsj(base_size = 16) +
-            theme(legend.position = "none")
-    } else if (plot.case == "waf") {
+            theme(legend.position = "none",
+                  plot.title.position =  "plot")
+        } else if (plot.case == "waf") {
         x = x + 
             theme_wsj(base_size = 16, color = "white") +
             theme(legend.position = "bottom",
@@ -115,7 +116,6 @@ waf = waf + geom_waffle(
     guides(fill = guide_legend(nrow = 3))
 
 waf = theme_ric(waf, "waf")
-save_ric(waf, "waffle", 12, 8)
 
 ########################################################## Waffle
 ########################################################## p_secsum_d_20
@@ -132,8 +132,7 @@ p_secsum_d_20 <- ggplot(secsum_20,
     ylab(element_blank())+
     scale_x_continuous(labels=scales::dollar_format()) 
 
-p_secsum_d_20  = theme_ric(p_secsum_d_20, "nl")
-save_ric(p_secsum_d_20, "p_secsum_d_20", 18, 10)
+p_secsum_d_20  = theme_ric(p_secsum_d_20, "nl") 
 
 ########################################################## p_secsum_d_20
 
@@ -183,7 +182,6 @@ p_change_1920 <- ggplot(change_1920,
     xlab("")
 
 p_change_1920 = theme_ric(p_change_1920, "nl")
-save_ric(p_change_1920, "p_change_1920", 20, 8.5)
 
 ########################################################## change_1920
 ########################################################## change_1920_d
@@ -218,7 +216,6 @@ p_change_1920_d <- ggplot(change_1920,
                        limits = c(-6000,6000))
 
 p_change_1920_d = theme_ric(p_change_1920_d, "nl")
-save_ric(p_change_1920_d, "p_change_1920_d", 20, 8.5)
 
 ########################################################## change_1920_d
 ########################################################## job_titles
@@ -282,8 +279,6 @@ p_longsum_grid = arrangeGrob(theme_ric(p_longsum, "nl"),
                              theme_ric(p_longsum_d,"nl"),
                              nrow=2)
 
-save_ric(p_longsum_grid, "p_longsum_grid", 10, 10)
-
 ########################################################## longsum 
 ########################################################## longsum % change
 
@@ -303,7 +298,22 @@ secsum_perc <- secsum %>%
 
 secsum_perc = secsum_perc %>% 
     mutate(money_chg = ifelse(is.na(money_chg), 0, money_chg),
-           sec_feq = ifelse(is.na(sec_feq), 0, sec_feq))
+           sec_feq_chg = ifelse(is.na(sec_feq_chg), 0, sec_feq_chg))
+
+####### Recessions? ######
+
+secsum_perc = secsum_perc %>% 
+    mutate(recession = ifelse(year==12 | year==19 | year==22 | year==24,
+                              1, 0))
+
+ggplot(secsum_perc, aes(x=recession, y= sec_feq_chg)) + 
+    geom_point(alpha=.5) + geom_smooth()
+
+answer = lm(sec_feq_chg ~ factor(recession), data = secsum_perc)
+
+summary(answer)
+
+####### Recessions? ######
 
 p_secsum_perc <- ggplot(secsum_perc, aes(x=year, y=sec_feq_chg)) +
     geom_line(aes(color=factor(sector)))
@@ -319,10 +329,8 @@ p_secsum_perc_grid = arrangeGrob(p_secsum_perc,
                                  p_secsum_perc_d,
                                  nrow=2)
 
-save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 15, 12)
-
 ########################################################## longsum % change
-########################################################## longsum % change
+########################################################## longsecsum
 
 longsecsum_d = master %>% 
     group_by(sector, year) %>% 
@@ -334,11 +342,7 @@ p_longsecsum <- ggplot(master,aes(x=year)) +
     scale_y_continuous(labels=scales::number_format()) +
     ggtitle("Sector Breakdown Through Time")+
     xlab("Year")+
-    ylab("Count")+
-    theme_bw() +
-    theme(legend.title = element_blank(),
-          legend.position = "bottom",
-          panel.background = element_rect(fill = "#dadada"))
+    ylab("Count")
 
 p_longsecsum_d <- ggplot(longsecsum_d, 
                          aes(x=year,
@@ -349,9 +353,98 @@ p_longsecsum_d <- ggplot(longsecsum_d,
     ggtitle("Sector Avg Earnings Through Time")+
     xlab("Avg Earnings")+
     ylab("Count")+
-    theme_bw() + 
-    theme(legend.position = "none",
-          panel.background = element_rect(fill = "#dadada")) 
+    theme_bw() 
 
-grid.arrange(theme_ric(p_longsecsum, "bar"), theme_ric(p_longsecsum_d, "bar"), nrow=2)
+########################################################## longsecsum
+########################################################## inflation
 
+inflation <- readr::read_csv("data/inflation.csv")
+inflation = head(inflation, 1)
+inflation = pivot_longer(inflation, 2:26, names_to = "year",
+                         values_to = "cpi") %>%
+    mutate(year = as.numeric(year)-1996,
+           indexed = cpi/88.2) %>%
+    select(year, indexed)
+
+master_inf = left_join(x=master, y=inflation) %>%
+    mutate(income_inf = total_income / indexed,
+           salary_inf = salary / indexed,
+           benefits_inf = benefits / indexed)
+
+master_adj = master_inf %>% filter(salary_inf>=100000)
+
+master_20_adj = master_adj %>% filter(year==24)
+
+secsum_20_adj = master_20_adj %>% 
+    group_by(sector) %>% 
+    summarise(money = mean(income_inf), sec_feq=n()) 
+
+secsum_20_adj = secsum_20_adj %>% 
+    mutate(perc = sec_feq/nrow(master_20))
+
+secsum_20_adj2 = left_join(x=secsum_20_adj, y=rank_20)
+
+########################################################## inflation
+########################################################## violins
+
+p_violins <- ggplot(master_inf, aes(x=factor(year), y=salary_inf)) +
+    geom_violin() + 
+    geom_hline(yintercept = 100000, color="#2270b5") + 
+    ggtitle("Distribution of the OSL in real numbers") +
+    xlab("Year") +
+    ylab("Salary in Real Dollars (1996)") +
+    scale_y_continuous(labels=scales::dollar_format(),
+                       limits = c(50000,500000))
+
+p_violins = theme_ric(p_violins, "nl")
+
+########################################################## violins
+########################################################## p_secsum_20_adj 
+
+p_secsum_20_adj <- ggplot(secsum_20_adj2, 
+                          aes(y=reorder(factor(sector), sec_feq),
+                              x=sec_feq, 
+                              fill=reorder(factor(sector), rank))) + 
+    geom_bar(stat="identity") +
+    ggtitle("2020 Count, Adjusted for Inflation") +
+    xlab("Count") +
+    ylab("")+
+    scale_x_continuous(labels=scales::number_format())
+
+p_secsum_d_20_adj <- ggplot(secsum_20_adj2, 
+                            aes(y=reorder(factor(sector), rank), x=money, fill=sector)) + 
+    geom_bar(stat="identity")  +
+    ggtitle("2020 Avg Earnings, Adjusted for Inflation") +
+    xlab("Avg Earnings") +
+    ylab("")+
+    scale_x_continuous(labels=scales::dollar_format()) 
+
+p_secsum_20_adj = theme_ric(p_secsum_20_adj, "nl")
+p_secsum_d_20_adj = theme_ric(p_secsum_d_20_adj, "nl")
+
+########################################################## p_secsum_20_adj 
+########################################################## saves
+save_ric(waf, "waffle", 12, 8.5)
+
+save_ric(p_secsum_d_20, "p_secsum_d_20", 15, 8.5)
+
+save_ric(p_change_1920, "p_change_1920", 15, 8.5)
+
+save_ric(p_change_1920_d, "p_change_1920_d", 15, 8.5)
+
+save_ric(p_longsum_grid, "p_longsum_grid", 12, 10)
+
+save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 12, 10)
+
+save_ric(theme_ric(p_longsecsum, "nl"), "p_longsecsum", 12, 9.5)
+save_ric(theme_ric(p_longsecsum_d, "nl"), "p_longsecsum_d", 15, 7.5)
+
+save_ric(p_violins, "p_violins", 16, 10) + 
+    theme(plot.title = element_text(size = 18))
+
+save_ric(p_secsum_20_grid, "p_secsum_20_grid", 12, 10)
+
+save_ric(p_secsum_20_adj, "p_secsum_20_adj", 12, 10)
+save_ric(p_secsum_d_20_adj, "p_secsum_d_20_adj", 12, 10)
+
+########################################################## saves
