@@ -21,24 +21,34 @@ theme_ric <- function(plt, plot.case) {
                   plot.title.position =  "plot")
         } else if (plot.case == "waf") {
         x = x + 
-            theme_wsj(base_size = 16, color = "white") +
-            theme(legend.position = "bottom",
-                  panel.grid.major = element_blank(),
+            theme_wsj(base_size = 16) +
+            # theme_enhance_waffle() +
+            theme(panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
                   panel.border = element_blank(),
-                  panel.background = element_blank(),
+                  panel.background = element_rect(fill="#f8f2e4"),
+                  plot.background = element_rect(fill="#f8f2e4"),
+                  strip.background = element_rect(fill="#f8f2e4"),
+                  plot.title.position =  "plot",
+                  axis.text.x = element_blank(),
+                  axis.text.y = element_blank(),
                   axis.line.x = element_blank(),
                   axis.ticks.x = element_blank(),
                   axis.ticks = element_blank(),
                   legend.text = element_text(size=18),
                   legend.title = element_blank(),
-                  legend.margin=margin(-20,0,40,0),
-                  legend.box.margin=margin(-10,-10,-10,-10)) +
-            theme_enhance_waffle() 
+                  legend.position = "right",
+                  legend.direction = "vertical")
     } else if (plot.case == "line"){
         x = x + theme_wsj(base_size = 16) + theme(
-            legend.title = element_blank()
-        )
+            legend.title = element_blank())
+    }else if (plot.case == "l"){
+        x = x + theme_wsj(base_size = 16) +
+            theme(legend.position = "bottom",
+                  plot.title.position =  "plot")
+    } else if (plot.case == "grid"){
+        x = x + theme_wsj(base_size = 16) + theme(
+            legend.position = "none")
     }
     return(x)
 }
@@ -103,17 +113,17 @@ waf <- ggplot(
                   y=c(0,0)) +
     coord_equal() +
     labs(fill = NULL,
-         color = NULL) +
-    theme_enhance_waffle() 
+         color = NULL) 
 
 waf = waf + geom_waffle(
     n_rows = 10, 
     size = .5, 
     make_proportional = TRUE,
     flip= TRUE,
-    color="white",
+    color="#f8f2e4",
     radius = unit(4, "pt")) +
-    guides(fill = guide_legend(nrow = 3))
+    ggtitle("Distribution of Sectors for 2020") +
+    guides(fill = guide_legend(nrow = 9)) 
 
 waf = theme_ric(waf, "waf")
 
@@ -254,9 +264,9 @@ power_19 = jobs19 %>%
 
 ########################################################## job_titles
 ########################################################## longsum
-
+master = master %>% mutate(lbl_year = year + 1996)
 p_longsum <- ggplot(master, 
-                    aes(x=year)) +
+                    aes(x=lbl_year)) +
     scale_y_continuous(labels=scales::number_format())+
     geom_bar(
         # fill="#2270b5"
@@ -266,7 +276,7 @@ p_longsum <- ggplot(master,
     xlab("Year")
 
 p_longsum_d <- ggplot(master, 
-                      aes(y=total_income, x=year)) + 
+                      aes(y=total_income, x=lbl_year)) + 
     geom_bar(stat="summary"
              # fill="#6bafd6"
     ) +
@@ -315,12 +325,13 @@ summary(answer)
 
 ####### Recessions? ######
 
-p_secsum_perc <- ggplot(secsum_perc, aes(x=year, y=sec_feq_chg)) +
+secsum_perc = secsum_perc %>% mutate(lbl_year=year +1996)
+p_secsum_perc <- ggplot(secsum_perc, aes(x=lbl_year, y=sec_feq_chg)) +
     geom_line(aes(color=factor(sector)))
 
-p_secsum_perc = theme_ric(p_secsum_perc, "line")
+p_secsum_perc = theme_ric(p_secsum_perc, "grid")
 
-p_secsum_perc_d <- ggplot(secsum_perc, aes(x=year, y=money_chg)) +
+p_secsum_perc_d <- ggplot(secsum_perc, aes(x=lbl_year, y=money_chg)) +
     geom_line(aes(color=factor(sector)))
 
 p_secsum_perc_d = theme_ric(p_secsum_perc_d, "line")
@@ -334,9 +345,11 @@ p_secsum_perc_grid = arrangeGrob(p_secsum_perc,
 
 longsecsum_d = master %>% 
     group_by(sector, year) %>% 
-    summarise(avg_income = mean(total_income))
+    summarise(avg_income = mean(total_income)) %>% 
+    mutate(lbl_year=year+1996)
 
-p_longsecsum <- ggplot(master,aes(x=year)) +
+
+p_longsecsum <- ggplot(master,aes(x=lbl_year)) +
     geom_histogram(aes(fill=factor(sector)),
                    binwidth=.5) + 
     scale_y_continuous(labels=scales::number_format()) +
@@ -345,7 +358,7 @@ p_longsecsum <- ggplot(master,aes(x=year)) +
     ylab("Count")
 
 p_longsecsum_d <- ggplot(longsecsum_d, 
-                         aes(x=year,
+                         aes(x=lbl_year,
                              y=avg_income)) + 
     geom_line(aes(color=factor(sector)),lwd=1.5) + 
     scale_y_continuous(labels=scales::dollar_format(),
@@ -354,6 +367,9 @@ p_longsecsum_d <- ggplot(longsecsum_d,
     xlab("Avg Earnings")+
     ylab("Count")+
     theme_bw() 
+
+p_longsecsum = theme_ric(p_longsecsum, "l")
+p_longsecsum_d = theme_ric(p_longsecsum_d, "nl")
 
 ########################################################## longsecsum
 ########################################################## inflation
@@ -436,15 +452,15 @@ save_ric(p_longsum_grid, "p_longsum_grid", 12, 10)
 
 save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 12, 10)
 
-save_ric(theme_ric(p_longsecsum, "nl"), "p_longsecsum", 12, 9.5)
-save_ric(theme_ric(p_longsecsum_d, "nl"), "p_longsecsum_d", 15, 7.5)
+save_ric(p_longsecsum, "p_longsecsum", 12, 9.5)
+save_ric(p_longsecsum_d, "p_longsecsum_d", 15, 7.5)
 
 save_ric(p_violins, "p_violins", 16, 10) + 
     theme(plot.title = element_text(size = 18))
 
-save_ric(p_secsum_20_grid, "p_secsum_20_grid", 12, 10)
+# save_ric(p_secsum_20_grid, "p_secsum_20_grid", 12, 10)
 
-save_ric(p_secsum_20_adj, "p_secsum_20_adj", 12, 10)
-save_ric(p_secsum_d_20_adj, "p_secsum_d_20_adj", 12, 10)
+save_ric(p_secsum_20_adj, "p_secsum_20_adj", 15, 10)
+save_ric(p_secsum_d_20_adj, "p_secsum_d_20_adj", 18, 10)
 
 ########################################################## saves
