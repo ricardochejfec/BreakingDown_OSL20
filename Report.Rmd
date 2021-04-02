@@ -56,7 +56,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ![Predicted values](plots/p_longsum_pred_adj)
 
 
-
 ## Conclusion
 
 
