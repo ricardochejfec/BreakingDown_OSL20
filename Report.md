@@ -32,6 +32,18 @@ Quantity](plots/p_change_1920)
 
 ## A Recession with Unparalelled Growth (Analysis)
 
+### Overall growth higher than expected
+
+![Predicted values](plots/p_longsum_pred)
+
+### The Culprits
+
+![Predicted values by sector](plots/p_longsum_pred_sec)
+
+### Adjusted for Inflation… things get messy
+
+![Predicted values](plots/p_longsum_pred_adj)
+
 ## Conclusion
 
 # Appendix

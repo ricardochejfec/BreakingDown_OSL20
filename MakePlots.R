@@ -7,6 +7,7 @@ library(kableExtra)
 library(remotes)
 library(waffle)
 library(ggpubr)
+library(modelr)
 
 
 # colpal <- c('#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b') #Blue
@@ -19,7 +20,7 @@ theme_ric <- function(plt, plot.case) {
         x = x + theme_wsj(base_size = 16) +
             theme(legend.position = "none",
                   plot.title.position =  "plot")
-        } else if (plot.case == "waf") {
+    } else if (plot.case == "waf") {
         x = x + 
             theme_wsj(base_size = 16) +
             # theme_enhance_waffle() +
@@ -45,6 +46,7 @@ theme_ric <- function(plt, plot.case) {
     }else if (plot.case == "l"){
         x = x + theme_wsj(base_size = 16) +
             theme(legend.position = "bottom",
+                  legend.title = element_blank(),
                   plot.title.position =  "plot")
     } else if (plot.case == "grid"){
         x = x + theme_wsj(base_size = 16) + theme(
@@ -439,7 +441,76 @@ p_secsum_20_adj = theme_ric(p_secsum_20_adj, "nl")
 p_secsum_d_20_adj = theme_ric(p_secsum_d_20_adj, "nl")
 
 ########################################################## p_secsum_20_adj 
+########################################################## model NI 
+
+longsum_pred = master  %>% 
+    group_by(year) %>% 
+    summarise(money = mean(total_income),
+              sec_feq = n())
+
+longsum_pred_sec = master  %>% 
+    group_by(year, sector) %>% 
+    summarise(money = mean(total_income),
+              sec_feq = n())
+
+p_longsum_pred <- ggplot(longsum_pred %>% filter(year<=23), aes(x=year, y=sec_feq))+ 
+    geom_point()+
+    xlim(0,26)+
+    stat_smooth(method="gam", fullrange=TRUE, color="brown") +
+    geom_point(data = longsum_pred %>% filter(year==24),
+               aes(x=year, y=sec_feq),
+               color="orange",
+               size=3) +
+    ggtitle("Predicting 2020") +
+    xlab("Year") +
+    ylab("Count") 
+
+p_longsum_pred_sec <- ggplot(longsum_pred_sec %>% filter(year<=23), aes(x=year, y=sec_feq))+ 
+    geom_point()+
+    xlim(0,26)+
+    stat_smooth(method="gam", fullrange=TRUE, color="brown") +
+    geom_point(data = longsum_pred_sec %>% filter(year==24),
+               aes(x=year, y=sec_feq),
+               color="orange") +
+    ggtitle("Predicting 2020 - Sectors") +
+    xlab("Year") +
+    ylab("Count") +
+    geom_rect(data = subset(longsum_pred_sec,
+                            sector %in% c("Crown Agencies",
+                                          "School Boards",
+                                          "Hospitals And Boards Of Public Health")), 
+              fill = NA, colour = "brown", xmin = -Inf,xmax = Inf,
+              ymin = -Inf,ymax = Inf) +
+    facet_wrap(~sector, scales = "free_y")
+
+p_longsum_pred = theme_ric(p_longsum_pred,"nl")
+p_longsum_pred_sec = theme_ric(p_longsum_pred_sec,"nl")
+
+########################################################## model NI 
+########################################################## model adj 
+
+longsum_pred_adj = master_adj  %>% 
+    group_by(year, sector) %>% 
+    summarise(money = mean(total_income),
+              sec_feq = n())
+
+p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(year<=23), aes(x=year, y=sec_feq))+ 
+    geom_point()+
+    xlim(0,26)+
+    stat_smooth(method="gam", fullrange=TRUE) +
+    geom_point(data = longsum_pred_adj %>% filter(year==24),
+               aes(x=year, y=sec_feq),
+               color="red") +
+    ggtitle("Predicting 2020") +
+    xlab("Year") +
+    ylab("Count") +
+    facet_wrap(~sector,scales = "free_y")
+
+p_longsum_pred_adj = theme_ric(p_longsum_pred_adj,"nl")
+
+########################################################## model adj 
 ########################################################## saves
+
 save_ric(waf, "waffle", 12, 8.5)
 
 save_ric(p_secsum_d_20, "p_secsum_d_20", 15, 8.5)
@@ -452,15 +523,19 @@ save_ric(p_longsum_grid, "p_longsum_grid", 12, 10)
 
 save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 12, 10)
 
-save_ric(p_longsecsum, "p_longsecsum", 12, 9.5)
+save_ric(p_longsecsum, "p_longsecsum", 12, 9)
 save_ric(p_longsecsum_d, "p_longsecsum_d", 15, 7.5)
 
 save_ric(p_violins, "p_violins", 16, 10) + 
     theme(plot.title = element_text(size = 18))
 
-# save_ric(p_secsum_20_grid, "p_secsum_20_grid", 12, 10)
-
 save_ric(p_secsum_20_adj, "p_secsum_20_adj", 15, 10)
 save_ric(p_secsum_d_20_adj, "p_secsum_d_20_adj", 18, 10)
 
-########################################################## saves
+save_ric(p_longsum_pred, "p_longsum_pred", 15, 8.5)
+save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 12)
+
+save_ric(p_longsum_pred_adj, "p_longsum_pred_adj", 15, 8.5)
+
+
+ ########################################################## saves
