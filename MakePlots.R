@@ -36,10 +36,11 @@ theme_ric <- function(plt, plot.case) {
                   axis.line.x = element_blank(),
                   axis.ticks.x = element_blank(),
                   axis.ticks = element_blank(),
-                  legend.text = element_text(size=18),
                   legend.title = element_blank(),
                   legend.position = "right",
-                  legend.direction = "vertical")
+                  legend.direction = "vertical",
+                  legend.text = element_text(margin = margin(t = 5, b=5),
+                                             size=18))
     } else if (plot.case == "line"){
         x = x + theme_wsj(base_size = 16) + theme(
             legend.title = element_blank())
@@ -123,7 +124,7 @@ waf = waf + geom_waffle(
     make_proportional = TRUE,
     flip= TRUE,
     color="#f8f2e4",
-    radius = unit(4, "pt")) +
+    radius = unit(9, "pt")) +
     ggtitle("Distribution of Sectors for 2020") +
     guides(fill = guide_legend(nrow = 9)) 
 
@@ -538,4 +539,4 @@ save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 12)
 save_ric(p_longsum_pred_adj, "p_longsum_pred_adj", 15, 8.5)
 
 
- ########################################################## saves
+########################################################## saves

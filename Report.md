@@ -10,7 +10,7 @@
 
 ### Recorded by Government Sector
 
-![Long Summary by Sector](plots/p_longsecsum_d.png) ![Long Summary by
+![Long Summary by Sector](plots/p_longsecsum.png) ![Long Summary by
 Sector in dollars](plots/p_longsecsum_d.png)
 
 ## 2020 in Review (Context)
