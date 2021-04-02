@@ -56,7 +56,7 @@ theme_ric <- function(plt, plot.case) {
 }
 
 save_ric <- function(plt, plt.name, plt.wdt, plt.hgt){
-    ggsave(plt.name, 
+    ggsave(paste(plt.name,"png", sep = "."),
            plot = plt,
            device = "png",
            scale=1,
@@ -511,7 +511,7 @@ p_longsum_pred_adj = theme_ric(p_longsum_pred_adj,"nl")
 ########################################################## model adj 
 ########################################################## saves
 
-save_ric(waf, "waffle", 12, 8.5)
+save_ric(waf, "waffle,png", 12, 8.5)
 
 save_ric(p_secsum_d_20, "p_secsum_d_20", 15, 8.5)
 
