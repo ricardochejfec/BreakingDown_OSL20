@@ -42,7 +42,11 @@ Quantity](plots/p_change_1920)
 
 ### Adjusted for Inflation… things get messy
 
+<<<<<<< HEAD
 ![Predicted values](plots/p_longsum_pred_adj)
+=======
+![Predicted values](plots/p_longsum_adj)
+>>>>>>> 51ffd5e4bd114601698a85c173a59d40dec73b99
 
 ## Conclusion
 
