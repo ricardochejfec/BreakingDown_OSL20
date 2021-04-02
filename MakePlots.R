@@ -8,6 +8,7 @@ library(remotes)
 library(waffle)
 library(ggpubr)
 library(modelr)
+library(gghighlight)
 
 
 # colpal <- c('#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b') #Blue
@@ -368,11 +369,28 @@ p_longsecsum_d <- ggplot(longsecsum_d,
                        limits = c(100000, 175000)) +
     ggtitle("Sector Avg Earnings Through Time")+
     xlab("Avg Earnings")+
-    ylab("Count")+
-    theme_bw() 
+    ylab("Count") 
+
+p_longsecsum_d_high <- ggplot(longsecsum_d %>% 
+                                  mutate(high = ifelse(sector %in% c("Universities",
+                                                                     "Ontario Power Generation"), 1, 0)), 
+                              aes(x=lbl_year,
+                                  y=avg_income)) + 
+    geom_line(aes(color=factor(sector)),lwd=1.5) + 
+    scale_y_continuous(labels=scales::dollar_format(),
+                       limits = c(100000, 175000)) +
+    ggtitle("Universities and Power Avg Earnings")+
+    xlab("Avg Earnings")+
+    ylab("Count") + 
+    gghighlight(max(high)>0,
+                use_group_by=TRUE) + 
+    geom_blank(aes(colour = factor(sector)), longsecsum_d %>% 
+                   mutate(high = ifelse(sector %in% c("Universities",
+                                                      "Ontario Power Generation"), 1, 0)))
 
 p_longsecsum = theme_ric(p_longsecsum, "l")
 p_longsecsum_d = theme_ric(p_longsecsum_d, "nl")
+p_longsecsum_d_high = theme_ric(p_longsecsum_d_high, "nl")
 
 ########################################################## longsecsum
 ########################################################## inflation
@@ -413,9 +431,9 @@ p_violins <- ggplot(master_inf, aes(x=factor(year), y=salary_inf)) +
     xlab("Year") +
     ylab("Salary in Real Dollars (1996)") +
     scale_y_continuous(labels=scales::dollar_format(),
-                       limits = c(50000,500000))
+                       limits = c(50000,500000)) 
 
-p_violins = theme_ric(p_violins, "nl")
+p_violins = theme_ric(p_violins, "nl") 
 
 ########################################################## violins
 ########################################################## p_secsum_20_adj 
@@ -509,10 +527,23 @@ p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(year<=23), aes(x=year, 
 
 p_longsum_pred_adj = theme_ric(p_longsum_pred_adj,"nl")
 
-########################################################## model adj 
+########################################################## model adj
+########################################################## time series
+
+master_aux =  master %>% 
+    group_by(year) %>% 
+    summarise(money = mean(total_income),
+              sec_feq = n()) %>% 
+    mutate(year=(year+1996)) %>% ungroup()
+
+master_ts = ts(master_aux, start=1996)
+
+plot.ts(master_ts)
+
+########################################################## time series
 ########################################################## saves
 
-save_ric(waf, "waffle,png", 12, 8.5)
+save_ric(waf, "waffle", 12, 8.5)
 
 save_ric(p_secsum_d_20, "p_secsum_d_20", 15, 8.5)
 
@@ -524,8 +555,9 @@ save_ric(p_longsum_grid, "p_longsum_grid", 12, 10)
 
 save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 12, 10)
 
-save_ric(p_longsecsum, "p_longsecsum", 12, 9)
+save_ric(p_longsecsum, "p_longsecsum", 15, 7.5)
 save_ric(p_longsecsum_d, "p_longsecsum_d", 15, 7.5)
+save_ric(p_longsecsum_d_high, "p_longsecsum_d_high", 15, 7.5)
 
 save_ric(p_violins, "p_violins", 16, 10) + 
     theme(plot.title = element_text(size = 18))
