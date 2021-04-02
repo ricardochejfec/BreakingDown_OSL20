@@ -55,9 +55,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Adjusted for Inflation... things get messy 
 ![Predicted values](plots/p_longsum_pred_adj)
 
-
 ## Conclusion
-
 
 # Appendix
 
