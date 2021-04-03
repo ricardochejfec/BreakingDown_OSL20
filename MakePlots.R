@@ -9,6 +9,7 @@ library(waffle)
 library(ggpubr)
 library(modelr)
 library(gghighlight)
+library(scales)
 
 
 # colpal <- c('#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b') #Blue
@@ -57,6 +58,43 @@ theme_ric <- function(plt, plot.case) {
     return(x)
 }
 
+get_jobs <- function(dt.master){
+    x <- dt.master %>% 
+        mutate(job_title = case_when(
+            grepl(pattern = "chief", x = job_title) ~ "Mgmt",
+            grepl(pattern = "manager", x = job_title) ~ "Mgmt",
+            grepl(pattern = "director", x = job_title) ~ "Mgmt",
+            grepl(pattern = "principal", x = job_title) ~ "Mgmt",
+            grepl(pattern = "sergeant", x = job_title) ~ "Mgmt",
+            grepl(pattern = "captain", x = job_title) ~ "Mgmt",
+            grepl(pattern = "leader", x = job_title) ~ "Mgmt",
+            grepl(pattern = "lead", x = job_title) ~ "Mgmt",
+            grepl(pattern = "chair", x = job_title) ~ "Mgmt",
+            grepl(pattern = "supervisor", x = job_title) ~ "Mgmt",
+            grepl(pattern = "head", x = job_title) ~ "Mgmt",
+            grepl(pattern = "direction", x = job_title) ~ "Mgmt",
+            grepl(pattern = "superintendent", x = job_title) ~ "Mgmt",
+            grepl(pattern = "coordinator", x = job_title) ~ "Mgmt",
+            grepl(pattern = "president", x = job_title) ~ "Mgmt",
+            grepl(pattern = "gestionnaire", x = job_title) ~ "Mgmt",
+            grepl(pattern = "dean", x = job_title) ~ "Mgmt",
+            grepl(pattern = "commander", x = job_title) ~ "Mgmt",
+            grepl(pattern = "lieutenant", x = job_title) ~ "Mgmt",
+            grepl(pattern = "administrator", x = job_title) ~ "Mgmt",
+            grepl(pattern = "vicedoyen", x = job_title) ~ "Mgmt",
+            grepl(pattern = "minister", x = job_title) ~ "Mgmt",
+            grepl(pattern = "executive officer", x = job_title) ~ "Mgmt",
+            grepl(pattern = "deputy", x = job_title) ~ "Mgmt",
+            grepl(pattern = "directeur", x = job_title) ~ "Mgmt",
+            grepl(pattern = "committee", x = job_title) ~ "Mgmt",
+            grepl(pattern = "commissioner", x = job_title) ~ "Mgmt",
+            grepl(pattern = "coordonnateur", x = job_title) ~ "Mgmt",
+            TRUE ~ "Proff"
+        ))
+    return(x)
+}
+
+
 save_ric <- function(plt, plt.name, plt.wdt, plt.hgt){
     ggsave(paste(plt.name,"png", sep = "."),
            plot = plt,
@@ -80,7 +118,8 @@ master = master %>%
                ifelse(salary_paid>3000000,
                       salary_paid/100,
                       salary_paid),
-           total_income = salary_paid + taxable_benefits) %>% 
+           total_income = salary_paid + taxable_benefits,
+           lbl_year = calendar_year + 1996) %>% 
     rename(salary = salary_paid,
            benefits = taxable_benefits,
            year = calendar_year)
@@ -93,12 +132,12 @@ master = master %>%
         sector = str_to_title(sector)) %>% 
     filter(sector!="Seconded")
 
+########################################################## Vars
 # 2020 
-master_20 = filter(master, year == 24)
-master_19 = filter(master, year == 23)
 
 # Sector Summary 20 
-secsum_20 = master_20 %>% 
+secsum_20 = master %>% 
+    filter(year == 24) %>% 
     group_by(sector) %>% 
     summarise(money = mean(total_income),
               sec_feq = n()) 
@@ -106,6 +145,13 @@ secsum_20 = master_20 %>%
 secsum_20 = arrange(secsum_20, 
                     desc(sec_feq)) %>%
     mutate(rank = 1:nrow(secsum_20))
+
+rank_secs = secsum_20 %>% select(sector, rank)
+master = left_join(master, rank_secs, by="sector")
+
+master_20 = filter(master, year == 24)
+master_19 = filter(master, year == 23)
+########################################################## Vars
 
 ########################################################## Waffle
 
@@ -136,7 +182,7 @@ waf = theme_ric(waf, "waf")
 
 p_secsum_d_20 <- ggplot(secsum_20, 
                         aes(y=reorder(factor(sector),
-                                      money), 
+                                      rank), 
                             x=money, 
                             fill=reorder(factor(sector),
                                          rank))) + 
@@ -144,7 +190,7 @@ p_secsum_d_20 <- ggplot(secsum_20,
     ggtitle("Average Earnings by Sector in 2020") +
     xlab("Avg Earnings")+
     ylab(element_blank())+
-    scale_x_continuous(labels=scales::dollar_format()) 
+    scale_x_continuous(labels=scales::dollar_format())
 
 p_secsum_d_20  = theme_ric(p_secsum_d_20, "nl") 
 
@@ -158,7 +204,7 @@ secsum_19 = master_19 %>%
     summarise(money19 = mean(total_income),
               n19=n())
 
-secsum_19 = arrange(secsum_19, desc(n19)) %>% mutate(rank = 1:nrow(secsum_19))
+secsum_19 = arrange(secsum_19, desc(n19))
 
 ########################################################## change_1920
 
@@ -168,13 +214,13 @@ change_1920 = left_join(secsum_20, secsum_19,"sector") %>%
 
 p_change_1920 <- ggplot(change_1920, 
                         aes(x=reorder(sector,
-                                      -delta_count), 
+                                      rank), 
                             y=delta_count, 
                             label=delta_count, 
                             color=reorder(sector,
-                                          rank.x))) +
+                                          rank))) +
     geom_point(aes(fill=reorder(sector,
-                                rank.x)),
+                                rank)),
                stat="identity",
                size=8,
                pch=21) + 
@@ -183,7 +229,7 @@ p_change_1920 <- ggplot(change_1920,
                      yend=delta_count,
                      xend=sector,
                      color=reorder(sector,
-                                   rank.x)),
+                                   rank)),
                  size=2)+
     geom_text(color="black",
               size=5,
@@ -202,13 +248,13 @@ p_change_1920 = theme_ric(p_change_1920, "nl")
 
 p_change_1920_d <- ggplot(change_1920,
                           aes(x=reorder(sector,
-                                        -delta_money), 
+                                        rank), 
                               y=delta_money, 
-                              label=round(delta_money), 
+                              label=dollar(round(delta_money)), 
                               color=reorder(sector,
-                                            rank.x))) +
+                                            rank))) +
     geom_point(aes(fill=reorder(sector,
-                                rank.x)),
+                                rank)),
                stat="identity", 
                size=8,
                pch=21) + 
@@ -217,7 +263,7 @@ p_change_1920_d <- ggplot(change_1920,
                      yend=delta_money,
                      xend=sector,
                      color=reorder(sector,
-                                   rank.x)),
+                                   rank)),
                  size=2)+
     geom_text(color="black",
               size=5,
@@ -268,22 +314,17 @@ power_19 = jobs19 %>%
 
 ########################################################## job_titles
 ########################################################## longsum
-master = master %>% mutate(lbl_year = year + 1996)
 p_longsum <- ggplot(master, 
                     aes(x=lbl_year)) +
     scale_y_continuous(labels=scales::number_format())+
-    geom_bar(
-        # fill="#2270b5"
-    ) +
+    geom_bar() +
     ggtitle("Count Across Time")+
     ylab("Count")+
     xlab("Year")
 
 p_longsum_d <- ggplot(master, 
                       aes(y=total_income, x=lbl_year)) + 
-    geom_bar(stat="summary"
-             # fill="#6bafd6"
-    ) +
+    geom_bar(stat="summary",) +
     scale_y_continuous(labels=scales::dollar_format()) +
     ggtitle("Avg Earnings Across Time")+
     ylab("Avg Earnings")+
@@ -301,8 +342,8 @@ secsum = master %>%
     summarise(money = mean(total_income),
               sec_feq = n()) 
 
-rank_20 = secsum_20 %>% select(sector, rank)
-secsum = left_join(secsum, rank_20, by="sector")
+secsum = left_join(secsum, rank_secs, by="sector") %>% 
+    mutate(lbl_year=year +1996)
 
 secsum_perc <- secsum %>%
     group_by(sector) %>%
@@ -329,16 +370,18 @@ summary(answer)
 
 ####### Recessions? ######
 
-secsum_perc = secsum_perc %>% mutate(lbl_year=year +1996)
 p_secsum_perc <- ggplot(secsum_perc, aes(x=lbl_year, y=sec_feq_chg)) +
-    geom_line(aes(color=factor(sector)))
+    geom_line(aes(color=reorder(factor(sector), rank))) +
+    scale_y_continuous(labels=scales::percent_format())
 
 p_secsum_perc = theme_ric(p_secsum_perc, "grid")
 
 p_secsum_perc_d <- ggplot(secsum_perc, aes(x=lbl_year, y=money_chg)) +
-    geom_line(aes(color=factor(sector)))
+    geom_line(aes(color=reorder(factor(sector), rank)))+
+    scale_y_continuous(labels=scales::percent_format())
 
-p_secsum_perc_d = theme_ric(p_secsum_perc_d, "line")
+p_secsum_perc_d = theme_ric(p_secsum_perc_d, "line") + 
+    theme(legend.justification  = "left")
 
 p_secsum_perc_grid = arrangeGrob(p_secsum_perc,
                                  p_secsum_perc_d,
@@ -352,45 +395,26 @@ longsecsum_d = master %>%
     summarise(avg_income = mean(total_income)) %>% 
     mutate(lbl_year=year+1996)
 
+longsecsum_d = left_join(longsecsum_d, rank_secs, by="sector")
 
-p_longsecsum <- ggplot(master,aes(x=lbl_year)) +
-    geom_histogram(aes(fill=factor(sector)),
+p_longsecsum <- ggplot(master, aes(x=lbl_year)) + 
+    geom_histogram(aes(fill=reorder(factor(sector), rank)),
                    binwidth=.5) + 
     scale_y_continuous(labels=scales::number_format()) +
-    ggtitle("Sector Breakdown Through Time")+
-    xlab("Year")+
-    ylab("Count")
+    ggtitle("Sector Breakdown Through Time") +
+    xlab("Year") +
+    ylab("Count") 
 
 p_longsecsum_d <- ggplot(longsecsum_d, 
                          aes(x=lbl_year,
                              y=avg_income)) + 
-    geom_line(aes(color=factor(sector)),lwd=1.5) + 
+    geom_line(aes(color=reorder(factor(sector), rank)),lwd=1.3) + 
     scale_y_continuous(labels=scales::dollar_format(),
                        limits = c(100000, 175000)) +
-    ggtitle("Sector Avg Earnings Through Time")+
-    xlab("Avg Earnings")+
-    ylab("Count") 
+    ggtitle("Sector Avg Earnings Through Time") 
 
-p_longsecsum_d_high <- ggplot(longsecsum_d %>% 
-                                  mutate(high = ifelse(sector %in% c("Universities",
-                                                                     "Ontario Power Generation"), 1, 0)), 
-                              aes(x=lbl_year,
-                                  y=avg_income)) + 
-    geom_line(aes(color=factor(sector)),lwd=1.5) + 
-    scale_y_continuous(labels=scales::dollar_format(),
-                       limits = c(100000, 175000)) +
-    ggtitle("Universities and Power Avg Earnings")+
-    xlab("Avg Earnings")+
-    ylab("Count") + 
-    gghighlight(max(high)>0,
-                use_group_by=TRUE) + 
-    geom_blank(aes(colour = factor(sector)), longsecsum_d %>% 
-                   mutate(high = ifelse(sector %in% c("Universities",
-                                                      "Ontario Power Generation"), 1, 0)))
-
-p_longsecsum = theme_ric(p_longsecsum, "l")
-p_longsecsum_d = theme_ric(p_longsecsum_d, "nl")
-p_longsecsum_d_high = theme_ric(p_longsecsum_d_high, "nl")
+p_longsecsum = theme_ric(p_longsecsum, "l") + theme(legend.justification = 'left')
+p_longsecsum_d = theme_ric(p_longsecsum_d, "nl") #+ xlab("year") + theme(axis.title=element_text(size=12))
 
 ########################################################## longsecsum
 ########################################################## inflation
@@ -419,7 +443,7 @@ secsum_20_adj = master_20_adj %>%
 secsum_20_adj = secsum_20_adj %>% 
     mutate(perc = sec_feq/nrow(master_20))
 
-secsum_20_adj2 = left_join(x=secsum_20_adj, y=rank_20)
+secsum_20_adj = left_join(x=secsum_20_adj, y=rank_secs) 
 
 ########################################################## inflation
 ########################################################## violins
@@ -438,8 +462,8 @@ p_violins = theme_ric(p_violins, "nl")
 ########################################################## violins
 ########################################################## p_secsum_20_adj 
 
-p_secsum_20_adj <- ggplot(secsum_20_adj2, 
-                          aes(y=reorder(factor(sector), sec_feq),
+p_secsum_20_adj <- ggplot(secsum_20_adj, 
+                          aes(y=reorder(factor(sector), -rank),
                               x=sec_feq, 
                               fill=reorder(factor(sector), rank))) + 
     geom_bar(stat="identity") +
@@ -448,8 +472,8 @@ p_secsum_20_adj <- ggplot(secsum_20_adj2,
     ylab("")+
     scale_x_continuous(labels=scales::number_format())
 
-p_secsum_d_20_adj <- ggplot(secsum_20_adj2, 
-                            aes(y=reorder(factor(sector), rank), x=money, fill=sector)) + 
+p_secsum_d_20_adj <- ggplot(secsum_20_adj, 
+                            aes(y=reorder(factor(sector), -rank), x=money, fill=reorder(factor(sector), rank))) + 
     geom_bar(stat="identity")  +
     ggtitle("2020 Avg Earnings, Adjusted for Inflation") +
     xlab("Avg Earnings") +
@@ -465,31 +489,33 @@ p_secsum_d_20_adj = theme_ric(p_secsum_d_20_adj, "nl")
 longsum_pred = master  %>% 
     group_by(year) %>% 
     summarise(money = mean(total_income),
-              sec_feq = n())
+              sec_feq = n()) %>% 
+    mutate(lbl_year=year+1996)
 
 longsum_pred_sec = master  %>% 
     group_by(year, sector) %>% 
     summarise(money = mean(total_income),
-              sec_feq = n())
+              sec_feq = n()) %>% 
+    mutate(lbl_year=year+1996)
 
-p_longsum_pred <- ggplot(longsum_pred %>% filter(year<=23), aes(x=year, y=sec_feq))+ 
+p_longsum_pred <- ggplot(longsum_pred %>% filter(lbl_year<=2019), aes(x=lbl_year, y=sec_feq))+ 
     geom_point()+
-    xlim(0,26)+
+    xlim(1996,2020)+
     stat_smooth(method="gam", fullrange=TRUE, color="brown") +
-    geom_point(data = longsum_pred %>% filter(year==24),
-               aes(x=year, y=sec_feq),
+    geom_point(data = longsum_pred %>% filter(lbl_year==2020),
+               aes(x=lbl_year, y=sec_feq),
                color="orange",
                size=3) +
     ggtitle("Predicting 2020") +
     xlab("Year") +
     ylab("Count") 
 
-p_longsum_pred_sec <- ggplot(longsum_pred_sec %>% filter(year<=23), aes(x=year, y=sec_feq))+ 
+p_longsum_pred_sec <- ggplot(longsum_pred_sec %>% filter(lbl_year<=2019), aes(x=lbl_year, y=sec_feq))+ 
     geom_point()+
-    xlim(0,26)+
+    xlim(1996,2020)+
     stat_smooth(method="gam", fullrange=TRUE, color="brown") +
-    geom_point(data = longsum_pred_sec %>% filter(year==24),
-               aes(x=year, y=sec_feq),
+    geom_point(data = longsum_pred_sec %>% filter(lbl_year==2020),
+               aes(x=lbl_year, y=sec_feq),
                color="orange") +
     ggtitle("Predicting 2020 - Sectors") +
     xlab("Year") +
@@ -511,14 +537,15 @@ p_longsum_pred_sec = theme_ric(p_longsum_pred_sec,"nl")
 longsum_pred_adj = master_adj  %>% 
     group_by(year, sector) %>% 
     summarise(money = mean(total_income),
-              sec_feq = n())
+              sec_feq = n()) %>% 
+    mutate(lbl_year=year+1996)
 
-p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(year<=23), aes(x=year, y=sec_feq))+ 
+p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(lbl_year<=2019), aes(x=lbl_year, y=sec_feq))+ 
     geom_point()+
-    xlim(0,26)+
+    xlim(1996,2020)+
     stat_smooth(method="gam", fullrange=TRUE) +
-    geom_point(data = longsum_pred_adj %>% filter(year==24),
-               aes(x=year, y=sec_feq),
+    geom_point(data = longsum_pred_adj %>% filter(lbl_year==2020),
+               aes(x=lbl_year, y=sec_feq),
                color="red") +
     ggtitle("Predicting 2020") +
     xlab("Year") +
@@ -528,17 +555,45 @@ p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(year<=23), aes(x=year, 
 p_longsum_pred_adj = theme_ric(p_longsum_pred_adj,"nl")
 
 ########################################################## model adj
+########################################################## management 
+
+prac_jobs_20 <- get_jobs(master_20)
+prac_jobs_20_adj <- get_jobs(master_20_adj)
+
+jobsum_20 <- prac_jobs_20 %>%
+    group_by(job_title) %>%
+    count() %>%
+    ungroup() %>%
+    mutate(i=row_number())
+
+jobsum_20_adj <- prac_jobs_20_adj %>%
+    group_by(job_title) %>%
+    count() %>%
+    ungroup() %>%
+    mutate(i=row_number())
+
+p_jobsum_20 <- ggplot(jobsum_20, aes(x = job_title,y=n)) + 
+    geom_bar(stat = "summary") + 
+    scale_y_continuous(labels = number_format())+
+    ggtitle("2020")
+
+
+p_jobsum_20 = theme_ric(p_jobsum_20, "nl")
+
+p_jobsum_20_adj <-  ggplot(jobsum_20_adj, aes(x = job_title,y=n)) + 
+    geom_bar(stat = "summary")+ 
+    scale_y_continuous(labels = number_format())+
+    ggtitle("2020 - Adjusted")
+
+
+p_jobsum_20_adj = theme_ric(p_jobsum_20_adj,"nl")
+
+p_jobsum_20_grid <- arrangeGrob(p_jobsum_20, p_jobsum_20_adj, ncol=2)
+
+########################################################## management 
 ########################################################## time series
 
-master_aux =  master %>% 
-    group_by(year) %>% 
-    summarise(money = mean(total_income),
-              sec_feq = n()) %>% 
-    mutate(year=(year+1996)) %>% ungroup()
 
-master_ts = ts(master_aux, start=1996)
-
-plot.ts(master_ts)
 
 ########################################################## time series
 ########################################################## saves
@@ -557,7 +612,6 @@ save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 12, 10)
 
 save_ric(p_longsecsum, "p_longsecsum", 15, 7.5)
 save_ric(p_longsecsum_d, "p_longsecsum_d", 15, 7.5)
-save_ric(p_longsecsum_d_high, "p_longsecsum_d_high", 15, 7.5)
 
 save_ric(p_violins, "p_violins", 16, 10) + 
     theme(plot.title = element_text(size = 18))
@@ -566,9 +620,12 @@ save_ric(p_secsum_20_adj, "p_secsum_20_adj", 15, 10)
 save_ric(p_secsum_d_20_adj, "p_secsum_d_20_adj", 18, 10)
 
 save_ric(p_longsum_pred, "p_longsum_pred", 15, 8.5)
-save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 12)
+save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 8.5)
 
 save_ric(p_longsum_pred_adj, "p_longsum_pred_adj", 15, 8.5)
 
+save_ric(p_jobsum_20_grid, "p_jobsum_20_grid", 12, 8.5)
 
-########################################################## saves
+
+
+ ########################################################## saves
