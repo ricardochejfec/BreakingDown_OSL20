@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)                           
 
-# source(file = "MakePlots.R", local = TRUE)
+source(file = "MakePlots.R", local = TRUE)
 
 ```
 
@@ -120,21 +120,34 @@ While Crown Agencies make a smaller share of the list, the higher than expected 
 
 ```{r}
 
-jobs = dd_delta %>% group_by(sector) %>% 
+jobs = dd_delta %>% filter(sector %in% c("Crown Agencies",
+                                         "Hospitals And Boards Of Public Health",
+                                         "School Boards")) %>% 
+    group_by(sector) %>% 
     arrange(-delta, .by_group = TRUE) %>% slice(1:5)
 
-jobs[1, 2]
+fchange = function(rown){
+    result = paste(paste("+",
+                         jobs[rown, 5],
+                         sep = ""),
+                   paste("(",
+                         round((jobs[rown, 6]*100), digits = 0),
+                         "%)",
+                         sep=""))
+    return(result)
+}
+
 
 ```
 
-| Crown          |                |     | Hospitals       |            |     | Schools         |            |
-|----------------|----------------|-----|-----------------|------------|-----|-----------------|------------|
-| Job Title      | Change (%)     |     | Job Title       | Change (%) |     | Job Title       | Change (%) |
-| `r jobs[1, 2]` | `r jobs[1, 2]` |     | `r jobs[6, 2]`  |            |     | `r jobs[11, 2]` |            |
-| `r jobs[2, 2]` |                |     | `r jobs[7, 2]`  |            |     | `r jobs[12, 2]` |            |
-| `r jobs[3, 2]` |                |     | `r jobs[8, 2]`  |            |     | `r jobs[13, 2]` |            |
-| `r jobs[4, 2]` |                |     | `r jobs[9, 2]`  |            |     | `r jobs[14, 2]` |            |
-| `r jobs[5, 2]` |                |     | `r jobs[10, 2]` |            |     | `r jobs[15, 2]` |            |
+| Crown          |                |     | Hospitals       |                 |     | Schools         |                 |
+|----------------|----------------|-----|-----------------|-----------------|-----|-----------------|-----------------|
+| **Job Title**  | **Change (%)** |     | **Job Title**   | **Change (%)**  |     | **Job Title**   | **Change (%)**  |
+| `r jobs[1, 2]` | `r fchange(1)` |     | `r jobs[6, 2]`  | `r fchange(6)`  |     | `r jobs[11, 2]` | `r fchange(11)` |
+| `r jobs[2, 2]` | `r fchange(2)` |     | `r jobs[7, 2]`  | `r fchange(7)`  |     | `r jobs[12, 2]` | `r fchange(12)` |
+| `r jobs[3, 2]` | `r fchange(3)` |     | `r jobs[8, 2]`  | `r fchange(8)`  |     | `r jobs[13, 2]` | `r fchange(13)` |
+| `r jobs[4, 2]` | `r fchange(4)` |     | `r jobs[9, 2]`  | `r fchange(9)`  |     | `r jobs[14, 2]` | `r fchange(14)` |
+| `r jobs[5, 2]` | `r fchange(5)` |     | `r jobs[10, 2]` | `r fchange(10)` |     | `r jobs[15, 2]` | `r fchange(15)` |
 
 : Largest Changes in Job Titles
 

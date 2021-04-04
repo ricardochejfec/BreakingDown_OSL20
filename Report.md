@@ -1,3 +1,5 @@
+![](Report_files/figure-markdown_strict/setup2-1.png)
+
 # It’s Not What It Looks Like
 
 ## The Effect of 2020 on Ontario Public Sector’s High Earners
@@ -183,6 +185,113 @@ increased need for policy and logistics development. The growth seen in
 Crown Agencies in 2020 is likely a result of more management and
 analysts, rising to navigate the difficult terrain of operating amid a
 pandemic.  
+
+    jobs = dd_delta %>% filter(sector %in% c("Crown Agencies",
+                                             "Hospitals And Boards Of Public Health",
+                                             "School Boards")) %>% 
+        group_by(sector) %>% 
+        arrange(-delta, .by_group = TRUE) %>% slice(1:5)
+
+    fchange = function(rown){
+        result = paste(paste("+",
+                             jobs[rown, 5],
+                             sep = ""),
+                       paste("(",
+                             round((jobs[rown, 6]*100), digits = 0),
+                             "%)",
+                             sep=""))
+        return(result)
+    }
+
+<table>
+<caption>Largest Changes in Job Titles</caption>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 4%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 4%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Crown</th>
+<th></th>
+<th></th>
+<th>Hospitals</th>
+<th></th>
+<th></th>
+<th>Schools</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Job Title</td>
+<td>Change (%)</td>
+<td></td>
+<td>Job Title</td>
+<td>Change (%)</td>
+<td></td>
+<td>Job Title</td>
+<td>Change (%)</td>
+</tr>
+<tr class="even">
+<td>manager</td>
+<td>+418 (20%)</td>
+<td></td>
+<td>nurse</td>
+<td>+8993 (93%)</td>
+<td></td>
+<td>teacher</td>
+<td>+15149 (103%)</td>
+</tr>
+<tr class="odd">
+<td>cm</td>
+<td>+270 (391%)</td>
+<td></td>
+<td>manager</td>
+<td>+542 (17%)</td>
+<td></td>
+<td>management</td>
+<td>+136 (1%)</td>
+</tr>
+<tr class="even">
+<td>specialist, return to work program</td>
+<td>+216 (10800%)</td>
+<td></td>
+<td>respiratory therapist</td>
+<td>+286 (308%)</td>
+<td></td>
+<td>manager</td>
+<td>+75 (13%)</td>
+</tr>
+<tr class="odd">
+<td>director</td>
+<td>+87 (8%)</td>
+<td></td>
+<td>social worker</td>
+<td>+255 (531%)</td>
+<td></td>
+<td>social worker</td>
+<td>+63 (119%)</td>
+</tr>
+<tr class="even">
+<td>pm</td>
+<td>+63 (31%)</td>
+<td></td>
+<td>pharmacist</td>
+<td>+118 (14%)</td>
+<td></td>
+<td>school leadership position</td>
+<td>+44 (35%)</td>
+</tr>
+</tbody>
+</table>
+
+Largest Changes in Job Titles
 
 ## Adjusting for Inflation (Considerations)
 

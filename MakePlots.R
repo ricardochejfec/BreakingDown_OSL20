@@ -502,32 +502,62 @@ longsum_pred_sec = master  %>%
               sec_feq = n()) %>% 
     mutate(lbl_year=year+1996)
 
-longsum_pred_sec_mod =  longsum_pred_sec %>% filter(year<24)
+longsum_pred_sec_mod =  longsum_pred_sec %>% 
+    filter(year<24)
 
-lin_model_sec = gam(sec_feq~year+sector, data = longsum_pred_sec_mod,
+crown_pred_mod = longsum_pred_sec_mod %>% 
+    filter(sector=="Crown Agencies")
+crown_lin = gam(sec_feq~year, data = crown_pred_mod,
+                family = "poisson")
+crown_gam = gam(sec_feq ~ s(year),
+                    data = crown_pred_mod,
                     family = "poisson")
-summary(lin_model_sec)
 
-
-
-longsum_pred_sec_mod = longsum_pred_sec_mod %>% mutate(
-    group_no = as.integer(factor(sector)))
-longsum_pred_sec = longsum_pred_sec %>% mutate(
-    group_no = as.integer(factor(sector)))
-
-gam_model_sec = gam(sec_feq ~ s(year, bs = "cp", k=10) + sector,
-                    data = longsum_pred_sec_mod,
+school_pred_mod = longsum_pred_sec_mod %>% 
+    filter(sector=="School Boards")
+school_lin = gam(sec_feq~year, data = school_pred_mod,
+                family = "poisson")
+school_gam = gam(sec_feq ~ s(year),
+                    data = school_pred_mod,
                     family = "poisson")
-summary(gam_model_sec)
 
-newdf_sec <- longsum_pred_sec
-gam_sec_pred <- add_predictions(newdf_sec, gam_model_sec, var="pred", type = "response")
-lin_sec_pred <- predict(lin_model_sec, newdata=newdf_sec, type = "response" )
+hosp_pred_mod = longsum_pred_sec_mod %>% 
+    filter(sector=="Hospitals And Boards Of Public Health")
+hosp_lin = gam(sec_feq~year, data = hosp_pred_mod,
+                 family = "poisson")
+hosp_gam = gam(sec_feq ~ s(year),
+                 data = hosp_pred_mod,
+                 family = "poisson")
 
-plot(gam_sec_pred$pred)
-ggplot(gam_sec_pred, aes(x=year, y=pred)) + geom_line()+
+summary(crown_lin)
+summary(crown_gam)
+
+summary(school_lin)
+summary(school_gam)
+
+summary(hosp_lin)
+summary(hosp_gam)
+
+crown_pred = longsum_pred_sec %>% 
+    filter(sector=="Crown Agencies")
+crown_pred <- add_predictions(crown_pred, crown_gam,
+                              var="pred", type = "response")
+
+school_pred  = longsum_pred_sec %>% 
+    filter(sector=="School Boards")
+school_pred <- add_predictions(school_pred, school_gam,
+                               var="pred", type = "response")
+
+hosp_pred = longsum_pred_sec %>% 
+    filter(sector=="Hospitals And Boards Of Public Health")
+hosp_pred <- add_predictions(hosp_pred, hosp_gam,
+                             var="pred", type = "response")
+
+gam_sector_plot_test = rbind(crown_pred,school_pred,hosp_pred)
+
+ggplot(gam_sector_plot_test, aes(x=year, y=pred)) + geom_line()+
     geom_point(aes(x=year, y=sec_feq), color="red", alpha=.5)+
-    facet_wrap(~group_no, scales = "free_y")
+    facet_wrap(~sector, scales = "free_y")
 
 ########################################################## model GAM Sec 
 ########################################################## model NI 
