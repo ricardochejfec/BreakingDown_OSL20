@@ -10,7 +10,12 @@ library(ggpubr)
 library(modelr)
 library(gghighlight)
 library(scales)
+library(mgcv)
 
+# Jonah
+# model by sector doesnt work. 
+# where do i put my functions?
+# 
 
 # colpal <- c('#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b') #Blue
 # colpal <- c('#fff7fb','#ece2f0','#d0d1e6','#a6bddb','#67a9cf','#3690c0','#02818a','#016c59','#014636') #green
@@ -93,7 +98,6 @@ get_jobs <- function(dt.master){
         ))
     return(x)
 }
-
 
 save_ric <- function(plt, plt.name, plt.wdt, plt.hgt){
     ggsave(paste(plt.name,"png", sep = "."),
@@ -278,48 +282,8 @@ p_change_1920_d <- ggplot(change_1920,
 p_change_1920_d = theme_ric(p_change_1920_d, "nl")
 
 ########################################################## change_1920_d
-########################################################## job_titles
-
-jobs20 = master_20 %>% 
-    group_by(sector) %>% 
-    count(job_title, sort=TRUE) %>% 
-    ungroup() %>% 
-    group_by(sector) %>% 
-    slice(1:10)
-
-crown_20 = jobs20 %>% 
-    filter(sector == "Crown Agencies")
-
-school_20 = jobs20 %>% 
-    filter(sector == "School Boards")
-
-univ_20 = jobs20 %>% 
-    filter(sector == "Universities")
-
-power_20 = jobs20 %>% 
-    filter(sector == "Ontario Power Generation")
-
-jobs19 = master_19 %>% 
-    group_by(sector) %>% 
-    count(job_title, sort=TRUE) %>% 
-    ungroup() %>% 
-    group_by(sector) %>% 
-    slice(1:10)
-
-crown_19 = jobs19 %>% 
-    filter(sector == "Crown Agencies")
-
-school_19 = jobs19 %>% 
-    filter(sector == "School Boards")
-
-univ_19 = jobs19 %>% 
-    filter(sector == "Universities")
-
-power_19 = jobs19 %>% 
-    filter(sector == "Ontario Power Generation")
-
-########################################################## job_titles
 ########################################################## longsum
+
 p_longsum <- ggplot(master, 
                     aes(x=lbl_year)) +
     scale_y_continuous(labels=scales::number_format())+
@@ -361,21 +325,6 @@ secsum_perc <- secsum %>%
 secsum_perc = secsum_perc %>% 
     mutate(money_chg = ifelse(is.na(money_chg), 0, money_chg),
            sec_feq_chg = ifelse(is.na(sec_feq_chg), 0, sec_feq_chg))
-
-####### Recessions? ######
-
-secsum_perc = secsum_perc %>% 
-    mutate(recession = ifelse(year==12 | year==19 | year==22 | year==24,
-                              1, 0))
-
-ggplot(secsum_perc, aes(x=recession, y= sec_feq_chg)) + 
-    geom_point(alpha=.5) + geom_smooth()
-
-answer = lm(sec_feq_chg ~ factor(recession), data = secsum_perc)
-
-summary(answer)
-
-####### Recessions? ######
 
 p_secsum_perc <- ggplot(secsum_perc, aes(x=lbl_year, y=sec_feq_chg)) +
     geom_line(aes(color=reorder(factor(sector), rank))) +
@@ -420,8 +369,10 @@ p_longsecsum_d <- ggplot(longsecsum_d,
                        limits = c(100000, 175000)) +
     ggtitle("Sector Avg Earnings Through Time") 
 
-p_longsecsum = theme_ric(p_longsecsum, "l") + theme(legend.justification = 'left')
-p_longsecsum_d = theme_ric(p_longsecsum_d, "nl") #+ xlab("year") + theme(axis.title=element_text(size=12))
+p_longsecsum = theme_ric(p_longsecsum, "l") + 
+    theme(legend.justification = 'left')
+p_longsecsum_d = theme_ric(p_longsecsum_d, "nl") 
+#+ xlab("year") + theme(axis.title=element_text(size=12))
 
 ########################################################## longsecsum
 ########################################################## inflation
@@ -480,7 +431,9 @@ p_secsum_20_adj <- ggplot(secsum_20_adj,
     scale_x_continuous(labels=scales::number_format())
 
 p_secsum_d_20_adj <- ggplot(secsum_20_adj, 
-                            aes(y=reorder(factor(sector), -rank), x=money, fill=reorder(factor(sector), rank))) + 
+                            aes(y=reorder(factor(sector), -rank),
+                                x=money, 
+                                fill=reorder(factor(sector), rank))) + 
     geom_bar(stat="identity")  +
     ggtitle("2020 Avg Earnings, Adjusted for Inflation") +
     xlab("Avg Earnings") +
@@ -499,18 +452,49 @@ longsum_pred = master  %>%
               sec_feq = n()) %>% 
     mutate(lbl_year=year+1996)
 
-    
-# longsum_perc = longsum_pred %>%
-#     mutate(money_chg = (money - lag(money))/lag(money),
-#            sec_feq_chg = (sec_feq - lag(sec_feq))/lag(sec_feq))
-# 
-# ggplot(longsum_perc, aes(x=lbl_year, y=sec_feq_chg)) + geom_line()
-# 
-# sec_feq1 = longsum_perc$sec_feq[1]
-# 
-# longsum_perc_2= longsum_pred %>%
-#         mutate(money_chg = (money - lag(money))/(money),
-#                sec_feq_chg = (sec_feq /sec_feq1))
+########################################################## model GAM Long 
+
+longsum_pred_mod = longsum_pred %>% filter(year<24)
+
+lin_model = gam(sec_feq~year, data = longsum_pred_mod,
+                family = "poisson")
+summary(lin_model)
+
+gam_model =  gam(sec_feq~s(year, bs = "cr", k = 2), data = longsum_pred_mod,
+                 family = "poisson")
+summary(gam_model)
+
+# p <- predict(gam_model, type="lpmatrix")
+# beta <- coef(gam_model)[grepl("sec_feq", names(coef(gam_model)))]
+# s <- p[,grepl("sec_feq", colnames(p))] %*% beta
+# ggplot(data=cbind.data.frame(s, longsum_pred$sec_feq), aes(x=longsum_pred$sec_feq, y=s)) + geom_line()
+
+newdf <- longsum_pred 
+gam_pred <- add_predictions(newdf, gam_model, var="pred",  type="response")
+lim_pred <- add_predictions(newdf, lin_model, var="pred", type="response")
+
+z_score = qt(.975, df=23)
+
+# gam_pred_2 <- predict(gam_model, newdata = newdf, type="response", se.fit = TRUE)
+# gam_pred_2 = data.frame(newdf,gam_pred_2) %>% mutate(
+#     upper = fit + z_score*se.fit,
+#     lower = fit - z_score*se.fit
+# )
+
+
+# ggplot(gam_pred_2, aes(x=year, y=fit)) +  
+#     geom_ribbon(aes(ymin=lower, ymax=upper), fill="grey") +
+#     geom_line() + 
+#     geom_point(aes(x=year, y=sec_feq), color="red", alpha=.5)
+
+ggplot(gam_pred, aes(x=year, y=pred)) + geom_line() +
+    geom_point(aes(x=year, y=sec_feq), color="red", alpha=.5)
+
+ggplot(lim_pred, aes(x=year, y=pred)) + geom_line() + 
+    geom_point(aes(x=year, y=sec_feq), color="red", alpha=.5)
+
+########################################################## model GAM Long 
+########################################################## model GAM Sec 
 
 longsum_pred_sec = master  %>% 
     group_by(year, sector) %>% 
@@ -518,7 +502,38 @@ longsum_pred_sec = master  %>%
               sec_feq = n()) %>% 
     mutate(lbl_year=year+1996)
 
-p_longsum_pred <- ggplot(longsum_pred %>% filter(lbl_year<=2019), aes(x=lbl_year, y=sec_feq))+ 
+longsum_pred_sec_mod =  longsum_pred_sec %>% filter(year<24)
+
+lin_model_sec = gam(sec_feq~year+sector, data = longsum_pred_sec_mod,
+                    family = "poisson")
+summary(lin_model_sec)
+
+
+
+longsum_pred_sec_mod = longsum_pred_sec_mod %>% mutate(
+    group_no = as.integer(factor(sector)))
+longsum_pred_sec = longsum_pred_sec %>% mutate(
+    group_no = as.integer(factor(sector)))
+
+gam_model_sec = gam(sec_feq ~ s(year, bs = "cp", k=10) + sector,
+                    data = longsum_pred_sec_mod,
+                    family = "poisson")
+summary(gam_model_sec)
+
+newdf_sec <- longsum_pred_sec
+gam_sec_pred <- add_predictions(newdf_sec, gam_model_sec, var="pred", type = "response")
+lin_sec_pred <- predict(lin_model_sec, newdata=newdf_sec, type = "response" )
+
+plot(gam_sec_pred$pred)
+ggplot(gam_sec_pred, aes(x=year, y=pred)) + geom_line()+
+    geom_point(aes(x=year, y=sec_feq), color="red", alpha=.5)+
+    facet_wrap(~group_no, scales = "free_y")
+
+########################################################## model GAM Sec 
+########################################################## model NI 
+
+p_longsum_pred <- ggplot(longsum_pred %>% filter(lbl_year<=2019),
+                         aes(x=lbl_year, y=sec_feq))+ 
     geom_point()+
     xlim(1996,2020)+
     stat_smooth(method="gam", fullrange=TRUE, color="brown") +
@@ -530,7 +545,8 @@ p_longsum_pred <- ggplot(longsum_pred %>% filter(lbl_year<=2019), aes(x=lbl_year
     xlab("Year") +
     ylab("Count") 
 
-p_longsum_pred_sec <- ggplot(longsum_pred_sec %>% filter(lbl_year<=2019), aes(x=lbl_year, y=sec_feq))+ 
+p_longsum_pred_sec <- ggplot(longsum_pred_sec %>% filter(lbl_year<=2019),
+                             aes(x=lbl_year, y=sec_feq))+ 
     geom_point()+
     xlim(1996,2020)+
     stat_smooth(method="gam", fullrange=TRUE, color="brown") +
@@ -555,16 +571,38 @@ p_longsum_pred_sec = theme_ric(p_longsum_pred_sec,"nl")
 ########################################################## model adj 
 
 longsum_pred_adj = master_adj  %>% 
+    group_by(year) %>% 
+    summarise(money = mean(total_income),
+              sec_feq = n()) %>% 
+    mutate(lbl_year=year+1996)
+
+longsum_pred_sec_adj = master_adj  %>% 
     group_by(year, sector) %>% 
     summarise(money = mean(total_income),
               sec_feq = n()) %>% 
     mutate(lbl_year=year+1996)
 
-p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(lbl_year<=2019), aes(x=lbl_year, y=sec_feq))+ 
+p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(lbl_year<=2019), 
+                             aes(x=lbl_year, y=sec_feq))+ 
+    geom_point()+
+    xlim(1996,2020)+
+    stat_smooth(method="gam", fullrange=TRUE, color="blue") +
+    geom_point(data = longsum_pred_adj %>% filter(lbl_year==2020),
+               aes(x=lbl_year, y=sec_feq),
+               color="red",
+               size=3) +
+    ggtitle("Predicting 2020") +
+    xlab("Year") +
+    ylab("Count") 
+
+p_longsum_pred_sec_adj <- ggplot(longsum_pred_sec_adj %>% 
+                                     filter(lbl_year<=2019),
+                                 aes(x=lbl_year, y=sec_feq))+ 
     geom_point()+
     xlim(1996,2020)+
     stat_smooth(method="gam", fullrange=TRUE) +
-    geom_point(data = longsum_pred_adj %>% filter(lbl_year==2020),
+    geom_point(data = longsum_pred_sec_adj %>% 
+                   filter(lbl_year==2020),
                aes(x=lbl_year, y=sec_feq),
                color="red") +
     ggtitle("Predicting 2020") +
@@ -572,6 +610,7 @@ p_longsum_pred_adj <- ggplot(longsum_pred_adj %>% filter(lbl_year<=2019), aes(x=
     ylab("Count") +
     facet_wrap(~sector,scales = "free_y")
 
+p_longsum_pred_sec_adj = theme_ric(p_longsum_pred_sec_adj,"nl")
 p_longsum_pred_adj = theme_ric(p_longsum_pred_adj,"nl")
 
 ########################################################## model adj
@@ -611,6 +650,65 @@ p_jobsum_20_adj = theme_ric(p_jobsum_20_adj,"nl")
 p_jobsum_20_grid <- arrangeGrob(p_jobsum_20, p_jobsum_20_adj, ncol=2)
 
 ########################################################## management 
+########################################################## job_deep_dive 
+
+deepdive = function(dtb){
+    x <- dtb 
+    x = x %>% mutate(job_title = case_when(
+        grepl(pattern = "nurse", x=job_title) ~ "nurse", 
+        grepl(pattern = "respiratory therapist", x=job_title) ~ "respiratory therapist", 
+        grepl(pattern = "teacher", x=job_title) ~ "teacher",
+        grepl(pattern = "enseignante", x=job_title) ~ "teacher",
+        grepl(pattern = "enseignant", x=job_title) ~ "teacher",
+        grepl(pattern = "assistant curriculum leader", x=job_title) ~ "assistant curriculum leader",
+        grepl(pattern = "enseignement", x=job_title) ~ "teacher",
+        grepl(pattern = "principal", x=job_title) ~ "management",
+        grepl(pattern = "direction", x=job_title) ~ "management",
+        grepl(pattern = "head", x=job_title) ~ "management",
+        grepl(pattern = "chair", x=job_title) ~ "management",
+        grepl(pattern = "project manager", x=job_title) ~ "pm", 
+        grepl(pattern = "case manager", x=job_title) ~ "cm", 
+        grepl(pattern = "manager", x=job_title) ~ "manager", 
+        
+        TRUE ~ job_title
+    ))
+    return(x)
+}
+
+jobs_deepdive_20 = deepdive(master_20)
+jobs_deepdive_19 = deepdive(master_19)
+
+dd_20 = jobs_deepdive_20 %>% 
+    group_by(sector) %>% 
+    count(job_title, sort=TRUE) %>% 
+    ungroup() %>% 
+    group_by(sector)
+
+dd_19 = jobs_deepdive_19 %>% 
+    group_by(sector) %>% 
+    count(job_title, sort=TRUE) %>% 
+    ungroup() %>% 
+    group_by(sector) 
+
+dd_20 = dd_20 %>% filter(sector %in% c("Crown Agencies",
+                                       "School Boards",
+                                       "Hospitals And Boards Of Public Health",
+                                       "Universities",
+                                       "Ontario Power Generation"))
+
+dd_19 = dd_19 %>% filter(sector %in% c("Crown Agencies",
+                                       "School Boards",
+                                       "Hospitals And Boards Of Public Health",
+                                       "Universities",
+                                       "Ontario Power Generation"))
+
+dd_delta = left_join(dd_20, dd_19, by=c("sector", "job_title")) %>% 
+    mutate(n.y = ifelse( is.na(n.y) , 0, n.y),
+        delta = n.x-n.y,
+        growth = (n.x-n.y)/n.y) %>% 
+    slice(1:10)
+
+########################################################## job_titles
 ########################################################## time series
 
 
@@ -643,6 +741,7 @@ save_ric(p_longsum_pred, "p_longsum_pred", 15, 8.5)
 save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 8.5)
 
 save_ric(p_longsum_pred_adj, "p_longsum_pred_adj", 15, 8.5)
+save_ric(p_longsum_pred_sec_adj, "p_longsum_pred_sec_adj", 15, 8.5)
 
 save_ric(p_jobsum_20_grid, "p_jobsum_20_grid", 12, 8.5)
 

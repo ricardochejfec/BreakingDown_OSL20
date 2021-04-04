@@ -133,11 +133,56 @@ before using this information to advocate for changes.
 
 ### Overall growth higher than expected
 
+Using a generalized additive model (GAM) w/ poisson we can project what
+the expected growth in number of people earning more than \\$100k would
+have been based solely on the observed trend. As we can see, the total
+number was expected to be between $\_\_$ and $\_\_$. According to this
+model, the list saw an increase significantly larger than predicted.
+
 ![Predicted values](plots/p_longsum_pred.png)
 
 ### The Culprits
 
+However, increased growth alone is not enough to warrant concerns. It is
+more interesting to look at where this growth is coming from. As
+discussed above, Hospitals and School Boards led the pack in number of
+new members joining the list in 2002 but, how did this growth align with
+the projected trend?
+
 ![Predicted values by sector](plots/p_longsum_pred_sec.png)
+
+Nearly all sectors saw increases in line with projections. Crown
+Agencies, Hospitals, and School Boards, stand out with increases far
+above expected. Increases in Hospitals and School Boards was led by
+nurses and teachers respectively. Crown Corporations saw a drastic
+increase in the number of nurses, bosses (managers and directors), and
+specialists.
+
+This analysis indicates that the above-projected growth observed, its
+not the result of broad salary increases or financial mismanagement.
+Instead it illustrates the strains that 2020 imposed on the Ontario
+government. Starting in February, the five unions representing the
+teachers of Ontario negotiated a new compensation agreement with the
+government. Negotiations went on until April and the result did not come
+without friction, with teacher strikes and blah blah. Advocates argue
+that blah blah blah.
+
+By April, Canada had reported \_\_\_ cases and lock-downs in blah and
+blah had been implemented. As the pandemic grew, the need for more
+nurses in hospitals and blah blah centers like long term homes was
+critical, and the government responded accordingly. It is very likely
+that the trend observed is caused by a combination of new nurses and
+other strains of the pandemic (increased overtime?).
+
+While Crown Agencies make a smaller share of the list, the higher than
+expected growth warrant a closer look. Most of the growth seen in 2020
+came from management positions like *director* and *manager*, as well as
+new-to-the-list job titles like *specialist, return to work program*.
+The pandemic has resulted in both a health and economic crises with an
+increased need for policy and logistics development. The growth seen in
+Crown Agencies in 2020 is likely a result of more management and
+analysts, rising to navigate the difficult terrain of operating amid a
+pandemic.  
 
 ## Adjusting for Inflation (Considerations)
 

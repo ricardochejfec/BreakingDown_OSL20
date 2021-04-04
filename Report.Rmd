@@ -13,6 +13,14 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r setup2, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(tidyverse)                           
+
+# source(file = "MakePlots.R", local = TRUE)
+
+```
+
 # It's Not What It Looks Like
 
 ## The Effect of 2020 on Ontario Public Sector's High Earners
@@ -92,7 +100,7 @@ The absolute number of people in the list coupled with the drastic change from 2
 
 ### Overall growth higher than expected
 
-Using a generalized additive model (GAM) we can project what the expected growth in number of people earning more than \\\$100k would have been based solely on the observed trend. As we can see, the total number was expected to be between $__$ and \$\_\_\$. According to this model, the list saw an increase significantly larger than predicted.
+Using a generalized additive model (GAM) w/ poisson we can project what the expected growth in number of people earning more than \\\$100k would have been based solely on the observed trend. As we can see, the total number was expected to be between $__$ and \$\_\_\$. According to this model, the list saw an increase significantly larger than predicted.
 
 ![Predicted values](plots/p_longsum_pred.png)
 
@@ -102,13 +110,33 @@ However, increased growth alone is not enough to warrant concerns. It is more in
 
 ![Predicted values by sector](plots/p_longsum_pred_sec.png)
 
-Nearly all sectors saw increases in line with projections. Crown Agencies, Hospitals, and School Boards, stand out with increases far above expected. Increases in Hospitals and School Boards, was led by nurses and teachers respectively. Crown Corporations saw a drastic increase in the number of nurses, bosses (managers and directors), and specialists (get back to work program).
+Nearly all sectors saw increases in line with projections. Crown Agencies, Hospitals, and School Boards, stand out with increases far above expected. Increases in Hospitals and School Boards was led by nurses and teachers respectively. Crown Corporations saw a drastic increase in the number of nurses, bosses (managers and directors), and specialists.
 
 This analysis indicates that the above-projected growth observed, its not the result of broad salary increases or financial mismanagement. Instead it illustrates the strains that 2020 imposed on the Ontario government. Starting in February, the five unions representing the teachers of Ontario negotiated a new compensation agreement with the government. Negotiations went on until April and the result did not come without friction, with teacher strikes and blah blah. Advocates argue that blah blah blah.
 
 By April, Canada had reported \_\_\_ cases and lock-downs in blah and blah had been implemented. As the pandemic grew, the need for more nurses in hospitals and blah blah centers like long term homes was critical, and the government responded accordingly. It is very likely that the trend observed is caused by a combination of new nurses and other strains of the pandemic (increased overtime?).
 
-While Crown Agencies make a smaller share of the list, the higher than expected growth warrant a closer look. Most of the growth seen in 2020 came from management positions like *director* and *manager*, as well as new-to-the-list job titles like *specialist, return to work program*. The pandemic has resulted in both a health and economic crises with an increased need for policy and logistics development. The growth seen in Crown Agencies in 2020 is likely a result of more management and analysts, raising to navigate the difficult terrain of operating amid a pandemic.\
+While Crown Agencies make a smaller share of the list, the higher than expected growth warrant a closer look. Most of the growth seen in 2020 came from management positions like *director* and *manager*, as well as new-to-the-list job titles like *specialist, return to work program*. The pandemic has resulted in both a health and economic crises with an increased need for policy and logistics development. The growth seen in Crown Agencies in 2020 is likely a result of more management and analysts, rising to navigate the difficult terrain of operating amid a pandemic.\
+
+```{r}
+
+jobs = dd_delta %>% group_by(sector) %>% 
+    arrange(-delta, .by_group = TRUE) %>% slice(1:5)
+
+jobs[1, 2]
+
+```
+
+| Crown          |                |     | Hospitals       |            |     | Schools         |            |
+|----------------|----------------|-----|-----------------|------------|-----|-----------------|------------|
+| Job Title      | Change (%)     |     | Job Title       | Change (%) |     | Job Title       | Change (%) |
+| `r jobs[1, 2]` | `r jobs[1, 2]` |     | `r jobs[6, 2]`  |            |     | `r jobs[11, 2]` |            |
+| `r jobs[2, 2]` |                |     | `r jobs[7, 2]`  |            |     | `r jobs[12, 2]` |            |
+| `r jobs[3, 2]` |                |     | `r jobs[8, 2]`  |            |     | `r jobs[13, 2]` |            |
+| `r jobs[4, 2]` |                |     | `r jobs[9, 2]`  |            |     | `r jobs[14, 2]` |            |
+| `r jobs[5, 2]` |                |     | `r jobs[10, 2]` |            |     | `r jobs[15, 2]` |            |
+
+: Largest Changes in Job Titles
 
 ## Adjusting for Inflation (Considerations)
 
