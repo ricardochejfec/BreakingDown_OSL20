@@ -175,7 +175,7 @@ waf = waf + geom_waffle(
     ggtitle("Distribution of Sectors for 2020") +
     guides(fill = guide_legend(nrow = 9)) 
 
-waf = theme_ric(waf, "waf")
+waf = theme_ric(waf, "waf")+theme(plot.title = element_text(size = 32))
 
 ########################################################## Waffle
 ########################################################## p_secsum_d_20
@@ -449,7 +449,7 @@ secsum_20_adj = left_join(x=secsum_20_adj, y=rank_secs)
 ########################################################## inflation
 ########################################################## violins
 
-p_violins <- ggplot(master_inf, aes(x=factor(year), y=salary_inf)) +
+p_violins <- ggplot(master_inf, aes(x=factor(lbl_year), y=salary_inf)) +
     geom_violin() + 
     geom_hline(yintercept = 100000, color="#2270b5") + 
     ggtitle("Distribution of the OSL in real numbers") +
@@ -500,11 +500,11 @@ longsum_pred = master  %>%
 # 
 # ggplot(longsum_perc, aes(x=lbl_year, y=sec_feq_chg)) + geom_line()
 # 
-sec_feq1 = longsum_perc$sec_feq[1]
-
-longsum_perc_2= longsum_pred %>%
-        mutate(money_chg = (money - lag(money))/(money),
-               sec_feq_chg = (sec_feq /sec_feq1))
+# sec_feq1 = longsum_perc$sec_feq[1]
+# 
+# longsum_perc_2= longsum_pred %>%
+#         mutate(money_chg = (money - lag(money))/(money),
+#                sec_feq_chg = (sec_feq /sec_feq1))
 
 longsum_pred_sec = master  %>% 
     group_by(year, sector) %>% 
@@ -612,7 +612,7 @@ p_jobsum_20_grid <- arrangeGrob(p_jobsum_20, p_jobsum_20_adj, ncol=2)
 ########################################################## time series
 ########################################################## saves
 
-save_ric(waf, "waffle", 12, 8.5)
+save_ric(waf, "waffle", 12, 8)
 
 save_ric(p_secsum_d_20, "p_secsum_d_20", 15, 8.5)
 

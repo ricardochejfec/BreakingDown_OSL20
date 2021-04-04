@@ -21,8 +21,6 @@ Abstract: The Ontario Sunshine List - - reported a higher-than-projected \_\_\_\
 
 <!-- change to summary  -->
 
-<!-- Fix 2014 -->
-
 <!-- add db context -->
 
 Summary:

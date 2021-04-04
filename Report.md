@@ -15,7 +15,6 @@ government is responding to a health crisis first, social second, and
 economic last.
 
 <!-- change to summary  -->
-<!-- Fix 2014 -->
 <!-- add db context -->
 
 Summary:
