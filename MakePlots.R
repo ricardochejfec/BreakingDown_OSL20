@@ -285,10 +285,13 @@ jobs20 = master_20 %>%
     count(job_title, sort=TRUE) %>% 
     ungroup() %>% 
     group_by(sector) %>% 
-    slice(1:5)
+    slice(1:10)
 
 crown_20 = jobs20 %>% 
     filter(sector == "Crown Agencies")
+
+school_20 = jobs20 %>% 
+    filter(sector == "School Boards")
 
 univ_20 = jobs20 %>% 
     filter(sector == "Universities")
@@ -301,10 +304,13 @@ jobs19 = master_19 %>%
     count(job_title, sort=TRUE) %>% 
     ungroup() %>% 
     group_by(sector) %>% 
-    slice(1:5)
+    slice(1:10)
 
 crown_19 = jobs19 %>% 
     filter(sector == "Crown Agencies")
+
+school_19 = jobs19 %>% 
+    filter(sector == "School Boards")
 
 univ_19 = jobs19 %>% 
     filter(sector == "Universities")
