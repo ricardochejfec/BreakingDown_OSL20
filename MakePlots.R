@@ -322,6 +322,7 @@ p_longsum <- ggplot(master,
     ylab("Count")+
     xlab("Year")
 
+
 p_longsum_d <- ggplot(master, 
                       aes(y=total_income, x=lbl_year)) + 
     geom_bar(stat="summary",) +
@@ -333,7 +334,7 @@ p_longsum_d <- ggplot(master,
 p_longsum_grid = arrangeGrob(theme_ric(p_longsum, "nl"),
                              theme_ric(p_longsum_d,"nl"),
                              nrow=2)
-
+ 
 ########################################################## longsum 
 ########################################################## longsum % change
 
@@ -492,6 +493,19 @@ longsum_pred = master  %>%
               sec_feq = n()) %>% 
     mutate(lbl_year=year+1996)
 
+    
+# longsum_perc = longsum_pred %>%
+#     mutate(money_chg = (money - lag(money))/lag(money),
+#            sec_feq_chg = (sec_feq - lag(sec_feq))/lag(sec_feq))
+# 
+# ggplot(longsum_perc, aes(x=lbl_year, y=sec_feq_chg)) + geom_line()
+# 
+sec_feq1 = longsum_perc$sec_feq[1]
+
+longsum_perc_2= longsum_pred %>%
+        mutate(money_chg = (money - lag(money))/(money),
+               sec_feq_chg = (sec_feq /sec_feq1))
+
 longsum_pred_sec = master  %>% 
     group_by(year, sector) %>% 
     summarise(money = mean(total_income),
@@ -625,7 +639,5 @@ save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 8.5)
 save_ric(p_longsum_pred_adj, "p_longsum_pred_adj", 15, 8.5)
 
 save_ric(p_jobsum_20_grid, "p_jobsum_20_grid", 12, 8.5)
-
-
 
  ########################################################## saves
