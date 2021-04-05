@@ -14,8 +14,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r setup2, echo=FALSE, message=FALSE, warning=FALSE}
-
-library(tidyverse)                           
+# library(knitr)
+# library(kableExtra)
+library(tidyverse)
+library(gt)
 
 source(file = "MakePlots.R", local = TRUE)
 
@@ -81,15 +83,33 @@ All sectors saw the number of people making over \$100k increase, but it was Sch
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
 
-### Job Titles 
+```{r top5, echo=FALSE, message=FALSE, warning=FALSE}
 
-| Job Title            | Count                | Average Salary       |
-|----------------------|----------------------|----------------------|
-| `r top_10_jobs[1,1]` | `r top_10_jobs[1,2]` | `r top_10_jobs[1,3]` |
-| `r top_10_jobs[2,1]` | `r top_10_jobs[2,2]` | `r top_10_jobs[2,3]` |
-| `r top_10_jobs[3,1]` | `r top_10_jobs[3,2]` | `r top_10_jobs[3,3]` |
-| `r top_10_jobs[4,1]` | `r top_10_jobs[4,2]` | `r top_10_jobs[4,3]` |
-| `r top_10_jobs[5,1]` | `r top_10_jobs[5,2]` | `r top_10_jobs[5,3]` |
+top_5_jobs = top_10_jobs %>% 
+  slice(1:5)
+
+top_5_jobs = top_5_jobs %>% mutate(job_title = stringr::str_to_sentence(job_title))
+
+# top_5_jobs %>% kbl() %>%  kable_minimal(bootstrap_options = c("striped", "hover"))
+top_5_table = top_5_jobs %>% gt() %>%
+  fmt_number(columns = vars(n), decimals = 0) %>%
+  fmt_currency(columns = vars(mean_sal), currency = "USD",, decimals = 0) %>%
+  tab_header(
+    title = md("The 5 Most Popular Job Titles 2020")) %>%
+  cols_label(
+    job_title = md("**Job Title**"),
+    n = md("**Count**"), 
+    mean_sal = md("**Avg Salary**")) %>% 
+  tab_options(table.width = pct(50)) %>% 
+  cols_align(align = "center") 
+
+top_5_table
+
+```
+
+### Job Titles
+
+`r top_5_table`
 
 ## A Recession with Unparalleled Growth (Analysis)
 
@@ -109,16 +129,7 @@ Using a generalized additive model (GAM) w/ poisson we can project what the expe
 However, increased growth alone is not enough to warrant concerns. It is more interesting to look at where this growth is coming from. As discussed above, Hospitals and School Boards led the pack in number of new members joining the list in 2002 but, how did this growth align with the projected trend?
 
 ![Predicted values by sector](plots/p_longsum_pred_sec.png)
-
-Nearly all sectors saw increases in line with projections. Crown Agencies, Hospitals, and School Boards, stand out with increases far above expected. Increases in Hospitals and School Boards was led by nurses and teachers respectively. Crown Corporations saw a drastic increase in the number of nurses, bosses (managers and directors), and specialists.
-
-This analysis indicates that the above-projected growth observed, its not the result of broad salary increases or financial mismanagement. Instead it illustrates the strains that 2020 imposed on the Ontario government. Starting in February, the five unions representing the teachers of Ontario negotiated a new compensation agreement with the government. Negotiations went on until April and the result did not come without friction, with teacher strikes and blah blah. Advocates argue that blah blah blah.
-
-By April, Canada had reported \_\_\_ cases and lock-downs in blah and blah had been implemented. As the pandemic grew, the need for more nurses in hospitals and blah blah centers like long term homes was critical, and the government responded accordingly. It is very likely that the trend observed is caused by a combination of new nurses and other strains of the pandemic (increased overtime?).
-
-While Crown Agencies make a smaller share of the list, the higher than expected growth warrant a closer look. Most of the growth seen in 2020 came from management positions like *director* and *manager*, as well as new-to-the-list job titles like *specialist, return to work program*. The pandemic has resulted in both a health and economic crises with an increased need for policy and logistics development. The growth seen in Crown Agencies in 2020 is likely a result of more management and analysts, rising to navigate the difficult terrain of operating amid a pandemic.\
-
-```{r}
+```{r changeJobs, echo=FALSE, message=FALSE, warning=FALSE}
 
 jobs = dd_delta %>% filter(sector %in% c("Crown Agencies",
                                          "Hospitals And Boards Of Public Health",
@@ -126,31 +137,85 @@ jobs = dd_delta %>% filter(sector %in% c("Crown Agencies",
     group_by(sector) %>% 
     arrange(-delta, .by_group = TRUE) %>% slice(1:5)
 
-fchange = function(rown){
-    result = paste(paste("+",
-                         jobs[rown, 5],
-                         sep = ""),
-                   paste("(",
-                         round((jobs[rown, 6]*100), digits = 0),
-                         "%)",
-                         sep=""))
-    return(result)
+jobs = jobs %>% mutate(job_title = ifelse(nchar(job_title)>2,
+                                          stringr::str_to_sentence(job_title), 
+                                          stringr::str_to_upper(job_title)))
+
+jobs_ch = change_1920 %>% 
+  filter(sector %in% c("Crown Agencies",
+                                         "Hospitals And Boards Of Public Health",
+                                         "School Boards")) %>% 
+  select(sector, delta_count)
+
+change_20 = nrow(master_20) - nrow(master_19)
+
+jobs_tab = left_join(jobs, jobs_ch, by="sector") %>% 
+  mutate(secinc =  delta/delta_count) %>% 
+  mutate(totinc =  delta/change_20)
+
+
+
+make_table = function(table.sector){
+  result_tbl = jobs_tab %>% filter(sector==table.sector) %>% 
+    ungroup() %>%
+    select(job_title, delta, growth, 
+           secinc, 
+           totinc) %>% 
+    gt() %>%
+    fmt_number(columns = vars(delta), decimals = 0) %>%
+    fmt_percent(columns = vars(growth, 
+                               secinc, 
+                               totinc),
+                scale_values = TRUE) %>%
+    tab_header(
+      title = paste("Biggest Changes in", table.sector, sep=" "),
+    ) %>%
+    cols_label(
+      job_title = md("**Job Title**"),
+      delta = md("**Change**"), 
+      growth = md("**Change %**"),
+      secinc = md("**Share of Sector Increase**"),
+      totinc = md("**Share of Total Increase**")) %>% 
+    cols_align(align = "right", columns = vars(job_title)) %>% 
+    cols_align(align = "center", columns = vars(delta, growth, secinc, totinc)) %>% 
+    tab_options(
+      table.width = pct(100)
+    ) 
+  return(result_tbl)
 }
+
+crown_change = make_table("Crown Agencies" )%>% 
+    tab_source_note(
+      source_note = "Specialists increased from 2 in 2019 to 216 in 2020."
+    ) %>% 
+    tab_source_note(
+      source_note = "CM = Case Manager PM = Project Manger"
+    )
+hosp_change = make_table("Hospitals And Boards Of Public Health")
+school_change = make_table("School Boards")
 
 
 ```
 
-| Crown Job Title | Change %       |     | Hospitals Job Title | Change %        |     | Schools Job Title | Change %        |
-|-----------------|----------------|-----|---------------------|-----------------|-----|-------------------|-----------------|
-| `r jobs[1, 2]`  | `r fchange(1)` |     | `r jobs[6, 2]`      | `r fchange(6)`  |     | `r jobs[11, 2]`   | `r fchange(11)` |
-| `r jobs[2, 2]`  | `r fchange(2)` |     | `r jobs[7, 2]`      | `r fchange(7)`  |     | `r jobs[12, 2]`   | `r fchange(12)` |
-| `r jobs[3, 2]`  | `r fchange(3)` |     | `r jobs[8, 2]`      | `r fchange(8)`  |     | `r jobs[13, 2]`   | `r fchange(13)` |
-| `r jobs[4, 2]`  | `r fchange(4)` |     | `r jobs[9, 2]`      | `r fchange(9)`  |     | `r jobs[14, 2]`   | `r fchange(14)` |
-| `r jobs[5, 2]`  | `r fchange(5)` |     | `r jobs[10, 2]`     | `r fchange(10)` |     | `r jobs[15, 2]`   | `r fchange(15)` |
+Nearly all sectors saw increases in line with projections. Crown Agencies, Hospitals, and School Boards, stand out with increases far above expected. Increases in Hospitals and School Boards was led by nurses and teachers respectively. Crown Corporations saw a drastic increase in the number of nurses, bosses (managers and directors), and specialists.
+
+This analysis indicates that the above-projected growth observed, its not the result of broad salary increases or financial mismanagement. Instead it illustrates the strains that 2020 imposed on the Ontario government. Starting in February, the five unions representing the teachers of Ontario negotiated a new compensation agreement with the government. Negotiations went on until April and the result did not come without friction, with teacher strikes and blah blah. Advocates argue that blah blah blah.
+
+`r school_change`
+
+
+By April, Canada had reported \_\_\_ cases and lock-downs in blah and blah had been implemented. As the pandemic grew, the need for more nurses in hospitals and blah blah centers like long term homes was critical, and the government responded accordingly. It is very likely that the trend observed is caused by a combination of new nurses and other strains of the pandemic (increased overtime?).
+
+`r hosp_change`
+
+
+While Crown Agencies make a smaller share of the list, the higher than expected growth warrant a closer look. Most of the growth seen in 2020 came from management positions like *director* and *manager*, as well as new-to-the-list job titles like *specialist, return to work program*. The pandemic has resulted in both a health and economic crises with an increased need for policy and logistics development. The growth seen in Crown Agencies in 2020 is likely a result of more management and analysts, rising to navigate the difficult terrain of operating amid a pandemic.\
+
+`r crown_change`
 
 ## Conclusion
 
-# Appendix A - Adjusting for Inflation 
+# Appendix A - Adjusting for Inflation
 
 ### Only 8% Remain
 
