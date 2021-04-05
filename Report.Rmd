@@ -18,6 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # library(kableExtra)
 library(tidyverse)
 library(gt)
+library(webshot)
 
 source(file = "MakePlots.R", local = TRUE)
 
@@ -103,13 +104,13 @@ top_5_table = top_5_jobs %>% gt() %>%
   tab_options(table.width = pct(50)) %>% 
   cols_align(align = "center") 
 
-top_5_table
+top_5_table %>% gtsave(filename = "top_5_table.png", path="tables/") 
 
 ```
 
 ### Job Titles
 
-`r top_5_table`
+[Top 5 Job Titles](tables/top_5_table.png)
 
 ## A Recession with Unparalleled Growth (Analysis)
 
@@ -194,6 +195,9 @@ crown_change = make_table("Crown Agencies" )%>%
 hosp_change = make_table("Hospitals And Boards Of Public Health")
 school_change = make_table("School Boards")
 
+crown_change %>% gtsave(filename = "crown_change.png", path="tables/") 
+hosp_change %>% gtsave(filename = "hosp_change.png", path="tables/") 
+school_change %>% gtsave(filename = "school_change.png", path="tables/") 
 
 ```
 
@@ -201,17 +205,16 @@ Nearly all sectors saw increases in line with projections. Crown Agencies, Hospi
 
 This analysis indicates that the above-projected growth observed, its not the result of broad salary increases or financial mismanagement. Instead it illustrates the strains that 2020 imposed on the Ontario government. Starting in February, the five unions representing the teachers of Ontario negotiated a new compensation agreement with the government. Negotiations went on until April and the result did not come without friction, with teacher strikes and blah blah. Advocates argue that blah blah blah.
 
-`r school_change`
-
+[School Job Change](tables/school_change.png)
 
 By April, Canada had reported \_\_\_ cases and lock-downs in blah and blah had been implemented. As the pandemic grew, the need for more nurses in hospitals and blah blah centers like long term homes was critical, and the government responded accordingly. It is very likely that the trend observed is caused by a combination of new nurses and other strains of the pandemic (increased overtime?).
 
-`r hosp_change`
-
+[Hosp Job Change](tables/hosp_change.png)
 
 While Crown Agencies make a smaller share of the list, the higher than expected growth warrant a closer look. Most of the growth seen in 2020 came from management positions like *director* and *manager*, as well as new-to-the-list job titles like *specialist, return to work program*. The pandemic has resulted in both a health and economic crises with an increased need for policy and logistics development. The growth seen in Crown Agencies in 2020 is likely a result of more management and analysts, rising to navigate the difficult terrain of operating amid a pandemic.\
 
-`r crown_change`
+[Crown Job Change](tables/crown_change.png)
+
 
 ## Conclusion
 
