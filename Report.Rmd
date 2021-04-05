@@ -205,15 +205,15 @@ Nearly all sectors saw increases in line with projections. Crown Agencies, Hospi
 
 This analysis indicates that the above-projected growth observed, its not the result of broad salary increases or financial mismanagement. Instead it illustrates the strains that 2020 imposed on the Ontario government. Starting in February, the five unions representing the teachers of Ontario negotiated a new compensation agreement with the government. Negotiations went on until April and the result did not come without friction, with teacher strikes and blah blah. Advocates argue that blah blah blah.
 
-[School Job Change](tables/school_change.png)
+![School Job Change](tables/school_change.png)
 
 By April, Canada had reported \_\_\_ cases and lock-downs in blah and blah had been implemented. As the pandemic grew, the need for more nurses in hospitals and blah blah centers like long term homes was critical, and the government responded accordingly. It is very likely that the trend observed is caused by a combination of new nurses and other strains of the pandemic (increased overtime?).
 
-[Hosp Job Change](tables/hosp_change.png)
+![Hosp Job Change](tables/hosp_change.png)
 
 While Crown Agencies make a smaller share of the list, the higher than expected growth warrant a closer look. Most of the growth seen in 2020 came from management positions like *director* and *manager*, as well as new-to-the-list job titles like *specialist, return to work program*. The pandemic has resulted in both a health and economic crises with an increased need for policy and logistics development. The growth seen in Crown Agencies in 2020 is likely a result of more management and analysts, rising to navigate the difficult terrain of operating amid a pandemic.\
 
-[Crown Job Change](tables/crown_change.png)
+![Crown Job Change](tables/crown_change.png)
 
 
 ## Conclusion
