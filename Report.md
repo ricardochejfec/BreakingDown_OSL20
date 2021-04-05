@@ -108,11 +108,9 @@ was School Boards and Hospitals that saw the biggest change.
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
 
-![](Report_files/figure-markdown_strict/top5-1.png)
-
 ### Job Titles
 
-[Top 5 Job Titles](tables/top_5_table.png)
+![Top 5 Job Titles](tables/top_5_table.png)
 
 ## A Recession with Unparalleled Growth (Analysis)
 
@@ -145,7 +143,6 @@ new members joining the list in 2002 but, how did this growth align with
 the projected trend?
 
 ![Predicted values by sector](plots/p_longsum_pred_sec.png)
-![](Report_files/figure-markdown_strict/changeJobs-1.png)![](Report_files/figure-markdown_strict/changeJobs-2.png)![](Report_files/figure-markdown_strict/changeJobs-3.png)
 
 Nearly all sectors saw increases in line with projections. Crown
 Agencies, Hospitals, and School Boards, stand out with increases far
@@ -163,7 +160,7 @@ government. Negotiations went on until April and the result did not come
 without friction, with teacher strikes and blah blah. Advocates argue
 that blah blah blah.
 
-[School Job Change](tables/school_change.png)
+![School Job Change](tables/school_change.png)
 
 By April, Canada had reported \_\_\_ cases and lock-downs in blah and
 blah had been implemented. As the pandemic grew, the need for more
@@ -172,7 +169,7 @@ critical, and the government responded accordingly. It is very likely
 that the trend observed is caused by a combination of new nurses and
 other strains of the pandemic (increased overtime?).
 
-[Hosp Job Change](tables/hosp_change.png)
+![Hosp Job Change](tables/hosp_change.png)
 
 While Crown Agencies make a smaller share of the list, the higher than
 expected growth warrant a closer look. Most of the growth seen in 2020
@@ -184,7 +181,7 @@ Crown Agencies in 2020 is likely a result of more management and
 analysts, rising to navigate the difficult terrain of operating amid a
 pandemic.  
 
-[Crown Job Change](tables/crown_change.png)
+![Crown Job Change](tables/crown_change.png)
 
 ## Conclusion
 
@@ -210,5 +207,3 @@ between $100K and $150K, Universities and Ontario Power Generation have
 seen a generally upward sloping trend and Hospitals avg salaries have
 been decreasing. Further investigation is required to learn more about
 the cause for this trends.
-
-![Long Summary by Sector in dollars](plots/p_longsecsum_d.png)

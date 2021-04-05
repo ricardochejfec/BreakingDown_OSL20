@@ -17,10 +17,16 @@ knitr::opts_chunk$set(echo = TRUE)
 # library(knitr)
 # library(kableExtra)
 library(tidyverse)
-library(gt)
-library(webshot)
 
-source(file = "MakePlots.R", local = TRUE)
+
+# source(file = "0_get_data.R", local = TRUE)
+
+
+# source(file = "code/functions.R", local = TRUE)
+# source(file = "1_process_data.R", local = TRUE)
+# source(file = "2_plot_data.R", local = TRUE)
+# source(file = "3_model_data.R", local = TRUE)
+
 
 ```
 
@@ -84,33 +90,9 @@ All sectors saw the number of people making over \$100k increase, but it was Sch
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
 
-```{r top5, echo=FALSE, message=FALSE, warning=FALSE}
-
-top_5_jobs = top_10_jobs %>% 
-  slice(1:5)
-
-top_5_jobs = top_5_jobs %>% mutate(job_title = stringr::str_to_sentence(job_title))
-
-# top_5_jobs %>% kbl() %>%  kable_minimal(bootstrap_options = c("striped", "hover"))
-top_5_table = top_5_jobs %>% gt() %>%
-  fmt_number(columns = vars(n), decimals = 0) %>%
-  fmt_currency(columns = vars(mean_sal), currency = "USD",, decimals = 0) %>%
-  tab_header(
-    title = md("The 5 Most Popular Job Titles 2020")) %>%
-  cols_label(
-    job_title = md("**Job Title**"),
-    n = md("**Count**"), 
-    mean_sal = md("**Avg Salary**")) %>% 
-  tab_options(table.width = pct(50)) %>% 
-  cols_align(align = "center") 
-
-top_5_table %>% gtsave(filename = "top_5_table.png", path="tables/") 
-
-```
-
 ### Job Titles
 
-[Top 5 Job Titles](tables/top_5_table.png)
+![Top 5 Job Titles](tables/top_5_table.png)
 
 ## A Recession with Unparalleled Growth (Analysis)
 
@@ -130,76 +112,7 @@ Using a generalized additive model (GAM) w/ poisson we can project what the expe
 However, increased growth alone is not enough to warrant concerns. It is more interesting to look at where this growth is coming from. As discussed above, Hospitals and School Boards led the pack in number of new members joining the list in 2002 but, how did this growth align with the projected trend?
 
 ![Predicted values by sector](plots/p_longsum_pred_sec.png)
-```{r changeJobs, echo=FALSE, message=FALSE, warning=FALSE}
 
-jobs = dd_delta %>% filter(sector %in% c("Crown Agencies",
-                                         "Hospitals And Boards Of Public Health",
-                                         "School Boards")) %>% 
-    group_by(sector) %>% 
-    arrange(-delta, .by_group = TRUE) %>% slice(1:5)
-
-jobs = jobs %>% mutate(job_title = ifelse(nchar(job_title)>2,
-                                          stringr::str_to_sentence(job_title), 
-                                          stringr::str_to_upper(job_title)))
-
-jobs_ch = change_1920 %>% 
-  filter(sector %in% c("Crown Agencies",
-                                         "Hospitals And Boards Of Public Health",
-                                         "School Boards")) %>% 
-  select(sector, delta_count)
-
-change_20 = nrow(master_20) - nrow(master_19)
-
-jobs_tab = left_join(jobs, jobs_ch, by="sector") %>% 
-  mutate(secinc =  delta/delta_count) %>% 
-  mutate(totinc =  delta/change_20)
-
-
-
-make_table = function(table.sector){
-  result_tbl = jobs_tab %>% filter(sector==table.sector) %>% 
-    ungroup() %>%
-    select(job_title, delta, growth, 
-           secinc, 
-           totinc) %>% 
-    gt() %>%
-    fmt_number(columns = vars(delta), decimals = 0) %>%
-    fmt_percent(columns = vars(growth, 
-                               secinc, 
-                               totinc),
-                scale_values = TRUE) %>%
-    tab_header(
-      title = paste("Biggest Changes in", table.sector, sep=" "),
-    ) %>%
-    cols_label(
-      job_title = md("**Job Title**"),
-      delta = md("**Change**"), 
-      growth = md("**Change %**"),
-      secinc = md("**Share of Sector Increase**"),
-      totinc = md("**Share of Total Increase**")) %>% 
-    cols_align(align = "right", columns = vars(job_title)) %>% 
-    cols_align(align = "center", columns = vars(delta, growth, secinc, totinc)) %>% 
-    tab_options(
-      table.width = pct(100)
-    ) 
-  return(result_tbl)
-}
-
-crown_change = make_table("Crown Agencies" )%>% 
-    tab_source_note(
-      source_note = "Specialists increased from 2 in 2019 to 216 in 2020."
-    ) %>% 
-    tab_source_note(
-      source_note = "CM = Case Manager PM = Project Manger"
-    )
-hosp_change = make_table("Hospitals And Boards Of Public Health")
-school_change = make_table("School Boards")
-
-crown_change %>% gtsave(filename = "crown_change.png", path="tables/") 
-hosp_change %>% gtsave(filename = "hosp_change.png", path="tables/") 
-school_change %>% gtsave(filename = "school_change.png", path="tables/") 
-
-```
 
 Nearly all sectors saw increases in line with projections. Crown Agencies, Hospitals, and School Boards, stand out with increases far above expected. Increases in Hospitals and School Boards was led by nurses and teachers respectively. Crown Corporations saw a drastic increase in the number of nurses, bosses (managers and directors), and specialists.
 
@@ -236,4 +149,3 @@ While Crown Agencies make a smaller share of the list, the higher than expected 
 
 Fig 3 shows how average earnings by sector differ from the average trend observed above. While most sectors seem to remain mostly constant between \$100K and \$150K, Universities and Ontario Power Generation have seen a generally upward sloping trend and Hospitals avg salaries have been decreasing. Further investigation is required to learn more about the cause for this trends.
 
-![Long Summary by Sector in dollars](plots/p_longsecsum_d.png)
