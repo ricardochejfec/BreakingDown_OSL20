@@ -21,49 +21,39 @@ source(file = "MakePlots.R", local = TRUE)
 
 ```
 
-# It's Not What It Looks Like
+# 2020 Drastically Increased the Number of People on the Ontario Sunshine List
 
-## The Effect of 2020 on Ontario Public Sector's High Earners
+## An analysis of Ontario Public Sector's "Highest" Earners
 
-Abstract: The Ontario Sunshine List - - reported a higher-than-projected \_\_\_\_\_ members. Facing increased debt and considering the financial effects the pandemic had on many, a narrow look at the numbers may prompt some to argue for immediate cuts. The following is a breakdown of the OSL in 2020 and through time that attempts to learn more about the source of the increase. I determined that most of the excess increase came from two sectors in particular, hospitals and schools, completely in line with a responsible response to the pandemic (regarding direction, the magnitude requires further investigation). After all, the government is responding to a health crisis first, social second, and economic last.
+## Summary (Issue)
 
-<!-- change to summary  -->
+-   The 2020 Ontario Sunshine List was released on \_\_\_\_\_. It reported over 200,000 people, out of which $__$ were new, or an increase of \$\_\_\$.
 
-<!-- add db context -->
+-   While the list has expanded every year, this year's growth was significantly larger than what the trend predicted.
 
-Summary:
+-   Led by nurses and teachers, the higher-than-expected increase can be explained by a major compensation agreement in early 2020 and the government's efforts to combat the pandemic.
 
--   A
+## This Report
 
--   B
-
--   C
-
-## This Report (Issue)
-
--   A
+What follows is a descriptive analysis of the Ontario Sunshine List. The main section is my attempt to shed some light on the effects of 2020 on Ontario's high earners. Appendix A considers what would happen if the list's cut-off salary was adjusted for inflation and Appendix B includes other descriptive statistics that were not relevant to the research question. The project is intended to be fully reproducible. If you're interested in replicating or improving this analysis see the Read Me file to get started.
 
 ## What is the OSL (Background)
 
-A *sunshine list* is the name commonly given to the public disclosure of employee compensation (salary, benefits, severance). In 1996, then premier Mike Harris, introduced the first Ontario Sunshine List, intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported \_\_\_\_ high earners that year, with an average salary of \_\_\_\_.
+A *sunshine list* is the name commonly given to the public disclosure of employee compensation. In 1996, then premier Mike Harris, introduced the first Ontario Sunshine List, intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported \_\_\_\_ high earners that year, with an average salary of \_\_\_\_. Dictated by the Public Sector Salary Disclosure Act (1996), the government has required ever since that organizations that receive public funding from the Province of Ontario disclose by March 31 the names, positions, salaries and total taxable benefits of employees paid \$100,000 or more in a calendar year.
 
 ### Uninterrupted Growth
 
-The number of people in the Ontario public sector making more than \$100k a year has increased with every release since its conception 25 years ago. It was twice as big by 2000, ten times by 2008, and today the list is 45 times larger than in 1996. Regardless, the yearly average earnings have remained mostly constant around \_\_\_\_\_, likely because increasing existing salaries are compensated by the new additions to the list, most of which earn a salary close to the floor. From Fig 1. we can already see that 2020's list saw a growth larger than the trend predicted.
+The number of people in the Ontario public sector making more than \$100k a year has increased with every release since its conception 25 years ago. It was twice as big by 2000, ten times by 2008, and today the list is 45 times larger than in 1996. Regardless, the yearly average earnings have remained mostly constant around \_\_\_\_\_, likely because increasing existing salaries are compensated by the new additions to the list, most of which earn a salary close to the floor.
 
 ![Long Summary](plots/p_longsum_grid.png)
 
 ### Recorded by Government Sector
 
-The data provided is categorized by government sector. While these sectors change slightly year-to-year as a result of administrative changes and operational restructuring (See Appendix:\_\_ for a full list), we can functionally group all employees reported in 9 independent groups. Fig 2 and 3 show the number of people in the list as well as their average earnings through time divided by sector.
+The data provided is categorized by government sector. While these sectors change slightly year-to-year as a result of administrative changes and operational restructuring (See Appendix:\_\_ for a full list), we can functionally group all employees reported in 9 independent sectors. The following figure shows the number of people in the list through time divided by sector.
 
-While the size of sectors variate, we can see from Fig 2 that Municipalities, School Boards, Hospitals, and Universities, have captured the lion share of high earners for the past five years.
+While the size of sectors vary, Municipalities, School Boards, Hospitals, and Universities, have captured the lion share of high earners for most of the lists existence.
 
-![Long Summary by Sector](plots/p_longsecsum.png) <!-- push to appendix? -->
-
-Fig 3 shows how average earnings by sector differ from the average trend observed above. While most sectors seem to remain mostly constant between \$100K and \$150K, Universities and Ontario Power Generation have seen a generally upward sloping trend and Hospitals avg salaries have been decreasing. Further investigation is required to learn more about the cause for this trends.
-
-![Long Summary by Sector in dollars](plots/p_longsecsum_d.png)
+![Long Summary by Sector](plots/p_longsecsum.png)
 
 ## 2020 in Review (Context)
 
@@ -90,6 +80,16 @@ All sectors saw the number of people making over \$100k increase, but it was Sch
 -   While there was no wide changes to compensation agreements, the increase can be explained by the government's response to the COVID-19 pandemic. Facing a health crisis characterized by crowded intensive care units and a need to enforce public health guidelines unto the public, the Ford government engaged in several expended recruitment bouts, attempting to increase the number of health care professionals in hospitals, schools, and long-term care homes. [source](link)
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
+
+### Job Titles 
+
+| Job Title            | Count                | Average Salary       |
+|----------------------|----------------------|----------------------|
+| `r top_10_jobs[1,1]` | `r top_10_jobs[1,2]` | `r top_10_jobs[1,3]` |
+| `r top_10_jobs[2,1]` | `r top_10_jobs[2,2]` | `r top_10_jobs[2,3]` |
+| `r top_10_jobs[3,1]` | `r top_10_jobs[3,2]` | `r top_10_jobs[3,3]` |
+| `r top_10_jobs[4,1]` | `r top_10_jobs[4,2]` | `r top_10_jobs[4,3]` |
+| `r top_10_jobs[5,1]` | `r top_10_jobs[5,2]` | `r top_10_jobs[5,3]` |
 
 ## A Recession with Unparalleled Growth (Analysis)
 
@@ -140,18 +140,17 @@ fchange = function(rown){
 
 ```
 
-| Crown          |                |     | Hospitals       |                 |     | Schools         |                 |
-|----------------|----------------|-----|-----------------|-----------------|-----|-----------------|-----------------|
-| **Job Title**  | **Change (%)** |     | **Job Title**   | **Change (%)**  |     | **Job Title**   | **Change (%)**  |
-| `r jobs[1, 2]` | `r fchange(1)` |     | `r jobs[6, 2]`  | `r fchange(6)`  |     | `r jobs[11, 2]` | `r fchange(11)` |
-| `r jobs[2, 2]` | `r fchange(2)` |     | `r jobs[7, 2]`  | `r fchange(7)`  |     | `r jobs[12, 2]` | `r fchange(12)` |
-| `r jobs[3, 2]` | `r fchange(3)` |     | `r jobs[8, 2]`  | `r fchange(8)`  |     | `r jobs[13, 2]` | `r fchange(13)` |
-| `r jobs[4, 2]` | `r fchange(4)` |     | `r jobs[9, 2]`  | `r fchange(9)`  |     | `r jobs[14, 2]` | `r fchange(14)` |
-| `r jobs[5, 2]` | `r fchange(5)` |     | `r jobs[10, 2]` | `r fchange(10)` |     | `r jobs[15, 2]` | `r fchange(15)` |
+| Crown Job Title | Change %       |     | Hospitals Job Title | Change %        |     | Schools Job Title | Change %        |
+|-----------------|----------------|-----|---------------------|-----------------|-----|-------------------|-----------------|
+| `r jobs[1, 2]`  | `r fchange(1)` |     | `r jobs[6, 2]`      | `r fchange(6)`  |     | `r jobs[11, 2]`   | `r fchange(11)` |
+| `r jobs[2, 2]`  | `r fchange(2)` |     | `r jobs[7, 2]`      | `r fchange(7)`  |     | `r jobs[12, 2]`   | `r fchange(12)` |
+| `r jobs[3, 2]`  | `r fchange(3)` |     | `r jobs[8, 2]`      | `r fchange(8)`  |     | `r jobs[13, 2]`   | `r fchange(13)` |
+| `r jobs[4, 2]`  | `r fchange(4)` |     | `r jobs[9, 2]`      | `r fchange(9)`  |     | `r jobs[14, 2]`   | `r fchange(14)` |
+| `r jobs[5, 2]`  | `r fchange(5)` |     | `r jobs[10, 2]`     | `r fchange(10)` |     | `r jobs[15, 2]`   | `r fchange(15)` |
 
-: Largest Changes in Job Titles
+## Conclusion
 
-## Adjusting for Inflation (Considerations)
+# Appendix A - Adjusting for Inflation 
 
 ### Only 8% Remain
 
@@ -165,6 +164,8 @@ fchange = function(rown){
 
 ![Predicted values](plots/p_longsum_pred_adj.png)
 
-## Conclusion
+# Appendix B - Supplemental Information
 
-# Appendix
+Fig 3 shows how average earnings by sector differ from the average trend observed above. While most sectors seem to remain mostly constant between \$100K and \$150K, Universities and Ontario Power Generation have seen a generally upward sloping trend and Hospitals avg salaries have been decreasing. Further investigation is required to learn more about the cause for this trends.
+
+![Long Summary by Sector in dollars](plots/p_longsecsum_d.png)

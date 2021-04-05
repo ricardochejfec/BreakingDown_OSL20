@@ -1,45 +1,44 @@
-![](Report_files/figure-markdown_strict/setup2-1.png)
+# 2020 Drastically Increased the Number of People on the Ontario Sunshine List
 
-# It’s Not What It Looks Like
+## An analysis of Ontario Public Sector’s “Highest” Earners
 
-## The Effect of 2020 on Ontario Public Sector’s High Earners
+## Summary (Issue)
 
-Abstract: The Ontario Sunshine List - - reported a higher-than-projected
-\_\_\_\_\_ members. Facing increased debt and considering the financial
-effects the pandemic had on many, a narrow look at the numbers may
-prompt some to argue for immediate cuts. The following is a breakdown of
-the OSL in 2020 and through time that attempts to learn more about the
-source of the increase. I determined that most of the excess increase
-came from two sectors in particular, hospitals and schools, completely
-in line with a responsible response to the pandemic (regarding
-direction, the magnitude requires further investigation). After all, the
-government is responding to a health crisis first, social second, and
-economic last.
+-   The 2020 Ontario Sunshine List was released on \_\_\_\_\_. It
+    reported over 200,000 people, out of which $\_\_$ were new, or an
+    increase of $\_\_$.
 
-<!-- change to summary  -->
-<!-- add db context -->
+-   While the list has expanded every year, this year’s growth was
+    significantly larger than what the trend predicted.
 
-Summary:
+-   Led by nurses and teachers, the higher-than-expected increase can be
+    explained by a major compensation agreement in early 2020 and the
+    government’s efforts to combat the pandemic.
 
--   A
+## This Report
 
--   B
-
--   C
-
-## This Report (Issue)
-
--   A
+What follows is a descriptive analysis of the Ontario Sunshine List. The
+main section is my attempt to shed some light on the effects of 2020 on
+Ontario’s high earners. Appendix A considers what would happen if the
+list’s cut-off salary was adjusted for inflation and Appendix B includes
+other descriptive statistics that were not relevant to the research
+question. The project is intended to be fully reproducible. If you’re
+interested in replicating or improving this analysis see the Read Me
+file to get started.
 
 ## What is the OSL (Background)
 
 A *sunshine list* is the name commonly given to the public disclosure of
-employee compensation (salary, benefits, severance). In 1996, then
-premier Mike Harris, introduced the first Ontario Sunshine List,
-intending to disclose the salaries and benefits of all employees on the
-provincial government payroll who were considered high earners. Setting
-the floor at a salary of $100,000, the province reported \_\_\_\_ high
-earners that year, with an average salary of \_\_\_\_.
+employee compensation. In 1996, then premier Mike Harris, introduced the
+first Ontario Sunshine List, intending to disclose the salaries and
+benefits of all employees on the provincial government payroll who were
+considered high earners. Setting the floor at a salary of $100,000, the
+province reported \_\_\_\_ high earners that year, with an average
+salary of \_\_\_\_. Dictated by the Public Sector Salary Disclosure Act
+(1996), the government has required ever since that organizations that
+receive public funding from the Province of Ontario disclose by March 31
+the names, positions, salaries and total taxable benefits of employees
+paid $100,000 or more in a calendar year.
 
 ### Uninterrupted Growth
 
@@ -49,9 +48,7 @@ ago. It was twice as big by 2000, ten times by 2008, and today the list
 is 45 times larger than in 1996. Regardless, the yearly average earnings
 have remained mostly constant around \_\_\_\_\_, likely because
 increasing existing salaries are compensated by the new additions to the
-list, most of which earn a salary close to the floor. From Fig 1. we can
-already see that 2020’s list saw a growth larger than the trend
-predicted.
+list, most of which earn a salary close to the floor.
 
 ![Long Summary](plots/p_longsum_grid.png)
 
@@ -61,24 +58,14 @@ The data provided is categorized by government sector. While these
 sectors change slightly year-to-year as a result of administrative
 changes and operational restructuring (See Appendix:\_\_ for a full
 list), we can functionally group all employees reported in 9 independent
-groups. Fig 2 and 3 show the number of people in the list as well as
-their average earnings through time divided by sector.
+sectors. The following figure shows the number of people in the list
+through time divided by sector.
 
-While the size of sectors variate, we can see from Fig 2 that
-Municipalities, School Boards, Hospitals, and Universities, have
-captured the lion share of high earners for the past five years.
+While the size of sectors vary, Municipalities, School Boards,
+Hospitals, and Universities, have captured the lion share of high
+earners for most of the lists existence.
 
 ![Long Summary by Sector](plots/p_longsecsum.png)
-<!-- push to appendix? -->
-
-Fig 3 shows how average earnings by sector differ from the average trend
-observed above. While most sectors seem to remain mostly constant
-between $100K and $150K, Universities and Ontario Power Generation have
-seen a generally upward sloping trend and Hospitals avg salaries have
-been decreasing. Further investigation is required to learn more about
-the cause for this trends.
-
-![Long Summary by Sector in dollars](plots/p_longsecsum_d.png)
 
 ## 2020 in Review (Context)
 
@@ -120,6 +107,45 @@ was School Boards and Hospitals that saw the biggest change.
     [source](link)
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
+
+### Job Titles
+
+<table>
+<thead>
+<tr class="header">
+<th>Job Title</th>
+<th>Count</th>
+<th>Average Salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>teacher</td>
+<td>29877</td>
+<td>1.0342806^{5}</td>
+</tr>
+<tr class="even">
+<td>nurse</td>
+<td>20535</td>
+<td>1.1110136^{5}</td>
+</tr>
+<tr class="odd">
+<td>manager</td>
+<td>19924</td>
+<td>1.2687063^{5}</td>
+</tr>
+<tr class="even">
+<td>professor</td>
+<td>18864</td>
+<td>1.5270666^{5}</td>
+</tr>
+<tr class="odd">
+<td>director</td>
+<td>11256</td>
+<td>1.4490278^{5}</td>
+</tr>
+</tbody>
+</table>
 
 ## A Recession with Unparalleled Growth (Analysis)
 
@@ -204,41 +230,30 @@ pandemic.
     }
 
 <table>
-<caption>Largest Changes in Job Titles</caption>
 <colgroup>
 <col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 4%" />
+<col style="width: 17%" />
 <col style="width: 14%" />
 <col style="width: 4%" />
-<col style="width: 15%" />
-<col style="width: 15%" />
-<col style="width: 4%" />
-<col style="width: 15%" />
-<col style="width: 15%" />
+<col style="width: 16%" />
+<col style="width: 14%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th>Crown</th>
+<th>Crown Job Title</th>
+<th>Change %</th>
 <th></th>
+<th>Hospitals Job Title</th>
+<th>Change %</th>
 <th></th>
-<th>Hospitals</th>
-<th></th>
-<th></th>
-<th>Schools</th>
-<th></th>
+<th>Schools Job Title</th>
+<th>Change %</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Job Title</td>
-<td>Change (%)</td>
-<td></td>
-<td>Job Title</td>
-<td>Change (%)</td>
-<td></td>
-<td>Job Title</td>
-<td>Change (%)</td>
-</tr>
-<tr class="even">
 <td>manager</td>
 <td>+418 (20%)</td>
 <td></td>
@@ -248,7 +263,7 @@ pandemic.
 <td>teacher</td>
 <td>+15149 (103%)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>cm</td>
 <td>+270 (391%)</td>
 <td></td>
@@ -258,7 +273,7 @@ pandemic.
 <td>management</td>
 <td>+136 (1%)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>specialist, return to work program</td>
 <td>+216 (10800%)</td>
 <td></td>
@@ -268,7 +283,7 @@ pandemic.
 <td>manager</td>
 <td>+75 (13%)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>director</td>
 <td>+87 (8%)</td>
 <td></td>
@@ -278,7 +293,7 @@ pandemic.
 <td>social worker</td>
 <td>+63 (119%)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>pm</td>
 <td>+63 (31%)</td>
 <td></td>
@@ -291,9 +306,9 @@ pandemic.
 </tbody>
 </table>
 
-Largest Changes in Job Titles
+## Conclusion
 
-## Adjusting for Inflation (Considerations)
+# Appendix A - Adjusting for Inflation
 
 ### Only 8% Remain
 
@@ -307,6 +322,13 @@ Largest Changes in Job Titles
 
 ![Predicted values](plots/p_longsum_pred_adj.png)
 
-## Conclusion
+# Appendix B - Supplemental Information
 
-# Appendix
+Fig 3 shows how average earnings by sector differ from the average trend
+observed above. While most sectors seem to remain mostly constant
+between $100K and $150K, Universities and Ontario Power Generation have
+seen a generally upward sloping trend and Hospitals avg salaries have
+been decreasing. Further investigation is required to learn more about
+the cause for this trends.
+
+![Long Summary by Sector in dollars](plots/p_longsecsum_d.png)

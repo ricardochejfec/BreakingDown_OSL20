@@ -708,6 +708,10 @@ deepdive = function(dtb){
 jobs_deepdive_20 = deepdive(master_20)
 jobs_deepdive_19 = deepdive(master_19)
 
+top_10_jobs = jobs_deepdive_20 %>% group_by(job_title) %>% 
+    summarise(n=n(), mean_sal = mean(salary)) %>% 
+    arrange(-n, .by_group = TRUE) 
+
 dd_20 = jobs_deepdive_20 %>% 
     group_by(sector) %>% 
     count(job_title, sort=TRUE) %>% 
@@ -739,40 +743,40 @@ dd_delta = left_join(dd_20, dd_19, by=c("sector", "job_title")) %>%
     slice(1:10)
 
 ########################################################## job_titles
-########################################################## time series
+########################################################## job_titles
 
 
 
-########################################################## time series
+########################################################## job_titles
 ########################################################## saves
 
-save_ric(waf, "waffle", 12, 8)
-
-save_ric(p_secsum_d_20, "p_secsum_d_20", 15, 8.5)
-
-save_ric(p_change_1920, "p_change_1920", 15, 8.5)
-
-save_ric(p_change_1920_d, "p_change_1920_d", 15, 8.5)
-
-save_ric(p_longsum_grid, "p_longsum_grid", 12, 10)
-
-save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 12, 10)
-
-save_ric(p_longsecsum, "p_longsecsum", 15, 7.5)
-save_ric(p_longsecsum_d, "p_longsecsum_d", 15, 7.5)
-
-save_ric(p_violins, "p_violins", 16, 10) + 
-    theme(plot.title = element_text(size = 18))
-
-save_ric(p_secsum_20_adj, "p_secsum_20_adj", 15, 10)
-save_ric(p_secsum_d_20_adj, "p_secsum_d_20_adj", 18, 10)
-
-save_ric(p_longsum_pred, "p_longsum_pred", 15, 8.5)
-save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 8.5)
-
-save_ric(p_longsum_pred_adj, "p_longsum_pred_adj", 15, 8.5)
-save_ric(p_longsum_pred_sec_adj, "p_longsum_pred_sec_adj", 15, 8.5)
-
-save_ric(p_jobsum_20_grid, "p_jobsum_20_grid", 12, 8.5)
+# save_ric(waf, "waffle", 12, 8)
+# 
+# save_ric(p_secsum_d_20, "p_secsum_d_20", 15, 8.5)
+# 
+# save_ric(p_change_1920, "p_change_1920", 15, 8.5)
+# 
+# save_ric(p_change_1920_d, "p_change_1920_d", 15, 8.5)
+# 
+# save_ric(p_longsum_grid, "p_longsum_grid", 12, 10)
+# 
+# save_ric(p_secsum_perc_grid, "p_secsum_perc_grid", 12, 10)
+# 
+# save_ric(p_longsecsum, "p_longsecsum", 15, 7.5)
+# save_ric(p_longsecsum_d, "p_longsecsum_d", 15, 7.5)
+# 
+# save_ric(p_violins, "p_violins", 16, 10) + 
+#     theme(plot.title = element_text(size = 18))
+# 
+# save_ric(p_secsum_20_adj, "p_secsum_20_adj", 15, 10)
+# save_ric(p_secsum_d_20_adj, "p_secsum_d_20_adj", 18, 10)
+# 
+# save_ric(p_longsum_pred, "p_longsum_pred", 15, 8.5)
+# save_ric(p_longsum_pred_sec, "p_longsum_pred_sec", 15, 8.5)
+# 
+# save_ric(p_longsum_pred_adj, "p_longsum_pred_adj", 15, 8.5)
+# save_ric(p_longsum_pred_sec_adj, "p_longsum_pred_sec_adj", 15, 8.5)
+# 
+# save_ric(p_jobsum_20_grid, "p_jobsum_20_grid", 12, 8.5)
 
  ########################################################## saves
