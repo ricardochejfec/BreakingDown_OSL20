@@ -357,7 +357,7 @@ p_longsum_pred_sec <- theme_plt(p_longsum_pred_sec, "nl")
 # Adjusted Models ---------------------------------------------------------
 
 p_longsum_pred_adj <- ggplot(
-  lonsum_adj %>% filter(lbl_year <= 2019),
+  longsum_adj %>% filter(lbl_year <= 2019),
   aes(x = lbl_year, y = sec_frq)
 ) +
   geom_point() +

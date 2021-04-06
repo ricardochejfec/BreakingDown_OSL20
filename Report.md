@@ -4,9 +4,9 @@
 
 ## Summary (Issue)
 
--   The 2020 Ontario Sunshine List was released on \_\_\_\_\_. It
-    reported over 200,000 people, out of which $\_\_$ were new, or an
-    increase of $\_\_$.
+-   The 2020 Ontario Sunshine List was released on March 19th 2021. It
+    reported a total of 205,470 members, out of which 38,512 were new,
+    or an increase of 23%.
 
 -   While the list has expanded every year, this year’s growth was
     significantly larger than what the trend predicted.
@@ -23,8 +23,8 @@ Ontario’s high earners. Appendix A considers what would happen if the
 list’s cut-off salary was adjusted for inflation and Appendix B includes
 other descriptive statistics that were not relevant to the research
 question. The project is intended to be fully reproducible. If you’re
-interested in replicating or improving this analysis see the Read Me
-file to get started.
+interested in replicating or improving this analysis see the README file
+to get started.
 
 ## What is the OSL (Background)
 
@@ -33,8 +33,8 @@ employee compensation. In 1996, then premier Mike Harris, introduced the
 first Ontario Sunshine List, intending to disclose the salaries and
 benefits of all employees on the provincial government payroll who were
 considered high earners. Setting the floor at a salary of $100,000, the
-province reported \_\_\_\_ high earners that year, with an average
-salary of \_\_\_\_. Dictated by the Public Sector Salary Disclosure Act
+province reported 205,470 high earners that year, with an average salary
+of $125,872.7. Dictated by the Public Sector Salary Disclosure Act
 (1996), the government has required ever since that organizations that
 receive public funding from the Province of Ontario disclose by March 31
 the names, positions, salaries and total taxable benefits of employees
@@ -42,13 +42,13 @@ paid $100,000 or more in a calendar year.
 
 ### Uninterrupted Growth
 
-The number of people in the Ontario public sector making more than $100k
-a year has increased with every release since its conception 25 years
-ago. It was twice as big by 2000, ten times by 2008, and today the list
-is 45 times larger than in 1996. Regardless, the yearly average earnings
-have remained mostly constant around \_\_\_\_\_, likely because
-increasing existing salaries are compensated by the new additions to the
-list, most of which earn a salary close to the floor.
+The number of people in the Ontario Sunshine List has increased with
+every release since its conception 25 years ago. It was twice as big by
+2000, ten times by 2008, and today the list is 45 times larger than in
+1996. Regardless, the yearly average earnings have remained mostly
+constant around $127,372, likely because increasing existing salaries
+are compensated by new additions to the list, most of which earn a
+salary close to the floor.
 
 ![Long Summary](plots/p_longsum_grid.png)
 
@@ -56,8 +56,8 @@ list, most of which earn a salary close to the floor.
 
 The data provided is categorized by government sector. While these
 sectors change slightly year-to-year as a result of administrative
-changes and operational restructuring (See Appendix:\_\_ for a full
-list), we can functionally group all employees reported in 9 independent
+changes and operational restructuring (See Appendix B for a full list),
+we can functionally group all employees reported in 9 independent
 sectors. The following figure shows the number of people in the list
 through time divided by sector.
 
@@ -70,8 +70,7 @@ earners for most of the lists existence.
 ## 2020 in Review (Context)
 
 The last release of the OSL reported an increase in members by a total
-of $\_\_$ members ( total) and and reduction in the average salary of
-$\_\_$ ( total).
+of 38,512 members and a reduction in the average salary of $1,523.196.
 
 ### Municipalities, School-Boards and Hospitals
 
@@ -79,36 +78,31 @@ Municipalities, School-Boards, and Hospitals, top the share of high
 earners in 2020 by a significant margin, making-up almost two thirds of
 the total.
 
-![Waffle Chart of OLS 202](plots/waffle.png)
+![Waffle Chart of OLS 202](plots/waffle.png) **Municipalities**
+
+-   
+-   
 
 All sectors saw the number of people making over $100k increase, but it
 was School Boards and Hospitals that saw the biggest change.
 
 **School Boards**
 
--   The share of teachers in the OLS increased by $\_\_$, leading the
-    sector’s increase.
-
--   All five relevant [unions](link) agreed to new contracts in early
-    spring 2020.
+-   
+-   
 
 **Hospitals**
 
--   Similarly, it was an increase in the percentage of nurses ($\_\_$)
-    that can explain that drastic increase in the Hospital sector.
-
--   While there was no wide changes to compensation agreements, the
-    increase can be explained by the government’s response to the
-    COVID-19 pandemic. Facing a health crisis characterized by crowded
-    intensive care units and a need to enforce public health guidelines
-    unto the public, the Ford government engaged in several expended
-    recruitment bouts, attempting to increase the number of health care
-    professionals in hospitals, schools, and long-term care homes.
-    [source](link)
+-   
+-   
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
 
 ### Job Titles
+
+Teachers and nurses topped the list as the most popular jobs in the
+Ontario Sunshine List of 2020. The best paying jobs in contrast went to
+BLAH, BLAH, and BLAH.
 
 ![Top 5 Job Titles](tables/top_5_table.png)
 
@@ -126,11 +120,12 @@ before using this information to advocate for changes.
 
 ### Overall growth higher than expected
 
-Using a generalized additive model (GAM) w/ poisson we can project what
-the expected growth in number of people earning more than \\$100k would
-have been based solely on the observed trend. As we can see, the total
-number was expected to be between $\_\_$ and $\_\_$. According to this
-model, the list saw an increase significantly larger than predicted.
+Using a generalized additive model (GAM) with a poisson distribution, we
+can project what the expected growth in the number of people earning
+more than $100k would have been based solely on the observed trend. The
+total number was expected to be between $\_\_$ and $\_\_$. According to
+this model, the list saw an increase significantly larger than
+predicted.
 
 ![Predicted values](plots/p_longsum_pred.png)
 
@@ -185,17 +180,58 @@ pandemic.
 
 ## Conclusion
 
+There is only so much we can extrapolate from this limited information.
+While we can conclude that the increase observed was higher than normal,
+and this was due to very large increases in the number of teachers and
+nurses, it is impossible to determine whether the decisions behind such
+changes were appropriate, successful, or efficient.
+
+Many argue that the list’s floor should be raised according to inflation
+(see Appendix A), whereas other countries like BLAH have opted for full
+transparency in the public sector. It is clear that the cut-off, as it
+exists now, does more to confuse than clarify. $100k dollars, while far
+from the median ( ), covers too broad of a stroke to facilitate insights
+on the highest earners, but too narrow to attempt to investigate broad
+changes in the public sector. In fact, most of the reporting that
+follows the list’s release, focuses seldomly on the individuals earning
+the highest salaries. This is important information, but one that fails
+to give us any valuable big-picture insights.
+
+Further analysis on the OSL is welcomed, with interesting research
+questions like contrasting trends through time with electoral cycles or
+economic fluctuations.
+
 # Appendix A - Adjusting for Inflation
 
+The OSL is criticized for using the same cut-off at $100K that it began
+with, instead of adjusting for inflation. Any analysis that intends to
+learn more about Ontario’s highest earners, needs to account for the
+difference in purchasing power between 1996 and 2020. If we were to
+adjust for inflation, the floor today should sit at BLAH.
+
 ### Only 8% Remain
+
+By adjusting all salaries to 1996 dollars, we can identify how the list
+would have changed in the presence of a moving floor. While the list
+containing all years available houses BLAH recorded salaries, when
+adjusting for inflation only BLAH remain, or the equivalent to BLAH.
 
 ![Violin Chart of OLS adjusted for Inflation](plots/p_violins.png)
 
 ### Universities, Universities, Universities
 
+The 2020 list shrinks by BLAH when adjusting for inflation, totaling
+only BLAH members.
+
+This analysis shows that at the higher cut-off, universities dominate
+the list and have done so for quite some time. This is likely due to the
+nature of the sector, where the majority of its members are professors.
+The average salary of an Ontario Professor is BLAH compared to nurses at
+BLAH and teachers at BLAH.
+
 ![Sector Summary 2020 Adjusted for Inflation](plots/p_secsum_20_adj.png)
 
-### Adjusted for Inflation… things get messy
+### Modeling the List of Really High Earners
 
 ![Predicted values](plots/p_longsum_pred_adj.png)
 
