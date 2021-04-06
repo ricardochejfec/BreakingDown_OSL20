@@ -17,9 +17,9 @@ source(file = "code/functions.R")
 # Get and Clean Data ------------------------------------------------------
 
 # Master contains all years of the list compiled by 0_get_data.R 
-master <- data.table::fread(file = "data/master.csv")
-master <- as_tibble(master)
-master <- mutate(master, year = calendar_year - 1996)
+master_raw <- data.table::fread(file = "data/master.csv")
+master_raw <- as_tibble(master_raw)
+master <- mutate(master_raw, year = calendar_year - 1996)
 
 # Some Years made Taxable Benefits use NAs instead of Zeros 
 master <- mutate(master,
@@ -204,7 +204,7 @@ longsum_adj <- master_adj %>%
 secsum_adj <- master_adj %>%
     group_by(year, sector) %>%
     summarise(
-        money = mean(total_income),
+        money = mean(income_inf),
         sec_frq = n()
     ) %>%
     mutate(lbl_year = year + 1996)

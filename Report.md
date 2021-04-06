@@ -17,6 +17,8 @@
 
 ## This Report
 
+<!-- descriptive statistics / PLOTS? -->
+
 What follows is a descriptive analysis of the Ontario Sunshine List. The
 main section is my attempt to shed some light on the effects of 2020 on
 Ontario’s high earners. Appendix A considers what would happen if the
@@ -61,19 +63,19 @@ The data provided is categorized by government sector. While these
 sectors change slightly year-to-year as a result of administrative
 changes and operational restructuring (See Appendix B for a full list),
 we can functionally group all employees reported in 9 independent
-sectors. The following figure shows the number of people in the list
+groups. The following figure shows the number of people in the list
 through time divided by sector.
 
 While the size of sectors vary, Municipalities, School Boards,
 Hospitals, and Universities, have captured the lion share of high
-earners for most of the lists existence.
+earners for most of the list’s existence.
 
 ![Long Summary by Sector](plots/p_longsecsum.png)
 
 ## 2020 in Review
 
 The last release of the OSL reported an increase in members by a total
-of 38,512 members and a reduction in the average salary of $1,523.196.
+of 38,512 members and a reduction in the average salary by $1,523.196.
 
 ### Municipalities, School-Boards and Hospitals
 
@@ -86,8 +88,8 @@ the total.
 **Municipalities**
 
 -   Police constables ($118k), managers ($129), and firefighters
-    ($117k), made up almost a third of the job titles in Municipalities
-    in 2020.
+    ($117k), constituted almost a third of the job titles in
+    Municipalities in 2020.
 
 -   The average salary was $123,291.5. The highest paid positions were
     Chief of Police ($481k), Chief of Police ($436k), and City Planner
@@ -106,8 +108,8 @@ was School Boards and Hospitals that saw the biggest change.
 
 **Hospitals**
 
--   The list was topped by Nurses ($110k), followed by Managers ($116) ,
-    and Directors ($148k)
+-   The list was topped by Nurses ($110k), followed by Managers ($116),
+    and Directors ($148k).
 
 -   The average salary was $120,083.3. The highest paid positions were
     President and CEO ($845k), President and CEO ($776k), and President
@@ -119,8 +121,8 @@ was School Boards and Hospitals that saw the biggest change.
 
 Teachers and nurses were by far the most popular jobs in the Ontario
 Sunshine List of 2020. The best paying jobs in contrast went mostly to
-Ontario Power Sector with President and CEO ($1.22M), President Nuclear
-($1.13M), and CEO/Chief Nuclear Officer ($901k) as the top 3.
+the Ontario Power Sector with President and CEO ($1.22M), President
+Nuclear ($1.13M), and CEO/Chief Nuclear Officer ($901k) as the top 3.
 
 ![Top 5 Job Titles](tables/top_5_table.png)
 
@@ -148,25 +150,24 @@ conclusions.
 ### The Culprits
 
 We can apply the same technique for individual sectors in the list. This
-allows us to identify the individual impact of 2020 on each sector and
-attempt to determine where the above-expectations growth is coming from.
+allows us to identify the impact of 2020 on each sector and attempt to
+determine where the above-expectations growth came from.
 
 ![Predicted values by sector](plots/p_longsum_pred_sec.png)
 
 While earlier we learned that municipalities make up the largest share
 of the list and saw one of the biggest increases of 2020, we can see
-that its count is mostly in line with our model’s predictions. Instead,
-when accounting for the expected trend, Crown Agencies join School
-Boards and Hospitals, in the list of sectors which growth exceeded
-expectations.
+that its count is in line with our model’s predictions. Instead, when
+accounting for the expected trend, Crown Agencies join School Boards and
+Hospitals, in the list of sectors which growth exceeded expectations.
 
 #### Crown Agencies
 
-While Crown Agencies make a smaller share of the list, its
+Crown Agencies make a smaller share of the list but its
 higher-than-predicted growth warrants a closer look.
 
 -   The model predicted 8,351 members but the data reported 9,332 - a
-    difference of 981
+    difference of 981 employees
 
 -   About 40% of the growth can be explained by increases in Managers,
     Case Managers, and Specialist, return to work program.
@@ -174,13 +175,12 @@ higher-than-predicted growth warrants a closer look.
 -   The difference is likely a result of the various agencies’ efforts
     to operate during the COVID-19 pandemic.
 
-    -   The government has engaged on several
+    -   The government has engaged on several hiring
         [rounds](https://news.ontario.ca/en/release/58807/ontario-hiring-hundreds-more-contact-tracers-and-case-managers)
-        of hiring surges of Case Managers and Contact Tracers intending
-        to “to help track, trace and isolate new cases of COVID-19”. By
-        [January
+        of Case Managers and Contact Tracers intending to “to help
+        track, trace and isolate new cases of COVID-19”. By [January
         2021](https://news.ontario.ca/en/release/59964/ontario-expands-case-and-contact-management-workforce),
-        the government reported 5,600 case and contact tracers in the
+        Ontario had reported 5,600 case and contact tracers in the
         province.
 
     -   Specialist, return to work program, are employees in Ontario’s
@@ -190,25 +190,24 @@ higher-than-predicted growth warrants a closer look.
         difficulties returning to work.
 
     -   While I found no evidence to confirm this, I presume part of the
-        increase in Managers and Specialists, happened because of a need
-        for increased logistics and planning, and the hazardous nature
-        of the pandemic on workplaces, respectively.
+        increase in Managers and Specialists, occured due to a hightened
+        need for logistics and planning, and the hazardous nature of the
+        pandemic on workplaces, respectively.
 
 ![Crown Job Change](tables/crown_change.png)
 
 #### School Boards
 
--   The model predicted 34,019 members but the data reported 43,805 - a
-    difference of 9,786
+-   The model predicted 34,019 School Board members in the 2020 list.
+    Ontario reported 43,805 - a difference of 9,786 employees
 
--   Virtually all growth came from Teachers new to the list (a shocking
+-   Virtually all growth came from new to the list Teachers (a shocking
     ~40% of the total increase in 2020).
 
 -   As front-line workers, teachers in Ontario have been fully exposed
     to the dangers and impacts of the pandemic. While increased working
-    hours from the pandemic help explain this growth, it was a major
-    compensation agreement in early 2020 that was likely the main
-    source.
+    hours help explain this growth, it was a major compensation
+    agreement in early 2020 that was likely the main source.
 
     -   The 2019-2020 school year was a contract negotiation year for
         all unionized workers in School Boards in Ontario. The
@@ -217,8 +216,8 @@ higher-than-predicted growth warrants a closer look.
 
     -   The collective agreements included raises in compensation and
         benefits (given retroactively) and were negotiated with all five
-        relevant [teacher
-        boards](https://news.ontario.ca/en/backgrounder/56838/ocew-central-agreement-now-ratified)
+        relevant
+        [unions](https://news.ontario.ca/en/backgrounder/56838/ocew-central-agreement-now-ratified)
         Ontario Council of Educational Workers (OCEW), (Canadian Union
         of Public Employees (CUPE), Education Workers’ Alliance of
         Ontario (EWAO), Ontario English Catholic Teachers’ Association
@@ -228,30 +227,31 @@ higher-than-predicted growth warrants a closer look.
     -   Apart from the raise, it is likely that overtime and teachers
         filling in in administrative positions also contributed to the
         increase in teachers in the 2020 OSL. Also notable, the pandemic
-        led to a significant rise in the number of social workers (in
-        all three sectors).
+        led to a significant rise in the number of social workers in all
+        three sectors.
 
 ![School Job Change](tables/school_change.png)
 
 #### Hospitals
 
--   The model predicted 26,312 members but the data reported 33,928 - a
-    difference of 7,616
+-   The model predicted 26,312 Hospital members in the 2020 list.
+    Ontario reported 33,928 - a difference of 7,616 employees
+
 -   Similar to School Boards, the distribution of job titles in
     Hospitals and Boards of Public Health is skewed towards one
-    profession. Nurses made up more than 90% of the sector increase in
+    profession. Nurses made up more than 70% of the sector increase in
     2020 and almost a quarter of the total growth.
+
 -   The provincial government has been expanding their nurse staff since
     [mid
     2020](https://news.ontario.ca/en/release/58580/ontario-investing-525-million-to-recruit-retain-and-support-more-health-care-workers).
     Alongside it, a [pandemic pay
     bump](https://www.ontario.ca/page/covid-19-temporary-pandemic-pay)
-    applied to health care workers in the fall, as well as overtime
-    hours in dealing with the pandemic explain the drastic increase.
--   Also notable, we saw in increase in social workers similar than the
-    one seen in School Boards and, in line with the health implications
-    of COVID-19, we see the number of Respiratory Therapists on the list
-    increase by 300%.
+    given to health care workers in the fall, as well as overtime hours
+    in dealing with the pandemic, explain the drastic increase.
+
+-   In line with the health implications of COVID-19, we see the number
+    of Respiratory Therapists on the list increased by 300% from 2019.
 
 ![Hosp Job Change](tables/hosp_change.png)
 
@@ -279,13 +279,32 @@ any valuable big-picture insights.
 
 Further analysis on the OSL is welcomed, with interesting research
 questions like contrasting trends through time with electoral cycles or
-economic fluctuations. Earnings trends across sectors and job titles,
-could also reach useful insights about the income distribution of
-Ontario’s public sector.
+economic fluctuations.
+
+<!-- Earnings trends across sectors and job titles, could also reach useful insights about the income distribution of Ontario's public sector.  -->
 
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
+
+    cutoff20_n = 100000 * (inflation  %>%  filter(year==24))$indexed
+    cutoff20 = paste("$", prettyNum(round(cutoff20_n, digits = 0), big.mark = ","), sep = "")
+
+    all_n = nrow(master)
+    all = prettyNum(all_n, big.mark = ",")
+
+    adj_n = nrow(master_adj)
+    adj = prettyNum(adj_n, big.mark = ",")
+
+    diff = prettyNum( all_n - adj_n, big.mark = ",")
+    diff_p = round(adj_n/all_n*100, digits = 1)
+
+
+    adj20_n = nrow(master_20_adj)
+    adj20 = prettyNum(adj20_n, big.mark = ",")
+
+    diff20 = prettyNum( count20_n - adj20_n, big.mark = ",")
+    diff_p = round(adj20_n/count20_n*100, digits = 1)
 
 # Appendix A - Adjusting for Inflation
 
@@ -293,33 +312,62 @@ The OSL is criticized for using the same cut-off at $100K that it began
 with, instead of adjusting for inflation. Any analysis that intends to
 learn more about Ontario’s highest earners, needs to account for the
 difference in purchasing power between 1996 and 2020. If we were to
-adjust for inflation, the floor today should sit at BLAH.
+adjust for inflation, the floor today should sit at $156,916.
 
 ### Only 8% Remain
 
-By adjusting all salaries to 1996 dollars, we can identify how the list
-would have changed in the presence of a moving floor. While the list
-containing all years available houses BLAH recorded salaries, when
-adjusting for inflation only BLAH remain, or the equivalent to BLAH.
+By adjusting all salaries to 1996 dollars (using Ontario CPI All-items
+values from [Stats
+Can](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000413)),
+we can identify how the list would have changed in the presence of a
+moving floor. While the list containing all years available houses
+1,674,697 recorded salaries, when adjusting for inflation only 370,803
+remain, or the equivalent to 11.9%.
 
 ![Violin Chart of OLS adjusted for Inflation](plots/p_violins.png)
 
-### Universities, Universities, Universities
+### 2020 Using an Adjusted Cut-Off
 
-The 2020 list shrinks by BLAH when adjusting for inflation, totaling
-only BLAH members.
+The 2020 list shrinks by 88.1% when adjusting for inflation, totaling
+only 24,444 members.
 
 This analysis shows that at the higher cut-off, universities dominate
 the list and have done so for quite some time. This is likely due to the
 nature of the sector, where the majority of its members are professors.
-The average salary of an Ontario Professor is BLAH compared to nurses at
-BLAH and teachers at BLAH.
+The average salary of an Ontario Professor in the 2020 OSL is $167k
+compared to nurses at $110 and teachers at $103k
 
 ![Sector Summary 2020 Adjusted for Inflation](plots/p_secsum_20_adj.png)
 
+Matched only at first by Ontario Power Generation, Universities begin
+dominating the list using an adjusted cut-off around 2006. While all
+other sectors have remained mostly constant for the past ten years, only
+Universities (and Municipalities to a far lesser extent) have
+experienced a steady growth.
+
+![Sector Summary 2020 Adjusted for
+Inflation](plots/p_longsecsum_adj.png)
+
 ### Modeling the List of Really High Earners
 
+Adjusting the cut-off virtually means reducing the list to the very high
+earners. Repeating the exercise, we model growth using a GAM on the
+trend leading to 2020.
+
+Similarly, we see an increase higher than expected though with larger
+margins of error.
+
 ![Predicted values](plots/p_longsum_pred_adj.png)
+
+When eliminating those making between $100k and $156k from the list, the
+trends get messier. The model indicates that all but the Crown Agencies
+and Hospital sectors saw growth in line with projections.
+
+-   The increase in Crown Agencies came from Directors ($187k) and
+    Managers ($189)
+
+-   The increase in Hospitals came from Directors ($186k), Nurses
+    ($176k), and Pathologists ($311k)
 
 ![Adjusted modeling by sector](plots/p_longsum_pred_sec_adj.png)
 
@@ -329,4 +377,33 @@ BLAH and teachers at BLAH.
 
 # Appendix B - Supplemental Information
 
-<!-- Fig 3 shows how average earnings by sector differ from the average trend observed above. While most sectors seem to remain mostly constant between \$100K and \$150K, Universities and Ontario Power Generation have seen a generally upward sloping trend and Hospitals avg salaries have been decreasing. -->
+The following is a collection of charts and tables that are not relevant
+for the research question and as such are presented with little context.
+
+### Breakdown of Sectors Through the Years
+
+![Sectors Change Through the Years](plots/p_sector_db.png)
+
+### Ratio of Management versus Professional Job Titles
+
+Comparing the ratio of management and professional job titles in the
+2020 OSL suggests that around 1/3 of the list is made up of managers. As
+expected, when adjusting the cut-off point, the ratio goes up to 40:60.
+
+![Management versus Professionals 2020](plots/p_jobsum_20_grid.png)
+
+### Average Earnings by Sector
+
+#### In 2020
+
+![Sector Avg Earnings 20](plots/p_secsum_d_20.png)
+
+#### Through Time
+
+![Sector Avg Earnings Long](plots/p_secsum_d.png)
+
+#### Adjusting for Inflation
+
+![Sector Avg Earnings 20 (1996 Dollars)](plots/p_secsum_d_20_adj.png)
+
+![Sector Avg Earnings Long (1996 Dollars)](plots/p_longsecsum_adj_d.png)
