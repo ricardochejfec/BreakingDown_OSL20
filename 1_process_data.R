@@ -247,10 +247,14 @@ top_jobs <- dd_20 %>%
 
 # Count number of job titles per sector 2020
 dd_20 <- dd_20 %>%
-    group_by(sector) %>%
-    count(job_title, sort = TRUE) %>%
-    ungroup() %>%
-    group_by(sector)
+    group_by(sector, job_title) %>%
+    summarise(n=n(), 
+           sal = mean(salary))
+
+dd_20 = dd_20 %>% 
+    mutate(perc = n/52507)
+
+
 
 # Count number of job titles per sector 2019
 dd_19 <- dd_19 %>%

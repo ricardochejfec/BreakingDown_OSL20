@@ -27,6 +27,12 @@ source(file = "3_model_data.R", local = TRUE)
 
 # Report Variables 
 
+# Count and Avg Sal 1996
+master_96 = master %>% filter(year==0)
+count96 = prettyNum(nrow(master_96), big.mark = ",")
+salavg96 = paste("$", prettyNum(mean(master_96$salary), big.mark = ","), sep = "")
+
+
 # Count and Avg Sal 2020
 count20_n = nrow(master_20)
 count20 = prettyNum(count20_n, big.mark = ",")
@@ -65,7 +71,7 @@ What follows is a descriptive analysis of the Ontario Sunshine List. The main se
 
 ## What is the OSL (Background)
 
-A *sunshine list* is the name commonly given to the public disclosure of employee compensation. In 1996, then premier Mike Harris, introduced the first Ontario Sunshine List, intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported `r count20` high earners that year, with an average salary of `r salavg20`. Dictated by the Public Sector Salary Disclosure Act (1996), the government has required ever since that organizations that receive public funding from the Province of Ontario disclose by March 31 the names, positions, salaries and total taxable benefits of employees paid \$100,000 or more in a calendar year.
+A *sunshine list* is the name commonly given to the public disclosure of employee compensation. In 1996, then premier Mike Harris, introduced the first Ontario Sunshine List, intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported `r count96` high earners that year, with an average salary of `r salavg19_n`. Dictated by the Public Sector Salary Disclosure Act (1996), the government has required ever since that organizations that receive public funding from the Province of Ontario disclose by March 31 the names, positions, salaries and total taxable benefits of employees paid \$100,000 or more in a calendar year.
 
 ### Uninterrupted Growth
 
@@ -89,66 +95,74 @@ The last release of the OSL reported an increase in members by a total of `r chg
 
 Municipalities, School-Boards, and Hospitals, top the share of high earners in 2020 by a significant margin, making-up almost two thirds of the total.
 
-![Waffle Chart of OLS 202](plots/waffle.png)
+![Waffle Chart of OLS 2020](plots/waffle.png)
+
+```{r}
+salavg_mun_a = master_20 %>% filter(sector=="Municipalities And Services")
+salavg_mun = paste("$", prettyNum(mean(salavg_mun_a$salary), big.mark = ","), sep = "")
+
+salavg_sch_a = master_20 %>% filter(sector=="School Boards")
+salavg_sch = paste("$", prettyNum(mean(salavg_sch_a$salary), big.mark = ","), sep = "")
+
+salavg_hos_a = master_20 %>% filter(sector=="Hospitals And Boards Of Public Health")
+salavg_hos = paste("$", prettyNum(mean(salavg_hos_a$salary), big.mark = ","), sep = "")
+```
+
+
 **Municipalities**
 
--   
+-   Police constables (\$118k), managers (\$129), and firefighters ($117k), made up almost a third of the job titles in Municipalities in 2020. 
 
--   
+-  The average salary was `r salavg_mun`. The highest paid positions were Chief of Police (\$481k), Chief of Police (\$436k), and City Planner (\$387k). 
 
 All sectors saw the number of people making over \$100k increase, but it was School Boards and Hospitals that saw the biggest change.
 
 **School Boards**
 
--   
+-   Teachers (\$103k) dominated the School Board sector in 2020, making up 97% of jobs in the list.  
 
--   
+-   The average salary was `r salavg_sch`. The highest paid positions were Legal Counsel (\$382k), Director (\$334k), and Director (\$316k). 
 
 **Hospitals**
 
--   
+-   The list was topped by Nurses (\$110k), followed by Managers (\$116) , and Directors (\$148k)
 
--   
+-   The average salary was `r salavg_hos`. The highest paid positions were President and CEO (\$845k), President and CEO (\$776k), and President and CEO (\$733k). 
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
 
 ### Job Titles
 
-Teachers and nurses topped the list as the most popular jobs in the Ontario Sunshine List of 2020. The best paying jobs in contrast went to BLAH, BLAH, and BLAH.
+Teachers and nurses topped the list as the most popular jobs in the Ontario Sunshine List of 2020. The best paying jobs in contrast went mostly to Ontario Power Sector with President and CEO (\$1.22M), President Nuclear (\$1.13M), and CEO/Chief Nuclear Officer (\$901k) as the top 3.
 
 ![Top 5 Job Titles](tables/top_5_table.png)
 
 ## A Recession with Unparalleled Growth (Analysis)
 
-The absolute number of people in the list coupled with the drastic change from 2019, may raise worries about government spending. In particular amid an economic crisis, a growing OSL illustrates how government employees can get richer while many struggle to keep their jobs. However, it is important to consider the two following questions before using this information to advocate for changes.
 
--   Was the increase in 2020 in line with the observed growth trend?
--   Where is the increase coming from?
 
 ### Overall growth higher than expected
 
-Using a generalized additive model (GAM) with a poisson distribution, we can project what the expected growth in the number of people earning more than \$100k would have been based solely on the observed trend. The total number was expected to be between $__$ and $__$. According to this model, the list saw an increase significantly larger than predicted.
+
 
 ![Predicted values](plots/p_longsum_pred.png)
 
 ### The Culprits
 
-However, increased growth alone is not enough to warrant concerns. It is more interesting to look at where this growth is coming from. As discussed above, Hospitals and School Boards led the pack in number of new members joining the list in 2002 but, how did this growth align with the projected trend?
+
 
 ![Predicted values by sector](plots/p_longsum_pred_sec.png)
 
 
-Nearly all sectors saw increases in line with projections. Crown Agencies, Hospitals, and School Boards, stand out with increases far above expected. Increases in Hospitals and School Boards was led by nurses and teachers respectively. Crown Corporations saw a drastic increase in the number of nurses, bosses (managers and directors), and specialists.
 
-This analysis indicates that the above-projected growth observed, its not the result of broad salary increases or financial mismanagement. Instead it illustrates the strains that 2020 imposed on the Ontario government. Starting in February, the five unions representing the teachers of Ontario negotiated a new compensation agreement with the government. Negotiations went on until April and the result did not come without friction, with teacher strikes and blah blah. Advocates argue that blah blah blah.
 
 ![School Job Change](tables/school_change.png)
 
-By April, Canada had reported \_\_\_ cases and lock-downs in blah and blah had been implemented. As the pandemic grew, the need for more nurses in hospitals and blah blah centers like long term homes was critical, and the government responded accordingly. It is very likely that the trend observed is caused by a combination of new nurses and other strains of the pandemic (increased overtime?).
+
 
 ![Hosp Job Change](tables/hosp_change.png)
 
-While Crown Agencies make a smaller share of the list, the higher than expected growth warrant a closer look. Most of the growth seen in 2020 came from management positions like *director* and *manager*, as well as new-to-the-list job titles like *specialist, return to work program*. The pandemic has resulted in both a health and economic crises with an increased need for policy and logistics development. The growth seen in Crown Agencies in 2020 is likely a result of more management and analysts, rising to navigate the difficult terrain of operating amid a pandemic.\
+
 
 ![Crown Job Change](tables/crown_change.png)
 
@@ -187,5 +201,5 @@ This analysis shows that at the higher cut-off, universities dominate the list a
 
 # Appendix B - Supplemental Information
 
-Fig 3 shows how average earnings by sector differ from the average trend observed above. While most sectors seem to remain mostly constant between \$100K and \$150K, Universities and Ontario Power Generation have seen a generally upward sloping trend and Hospitals avg salaries have been decreasing. Further investigation is required to learn more about the cause for this trends.
+<!-- Fig 3 shows how average earnings by sector differ from the average trend observed above. While most sectors seem to remain mostly constant between \$100K and \$150K, Universities and Ontario Power Generation have seen a generally upward sloping trend and Hospitals avg salaries have been decreasing. -->
 
