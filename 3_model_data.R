@@ -17,9 +17,10 @@ lin_model <- gam(sec_frq ~ year,
 # summary(lin_model)
 
 #GAM Model with Poisson Distribution
-gam_model <- gam(sec_frq ~ s(year, bs = "cr", k = 2),
+gam_model <- gam(sec_frq ~ s(year, bs = "cr"),
                  data = longsum_pred,
-                 family = "poisson"
+                 family = "poisson",
+                 method = "REML"
 )
 # summary(gam_model)
 
@@ -36,6 +37,9 @@ gam_pred <- add_predictions(longsum, gam_model, var = "pred", type = "response")
 #     upper = fit + z_score*se.fit,
 #     lower = fit - z_score*se.fit
 # )
+
+# Model Testing -----------------------------------------------------------
+
 
 # Models w Sectors --------------------------------------------------------
 # We model indivudally the three sectors of interest 
@@ -55,7 +59,8 @@ crown_lin <- gam(sec_frq ~ year,
 # GAM
 crown_gam <- gam(sec_frq ~ s(year),
                  data = crown_pred_mod,
-                 family = "poisson"
+                 family = "poisson",
+                 method = "REML"
 )
 
 # SCHOOL BOARDS
@@ -66,12 +71,13 @@ school_lin <- gam(sec_frq ~ year,
                   data = school_pred_mod,
                   family = "poisson"
 )
+
 # GAM
 school_gam <- gam(sec_frq ~ s(year),
                   data = school_pred_mod,
-                  family = "poisson"
+                  family = "poisson",
+                  method = "REML"
 )
-
 
 # HOSPITALS
 hosp_pred_mod <- longsec_pred %>%
@@ -84,7 +90,8 @@ hosp_lin <- gam(sec_frq ~ year,
 # GAM
 hosp_gam <- gam(sec_frq ~ s(year),
                 data = hosp_pred_mod,
-                family = "poisson"
+                family = "poisson",
+                method = "REML"
 )
 
 # summary(crown_lin)
@@ -117,9 +124,4 @@ hosp_pred <- add_predictions(hosp_pred, hosp_gam,
                              var = "pred", type = "response"
 )
 
-gam_sector_plot_test <- rbind(crown_pred, school_pred, hosp_pred)
 
-ggplot(gam_sector_plot_test, aes(x = year, y = pred)) +
-    geom_line() +
-    geom_point(aes(x = year, y = sec_frq), color = "red", alpha = .5) +
-    facet_wrap(~sector, scales = "free_y")

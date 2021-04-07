@@ -11,7 +11,7 @@
 -   While the list has expanded every year, this year’s growth was
     significantly larger than what the trend predicted.
 
--   Led by nurses and teachers, the higher-than-expected increase can be
+-   Led by nurses and teachers, the higher-than-expected surge can be
     explained by a major compensation agreement in early 2020 and the
     government’s efforts to combat the pandemic.
 
@@ -33,12 +33,12 @@ to get started.
 A *sunshine list* is the name commonly given to the public disclosure of
 employee compensation. In 1996, then premier Mike Harris, introduced the
 first [Ontario Sunshine
-List](https://www.ontario.ca/page/public-sector-salary-disclosure-2020-all-sectors-and-seconded-employees),
-intending to disclose the salaries and benefits of all employees on the
-provincial government payroll who were considered high earners. Setting
-the floor at a salary of $100,000, the province reported 4,501 high
-earners that year, with an average salary of $121,495.2. Dictated by the
-[Public Sector Salary Disclosure
+List](https://www.ontario.ca/page/public-sector-salary-disclosure-2020-all-sectors-and-seconded-employees)
+(OSL), intending to disclose the salaries and benefits of all employees
+on the provincial government payroll who were considered high earners.
+Setting the floor at a salary of $100,000, the province reported 4,501
+high earners that year, with an average salary of $121,495.2. Dictated
+by the [Public Sector Salary Disclosure
 Act](https://www.ontario.ca/laws/statute/96p01a) (1996), the government
 has required ever since that organizations that receive public funding
 from the Province of Ontario disclose by March 31 the names, positions,
@@ -59,9 +59,9 @@ The number of people in the Ontario Sunshine List has increased with
 every release since its conception 25 years ago. It was twice as big by
 2000, ten times by 2008, and today the list is 45 times larger than in
 1996. Regardless, the yearly average earnings have remained mostly
-constant around $127,372, likely because increasing existing salaries
-are compensated by new additions to the list, most of which earn a
-salary close to the floor.
+constant around $127k, likely because increasing existing salaries are
+compensated by new additions to the list, most of which earn a salary
+close to the floor.
 
 ![Long Summary](plots/p_longsum_grid.png)
 
@@ -74,16 +74,16 @@ we can functionally classify all employees reported in 9 independent
 groups. The following figure shows the number of people in the list
 through time divided by sector.
 
-While the size of sectors vary, Municipalities, School Boards,
-Hospitals, and Universities, have captured the lion share of high
-earners for most of the list’s existence.
+The size of sectors vary, but Municipalities, School Boards, Hospitals,
+and Universities, have captured the lion share of high earners for most
+of the list’s existence.
 
 ![Long Summary by Sector](plots/p_longsecsum.png)
 
 ## 2020 in Review
 
 The last release of the OSL reported an increase in members by a total
-of 38,512 employees and a reduction in the average salary by $1,523.196.
+of 38,512 employees and a reduction in the average salary by $1,523.
 
 ### Municipalities, School-Boards and Hospitals
 
@@ -109,7 +109,7 @@ was School Boards and Hospitals that saw the biggest change.
 **School Boards**
 
 -   Teachers ($103k) dominated the School Board sector in 2020, making
-    up 97% of jobs in the list.
+    up 97% of jobs in the sector.
 
 -   The average salary was $109,083.8. The highest paid positions were
     *Legal Counsel* ($382k), *Director of Education* ($334k), and
@@ -117,8 +117,8 @@ was School Boards and Hospitals that saw the biggest change.
 
 **Hospitals**
 
--   The list was topped by Nurses ($110k), followed by Managers ($116k),
-    and Directors ($148k).
+-   The sector was topped by Nurses ($110k), followed by Managers
+    ($116k), and Directors ($148k).
 
 -   The average salary was $120,083.3. The highest paid positions were
     *President and CEO* ($845k), *President and CEO* ($776k), and
@@ -138,17 +138,18 @@ Nuclear ($1.13M), and CEO/Chief Nuclear Officer ($901k) as the top 3.
 ## Modeling Growth
 
 Using a generalized additive model (GAM) with a Poisson distribution, I
-forecast what growth in the list could have looked like **if** the
-number of people in the list increased according to the observed trend
-leading to 2020.
+forecast what growth in the list could have looked like if the number of
+people in the list increased according to the observed trend leading to
+2020.
+<!-- GAMs use groups of non-linear smooth functions to capture relationships within the data. This presents a greater risk of over-fitting (or over-smoothing), as compared to linear regression, but remains a useful way to visualize trends.  -->
 
 ### Overall growth higher than expected
 
 This model concludes that the increase in the number of people in the
 OSL in 2020 was much higher than expected. While it predicted that only
-175,511 public sector workers would earn more than $100k, or an increase
-of 5%. Instead, the list featured 205,470 members (23%), surpassing
-expectations by 29,959 employees.
+190,464 public sector workers would earn more than $100k, or a growth of
+14%. Instead, the list featured 205,470 members (23%), surpassing
+expectations by 15,006 employees.
 
 ![Predicted values](plots/p_longsum_pred.png)
 
@@ -175,8 +176,8 @@ Hospitals, in the list of sectors which growth exceeded expectations.
 Crown Agencies make a smaller share of the list but its
 higher-than-predicted growth warrants a closer look.
 
--   The model predicted 8,351 members but the data reported 9,332 - a
-    difference of 981 employees
+-   The model predicted 8,340 members but the data reported 9,332 - a
+    difference of 992 employees
 
 -   About 40% of the growth can be explained by increases in *Managers*,
     *Case Managers*, and *Specialist, return to work program*.
@@ -207,8 +208,8 @@ higher-than-predicted growth warrants a closer look.
 
 #### School Boards
 
--   The model predicted 34,019 School Board members in the 2020 list.
-    Ontario reported 43,805 - a difference of 9,786 employees
+-   The model predicted 33,994 School Board members in the 2020 list.
+    Ontario reported 43,805 - a difference of 9,811 employees
 
 -   Virtually all growth came from new to the list teachers (a shocking
     ~40% of the total increase in 2020).
@@ -243,8 +244,8 @@ higher-than-predicted growth warrants a closer look.
 
 #### Hospitals
 
--   The model predicted 26,312 Hospital members in the 2020 list.
-    Ontario reported 33,928 - a difference of 7,616 employees
+-   The model predicted 26,297 Hospital members in the 2020 list.
+    Ontario reported 33,928 - a difference of 7,631 employees
 
 -   Similar to School Boards, the distribution of job titles in
     Hospitals and Boards of Public Health is skewed towards one
@@ -260,17 +261,17 @@ higher-than-predicted growth warrants a closer look.
     in dealing with the pandemic, explain the drastic increase.
 
 -   In line with the health implications of COVID-19, we see the number
-    of respiratory therapists on the list increased by 300% from 2019.
+    of respiratory therapists on the list rose by 300% from 2019.
 
 ![Hosp Job Change](tables/hosp_change.png)
 
 ## Conclusion
 
 There is only so much we can extrapolate from this limited information.
-While we can conclude that the increase observed was higher than normal,
-and this was due to very large increases in the number of teachers and
-nurses, it is impossible to determine whether the decisions behind such
-changes were appropriate, successful, or efficient.
+While we can conclude that the increment observed was higher than
+normal, and this was due to very large increases in the number of
+teachers and nurses, it is impossible to determine whether the decisions
+behind such changes were appropriate, successful, or efficient.
 
 Many argue that the list’s floor should be raised according to inflation
 (see Appendix A), whereas other countries like
@@ -310,7 +311,7 @@ learn more about Ontario’s highest earners, needs to account for the
 difference in purchasing power between 1996 and 2020. If we were to
 adjust for inflation, the floor today should sit at $156,916.
 
-### Only 8% Remain
+### Only 12% Remain
 
 By adjusting all salaries to 1996 dollars (using Ontario CPI All-items
 values from [Stats
@@ -318,7 +319,7 @@ Can](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000413)),
 we can identify how the list would have changed in the presence of a
 moving floor. While the list containing all years available houses
 1,674,697 recorded salaries, when adjusting for inflation only 370,803
-remain, or the equivalent to 11.9%.
+remain, or the equivalent to 22.1%.
 
 ![Violin Chart of OLS adjusted for Inflation](plots/p_violins.png)
 

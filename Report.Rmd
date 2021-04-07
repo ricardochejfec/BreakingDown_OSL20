@@ -47,10 +47,16 @@ salavg19 = paste("$", prettyNum(salavg19_n, big.mark = ","), sep = "")
 # Count and Avg Sal Change 19-20
 chg1920_n = count20_n - count19_n
 chg1920 = prettyNum(chg1920_n, big.mark = ",")
-chg1920_d = paste("$", prettyNum(-salavg20_n+salavg19_n, big.mark = ","), sep = "")
+chg1920_d = paste("$", prettyNum(round(-salavg20_n+salavg19_n, digits=0), big.mark = ","), sep = "")
 
 # Average salary accross years
-salavg =  paste("$", prettyNum(mean(master$salary), big.mark = ","), sep = "")
+salavg =  paste("$", round(mean(master$salary)/1000, digits = 0),"k", sep = "")
+
+
+longsum_chg = longsum %>% 
+  mutate(
+    chg = (sec_frq - lag(sec_frq))/ lag(sec_frq) *100
+    )
 
 ```
 
@@ -64,7 +70,7 @@ salavg =  paste("$", prettyNum(mean(master$salary), big.mark = ","), sep = "")
 
 -   While the list has expanded every year, this year's growth was significantly larger than what the trend predicted.
 
--   Led by nurses and teachers, the higher-than-expected increase can be explained by a major compensation agreement in early 2020 and the government's efforts to combat the pandemic.
+-   Led by nurses and teachers, the higher-than-expected surge can be explained by a major compensation agreement in early 2020 and the government's efforts to combat the pandemic.
 
 ## This Report
 
@@ -74,7 +80,7 @@ What follows is a descriptive analysis of the Ontario Sunshine List. The main se
 
 ## What is the OSL
 
-A *sunshine list* is the name commonly given to the public disclosure of employee compensation. In 1996, then premier Mike Harris, introduced the first [Ontario Sunshine List](https://www.ontario.ca/page/public-sector-salary-disclosure-2020-all-sectors-and-seconded-employees), intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported `r count96` high earners that year, with an average salary of `r salavg96`. Dictated by the [Public Sector Salary Disclosure Act](https://www.ontario.ca/laws/statute/96p01a) (1996), the government has required ever since that organizations that receive public funding from the Province of Ontario disclose by March 31 the names, positions, salaries and total taxable benefits of employees paid \$100,000 or more in a calendar year.
+A *sunshine list* is the name commonly given to the public disclosure of employee compensation. In 1996, then premier Mike Harris, introduced the first [Ontario Sunshine List](https://www.ontario.ca/page/public-sector-salary-disclosure-2020-all-sectors-and-seconded-employees) (OSL), intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported `r count96` high earners that year, with an average salary of `r salavg96`. Dictated by the [Public Sector Salary Disclosure Act](https://www.ontario.ca/laws/statute/96p01a) (1996), the government has required ever since that organizations that receive public funding from the Province of Ontario disclose by March 31 the names, positions, salaries and total taxable benefits of employees paid \$100,000 or more in a calendar year.
 
 To the [criticism of many](https://amapceo.on.ca/sunshine-list-stuck-in-past), the list's cut-off has remained the same since 1996, failing to account for inflation (see Appendix A). While these renders the list a poor comparison to its earliest iterations in terms of purchasing power, it remains a useful tool to track broad changes in compensation trends across the public sector.
 
@@ -88,7 +94,7 @@ The number of people in the Ontario Sunshine List has increased with every relea
 
 The data provided is categorized by government sector. While these sectors change slightly year-to-year as a result of administrative changes and operational restructuring (See Appendix B for a full list), we can functionally classify all employees reported in 9 independent groups. The following figure shows the number of people in the list through time divided by sector.
 
-While the size of sectors vary, Municipalities, School Boards, Hospitals, and Universities, have captured the lion share of high earners for most of the list's existence.
+The size of sectors vary, but Municipalities, School Boards, Hospitals, and Universities, have captured the lion share of high earners for most of the list's existence.
 
 ![Long Summary by Sector](plots/p_longsecsum.png)
 
@@ -123,13 +129,13 @@ All sectors saw the number of people making over \$100k increase, but it was Sch
 
 **School Boards**
 
--   Teachers (\$103k) dominated the School Board sector in 2020, making up 97% of jobs in the list.
+-   Teachers (\$103k) dominated the School Board sector in 2020, making up 97% of jobs in the sector.
 
 -   The average salary was `r salavg_sch`. The highest paid positions were *Legal Counsel* (\$382k), *Director of Education* (\$334k), and *Director of Education and Secretary-Treasurer* (\$316k).
 
 **Hospitals**
 
--   The list was topped by Nurses (\$110k), followed by Managers (\$116k), and Directors (\$148k).
+-   The sector was topped by Nurses (\$110k), followed by Managers (\$116k), and Directors (\$148k).
 
 -   The average salary was `r salavg_hos`. The highest paid positions were *President and CEO* (\$845k), *President and CEO* (\$776k), and *President and CEO* (\$733k).
 
@@ -166,11 +172,12 @@ hosp_diff = prettyNum(round(hosp_n - hosp_20_n, digits = 0), big.mark = ",")
 
 ## Modeling Growth
 
-Using a generalized additive model (GAM) with a Poisson distribution, I forecast what growth in the list could have looked like **if** the number of people in the list increased according to the observed trend leading to 2020.
+Using a generalized additive model (GAM) with a Poisson distribution, I forecast what growth in the list could have looked like if the number of people in the list increased according to the observed trend leading to 2020.
+<!-- GAMs use groups of non-linear smooth functions to capture relationships within the data. This presents a greater risk of over-fitting (or over-smoothing), as compared to linear regression, but remains a useful way to visualize trends.  -->
 
 ### Overall growth higher than expected
 
-This model concludes that the increase in the number of people in the OSL in 2020 was much higher than expected. While it predicted that only `r pred_20` public sector workers would earn more than \$100k, or an increase of `r predchg`%. Instead, the list featured `r count20` members (`r round((count20_n-count19_n)/count19_n*100, digits = 0)`%), surpassing expectations by `r pred_diff` employees.
+This model concludes that the increase in the number of people in the OSL in 2020 was much higher than expected. While it predicted that only `r pred_20` public sector workers would earn more than \$100k, or a growth of `r predchg`%. Instead, the list featured `r count20` members (`r round((count20_n-count19_n)/count19_n*100, digits = 0)`%), surpassing expectations by `r pred_diff` employees.
 
 ![Predicted values](plots/p_longsum_pred.png)
 
@@ -226,13 +233,13 @@ Crown Agencies make a smaller share of the list but its higher-than-predicted gr
 
 -   The provincial government has been expanding their nursing staff since [mid 2020](https://news.ontario.ca/en/release/58580/ontario-investing-525-million-to-recruit-retain-and-support-more-health-care-workers). Alongside it, a [pandemic pay bump](https://www.ontario.ca/page/covid-19-temporary-pandemic-pay) given to health care workers in the fall, as well as overtime hours in dealing with the pandemic, explain the drastic increase.
 
--   In line with the health implications of COVID-19, we see the number of respiratory therapists on the list increased by 300% from 2019.
+-   In line with the health implications of COVID-19, we see the number of respiratory therapists on the list rose by 300% from 2019.
 
 ![Hosp Job Change](tables/hosp_change.png)
 
 ## Conclusion
 
-There is only so much we can extrapolate from this limited information. While we can conclude that the increase observed was higher than normal, and this was due to very large increases in the number of teachers and nurses, it is impossible to determine whether the decisions behind such changes were appropriate, successful, or efficient.
+There is only so much we can extrapolate from this limited information. While we can conclude that the increment observed was higher than normal, and this was due to very large increases in the number of teachers and nurses, it is impossible to determine whether the decisions behind such changes were appropriate, successful, or efficient.
 
 Many argue that the list's floor should be raised according to inflation (see Appendix A), whereas other countries like [Norway](https://www.bbc.com/news/magazine-40669239) have opted for full transparency in the public sector. It is clear that the cut-off, as it exists now, does more to confuse than clarify. \$100k dollars, while far from the median (\$37,500 as of [2019](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110023901&pickMembers%5B0%5D=1.8&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.1&pickMembers%5B3%5D=4.1&cubeTimeFrame.startYear=2000&cubeTimeFrame.endYear=2019&referencePeriods=20000101%2C20190101)), covers too broad of a stroke to facilitate insights on the highest earners, but too narrow to attempt to investigate broad changes in the public sector. In fact, most of the reporting that follows the list's release, focuses seldomly on the individuals earning the highest salaries (like [CTV](https://toronto.ctvnews.ca/ontario-s-2020-sunshine-list-revealed-here-are-the-people-who-got-paid-the-most-1.5354551) or [CBC](https://www.cbc.ca/news/canada/toronto/ontario-2020-sunshine-list-1.5957158). This is important information, but one that fails to give us any valuable big-picture insights.
 
@@ -262,7 +269,7 @@ adj20_n = nrow(master_20_adj)
 adj20 = prettyNum(adj20_n, big.mark = ",")
 
 diff20 = prettyNum( count20_n - adj20_n, big.mark = ",")
-diff_p = round(adj20_n/count20_n*100, digits = 1)
+diff20_p = round(adj20_n/count20_n*100, digits = 1)
 
 ```
 
@@ -270,7 +277,7 @@ diff_p = round(adj20_n/count20_n*100, digits = 1)
 
 The OSL is criticized for using the same cut-off at \$100K that it began with, instead of adjusting for inflation. Any analysis that intends to learn more about Ontario's highest earners, needs to account for the difference in purchasing power between 1996 and 2020. If we were to adjust for inflation, the floor today should sit at `r cutoff20`.
 
-### Only 8% Remain
+### Only 12% Remain
 
 By adjusting all salaries to 1996 dollars (using Ontario CPI All-items values from [Stats Can](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000413)), we can identify how the list would have changed in the presence of a moving floor. While the list containing all years available houses `r all` recorded salaries, when adjusting for inflation only `r adj` remain, or the equivalent to `r diff_p`%.
 
@@ -278,7 +285,7 @@ By adjusting all salaries to 1996 dollars (using Ontario CPI All-items values fr
 
 ### 2020 Using an Adjusted Cut-Off
 
-The 2020 list shrinks by `r 100 - diff_p`% when adjusting for inflation, totaling only `r adj20` members.
+The 2020 list shrinks by `r 100 - diff20_p`% when adjusting for inflation, totaling only `r adj20` members.
 
 This analysis shows that at the higher cut-off, universities dominate the list and have done so for quite some time. This is likely due to the nature of the sector, where the majority of its members are professors. The average salary of an Ontario Professor in the 2020 OSL is \$167k compared to nurses at \$110 and teachers at \$103k
 
