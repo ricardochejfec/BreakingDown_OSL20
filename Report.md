@@ -311,7 +311,7 @@ learn more about Ontario’s highest earners, needs to account for the
 difference in purchasing power between 1996 and 2020. If we were to
 adjust for inflation, the floor today should sit at $156,916.
 
-### Only 12% Remain
+### Only 22% Remain
 
 By adjusting all salaries to 1996 dollars (using Ontario CPI All-items
 values from [Stats
