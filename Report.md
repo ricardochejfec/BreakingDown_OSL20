@@ -45,6 +45,12 @@ from the Province of Ontario disclose by March 31 the names, positions,
 salaries and total taxable benefits of employees paid $100,000 or more
 in a calendar year.
 
+To the criticism of many, the list’s cut-off has remained the same since
+1996, failing to account for inflation. While these renders the list a
+poor comparison to its earliest iterations in terms of purchasing power,
+it remains a useful tool to track broad changes in compensation trends
+accross the public sector.
+
 ### Uninterrupted Growth
 
 The number of people in the Ontario Sunshine List has increased with
@@ -92,8 +98,8 @@ the total.
     Municipalities in 2020.
 
 -   The average salary was $123,291.5. The highest paid positions were
-    Chief of Police ($481k), Chief of Police ($436k), and City Planner
-    ($387k).
+    *Chief of Police* ($481k), *Chief of Police* ($436k), and *City
+    Planner* ($387k).
 
 All sectors saw the number of people making over $100k increase, but it
 was School Boards and Hospitals that saw the biggest change.
@@ -104,16 +110,17 @@ was School Boards and Hospitals that saw the biggest change.
     up 97% of jobs in the list.
 
 -   The average salary was $109,083.8. The highest paid positions were
-    Legal Counsel ($382k), Director ($334k), and Director ($316k).
+    *Legal Counsel* ($382k), *Director of Education* ($334k), and
+    *Director of Education and Secretary-Treasurer* ($316k).
 
 **Hospitals**
 
--   The list was topped by Nurses ($110k), followed by Managers ($116),
+-   The list was topped by Nurses ($110k), followed by Managers ($116k),
     and Directors ($148k).
 
 -   The average salary was $120,083.3. The highest paid positions were
-    President and CEO ($845k), President and CEO ($776k), and President
-    and CEO ($733k).
+    *President and CEO* ($845k), *President and CEO* ($776k), and
+    *President and CEO* ($733k).
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
 
@@ -138,7 +145,7 @@ leading to 2020.
 This model concludes that the increase in the number of people in the
 OSL in 2020 was much higher than expected. While it predicted that only
 175,511 public sector workers would earn more than $100k, or an increase
-of 18%. Instead, the list featured 205,470 members (23%), surpassing
+of 5%. Instead, the list featured 205,470 members (23%), surpassing
 expectations by 29,959 employees.
 
 ![Predicted values](plots/p_longsum_pred.png)
@@ -169,8 +176,8 @@ higher-than-predicted growth warrants a closer look.
 -   The model predicted 8,351 members but the data reported 9,332 - a
     difference of 981 employees
 
--   About 40% of the growth can be explained by increases in Managers,
-    Case Managers, and Specialist, return to work program.
+-   About 40% of the growth can be explained by increases in *Managers*,
+    *Case Managers*, and *Specialist, return to work program*.
 
 -   The difference is likely a result of the various agencies’ efforts
     to operate during the COVID-19 pandemic.
@@ -201,7 +208,7 @@ higher-than-predicted growth warrants a closer look.
 -   The model predicted 34,019 School Board members in the 2020 list.
     Ontario reported 43,805 - a difference of 9,786 employees
 
--   Virtually all growth came from new to the list Teachers (a shocking
+-   Virtually all growth came from new to the list teachers (a shocking
     ~40% of the total increase in 2020).
 
 -   As front-line workers, teachers in Ontario have been fully exposed
@@ -242,8 +249,8 @@ higher-than-predicted growth warrants a closer look.
     profession. Nurses made up more than 70% of the sector increase in
     2020 and almost a quarter of the total growth.
 
--   The provincial government has been expanding their nurse staff since
-    [mid
+-   The provincial government has been expanding their nursing staff
+    since [mid
     2020](https://news.ontario.ca/en/release/58580/ontario-investing-525-million-to-recruit-retain-and-support-more-health-care-workers).
     Alongside it, a [pandemic pay
     bump](https://www.ontario.ca/page/covid-19-temporary-pandemic-pay)
@@ -251,7 +258,7 @@ higher-than-predicted growth warrants a closer look.
     in dealing with the pandemic, explain the drastic increase.
 
 -   In line with the health implications of COVID-19, we see the number
-    of Respiratory Therapists on the list increased by 300% from 2019.
+    of respiratory therapists on the list increased by 300% from 2019.
 
 ![Hosp Job Change](tables/hosp_change.png)
 
@@ -274,37 +281,24 @@ covers too broad of a stroke to facilitate insights on the highest
 earners, but too narrow to attempt to investigate broad changes in the
 public sector. In fact, most of the reporting that follows the list’s
 release, focuses seldomly on the individuals earning the highest
-salaries. This is important information, but one that fails to give us
-any valuable big-picture insights.
+salaries (like
+[CTV](https://toronto.ctvnews.ca/ontario-s-2020-sunshine-list-revealed-here-are-the-people-who-got-paid-the-most-1.5354551)
+or
+[CBC](https://www.cbc.ca/news/canada/toronto/ontario-2020-sunshine-list-1.5957158).
+This is important information, but one that fails to give us any
+valuable big-picture insights.
 
 Further analysis on the OSL is welcomed, with interesting research
 questions like contrasting trends through time with electoral cycles or
-economic fluctuations.
+economic fluctuations, investigating income distributions across
+sectors, or even a longitudinal analysis that follows individuals over
+years.
 
 <!-- Earnings trends across sectors and job titles, could also reach useful insights about the income distribution of Ontario's public sector.  -->
 
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
-
-    cutoff20_n = 100000 * (inflation  %>%  filter(year==24))$indexed
-    cutoff20 = paste("$", prettyNum(round(cutoff20_n, digits = 0), big.mark = ","), sep = "")
-
-    all_n = nrow(master)
-    all = prettyNum(all_n, big.mark = ",")
-
-    adj_n = nrow(master_adj)
-    adj = prettyNum(adj_n, big.mark = ",")
-
-    diff = prettyNum( all_n - adj_n, big.mark = ",")
-    diff_p = round(adj_n/all_n*100, digits = 1)
-
-
-    adj20_n = nrow(master_20_adj)
-    adj20 = prettyNum(adj20_n, big.mark = ",")
-
-    diff20 = prettyNum( count20_n - adj20_n, big.mark = ",")
-    diff_p = round(adj20_n/count20_n*100, digits = 1)
 
 # Appendix A - Adjusting for Inflation
 

@@ -8,11 +8,6 @@ library(tidyverse)
 # Processing Longitudinal Data 
 # Processing Inflation-Adjusted Data
 
-### TESTING #############
-source(file = "code/functions.R")
-### TESTING #############
-
-
 
 # Get and Clean Data ------------------------------------------------------
 
@@ -254,8 +249,6 @@ dd_20 <- dd_20 %>%
 dd_20 = dd_20 %>% 
     mutate(perc = n/52507)
 
-
-
 # Count number of job titles per sector 2019
 dd_19 <- dd_19 %>%
     group_by(sector) %>%
@@ -283,6 +276,7 @@ dd_delta <- left_join(dd_20, dd_19, by = c("sector", "job_title")) %>%
         n.y = ifelse(is.na(n.y), 0, n.y),
         delta = n.x - n.y,
         growth = (n.x - n.y) / n.y
-    ) %>%
+    ) %>% 
+    arrange(-n.x,.by_group = TRUE) %>% 
     slice(1:10)
 

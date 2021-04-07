@@ -76,6 +76,8 @@ What follows is a descriptive analysis of the Ontario Sunshine List. The main se
 
 A *sunshine list* is the name commonly given to the public disclosure of employee compensation. In 1996, then premier Mike Harris, introduced the first [Ontario Sunshine List](https://www.ontario.ca/page/public-sector-salary-disclosure-2020-all-sectors-and-seconded-employees), intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported `r count96` high earners that year, with an average salary of `r salavg96`. Dictated by the [Public Sector Salary Disclosure Act](https://www.ontario.ca/laws/statute/96p01a) (1996), the government has required ever since that organizations that receive public funding from the Province of Ontario disclose by March 31 the names, positions, salaries and total taxable benefits of employees paid \$100,000 or more in a calendar year.
 
+To the criticism of many, the list's cut-off has remained the same since 1996, failing to account for inflation. While these renders the list a poor comparison to its earliest iterations in terms of purchasing power, it remains a useful tool to track broad changes in compensation trends accross the public sector.
+
 ### Uninterrupted Growth
 
 The number of people in the Ontario Sunshine List has increased with every release since its conception 25 years ago. It was twice as big by 2000, ten times by 2008, and today the list is 45 times larger than in 1996. Regardless, the yearly average earnings have remained mostly constant around `r salavg`, likely because increasing existing salaries are compensated by new additions to the list, most of which earn a salary close to the floor.
@@ -115,7 +117,7 @@ salavg_hos = paste("$", prettyNum(mean(salavg_hos_a$salary), big.mark = ","), se
 
 -   Police constables (\$118k), managers (\$129), and firefighters (\$117k), constituted almost a third of the job titles in Municipalities in 2020.
 
--   The average salary was `r salavg_mun`. The highest paid positions were Chief of Police (\$481k), Chief of Police (\$436k), and City Planner (\$387k).
+-   The average salary was `r salavg_mun`. The highest paid positions were *Chief of Police* (\$481k), *Chief of Police* (\$436k), and *City Planner* (\$387k).
 
 All sectors saw the number of people making over \$100k increase, but it was School Boards and Hospitals that saw the biggest change.
 
@@ -123,13 +125,13 @@ All sectors saw the number of people making over \$100k increase, but it was Sch
 
 -   Teachers (\$103k) dominated the School Board sector in 2020, making up 97% of jobs in the list.
 
--   The average salary was `r salavg_sch`. The highest paid positions were Legal Counsel (\$382k), Director (\$334k), and Director (\$316k).
+-   The average salary was `r salavg_sch`. The highest paid positions were *Legal Counsel* (\$382k), *Director of Education* (\$334k), and *Director of Education and Secretary-Treasurer* (\$316k).
 
 **Hospitals**
 
--   The list was topped by Nurses (\$110k), followed by Managers (\$116), and Directors (\$148k).
+-   The list was topped by Nurses (\$110k), followed by Managers (\$116k), and Directors (\$148k).
 
--   The average salary was `r salavg_hos`. The highest paid positions were President and CEO (\$845k), President and CEO (\$776k), and President and CEO (\$733k).
+-   The average salary was `r salavg_hos`. The highest paid positions were *President and CEO* (\$845k), *President and CEO* (\$776k), and *President and CEO* (\$733k).
 
 ![Percent Change in Quantity](plots/p_change_1920.png)
 
@@ -143,7 +145,7 @@ Teachers and nurses were by far the most popular jobs in the Ontario Sunshine Li
 pred_20_n = (gam_pred %>% filter(year==24))$pred
 pred_20 = prettyNum(round(pred_20_n, digits = 0), big.mark = ",")
 pred_diff = prettyNum(round(count20_n - pred_20_n, digits = 0), big.mark = ",")
-predchg = prettyNum(round((count20_n - pred_20_n)/count19_n*100, digits = 0), big.mark = ",")
+predchg = prettyNum(round((pred_20_n - count19_n )/count19_n*100, digits = 0), big.mark = ",")
 
 crown_n = (crown_pred %>% filter(year==24))$sec_frq
 crown_20_n = (crown_pred %>% filter(year==24))$pred
@@ -188,7 +190,7 @@ Crown Agencies make a smaller share of the list but its higher-than-predicted gr
 
 -   The model predicted `r crown_20` members but the data reported `r prettyNum(crown_n, big.mark= ",")` - a difference of `r crown_diff` employees
 
--   About 40% of the growth can be explained by increases in Managers, Case Managers, and Specialist, return to work program.
+-   About 40% of the growth can be explained by increases in *Managers*, *Case Managers*, and *Specialist, return to work program*.
 
 -   The difference is likely a result of the various agencies' efforts to operate during the COVID-19 pandemic.
 
@@ -204,7 +206,7 @@ Crown Agencies make a smaller share of the list but its higher-than-predicted gr
 
 -   The model predicted `r school_20` School Board members in the 2020 list. Ontario reported `r prettyNum(school_n, big.mark= ",")` - a difference of `r school_diff` employees
 
--   Virtually all growth came from new to the list Teachers (a shocking \~40% of the total increase in 2020).
+-   Virtually all growth came from new to the list teachers (a shocking \~40% of the total increase in 2020).
 
 -   As front-line workers, teachers in Ontario have been fully exposed to the dangers and impacts of the pandemic. While increased working hours help explain this growth, it was a major compensation agreement in early 2020 that was likely the main source.
 
@@ -222,9 +224,9 @@ Crown Agencies make a smaller share of the list but its higher-than-predicted gr
 
 -   Similar to School Boards, the distribution of job titles in Hospitals and Boards of Public Health is skewed towards one profession. Nurses made up more than 70% of the sector increase in 2020 and almost a quarter of the total growth.
 
--   The provincial government has been expanding their nurse staff since [mid 2020](https://news.ontario.ca/en/release/58580/ontario-investing-525-million-to-recruit-retain-and-support-more-health-care-workers). Alongside it, a [pandemic pay bump](https://www.ontario.ca/page/covid-19-temporary-pandemic-pay) given to health care workers in the fall, as well as overtime hours in dealing with the pandemic, explain the drastic increase.
+-   The provincial government has been expanding their nursing staff since [mid 2020](https://news.ontario.ca/en/release/58580/ontario-investing-525-million-to-recruit-retain-and-support-more-health-care-workers). Alongside it, a [pandemic pay bump](https://www.ontario.ca/page/covid-19-temporary-pandemic-pay) given to health care workers in the fall, as well as overtime hours in dealing with the pandemic, explain the drastic increase.
 
--   In line with the health implications of COVID-19, we see the number of Respiratory Therapists on the list increased by 300% from 2019.
+-   In line with the health implications of COVID-19, we see the number of respiratory therapists on the list increased by 300% from 2019.
 
 ![Hosp Job Change](tables/hosp_change.png)
 
@@ -232,9 +234,9 @@ Crown Agencies make a smaller share of the list but its higher-than-predicted gr
 
 There is only so much we can extrapolate from this limited information. While we can conclude that the increase observed was higher than normal, and this was due to very large increases in the number of teachers and nurses, it is impossible to determine whether the decisions behind such changes were appropriate, successful, or efficient.
 
-Many argue that the list's floor should be raised according to inflation (see Appendix A), whereas other countries like [Norway](https://www.bbc.com/news/magazine-40669239) have opted for full transparency in the public sector. It is clear that the cut-off, as it exists now, does more to confuse than clarify. \$100k dollars, while far from the median (\$37,500 as of [2019](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110023901&pickMembers%5B0%5D=1.8&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.1&pickMembers%5B3%5D=4.1&cubeTimeFrame.startYear=2000&cubeTimeFrame.endYear=2019&referencePeriods=20000101%2C20190101)), covers too broad of a stroke to facilitate insights on the highest earners, but too narrow to attempt to investigate broad changes in the public sector. In fact, most of the reporting that follows the list's release, focuses seldomly on the individuals earning the highest salaries. This is important information, but one that fails to give us any valuable big-picture insights.
+Many argue that the list's floor should be raised according to inflation (see Appendix A), whereas other countries like [Norway](https://www.bbc.com/news/magazine-40669239) have opted for full transparency in the public sector. It is clear that the cut-off, as it exists now, does more to confuse than clarify. \$100k dollars, while far from the median (\$37,500 as of [2019](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110023901&pickMembers%5B0%5D=1.8&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.1&pickMembers%5B3%5D=4.1&cubeTimeFrame.startYear=2000&cubeTimeFrame.endYear=2019&referencePeriods=20000101%2C20190101)), covers too broad of a stroke to facilitate insights on the highest earners, but too narrow to attempt to investigate broad changes in the public sector. In fact, most of the reporting that follows the list's release, focuses seldomly on the individuals earning the highest salaries (like [CTV](https://toronto.ctvnews.ca/ontario-s-2020-sunshine-list-revealed-here-are-the-people-who-got-paid-the-most-1.5354551) or [CBC](https://www.cbc.ca/news/canada/toronto/ontario-2020-sunshine-list-1.5957158). This is important information, but one that fails to give us any valuable big-picture insights.
 
-Further analysis on the OSL is welcomed, with interesting research questions like contrasting trends through time with electoral cycles or economic fluctuations.
+Further analysis on the OSL is welcomed, with interesting research questions like contrasting trends through time with electoral cycles or economic fluctuations, investigating income distributions across sectors, or even a longitudinal analysis that follows individuals over years.
 
 <!-- Earnings trends across sectors and job titles, could also reach useful insights about the income distribution of Ontario's public sector.  -->
 
@@ -242,7 +244,7 @@ Further analysis on the OSL is welcomed, with interesting research questions lik
 
 ------------------------------------------------------------------------
 
-```{r}
+```{r inflation, echo=FALSE, message=FALSE, warning=FALSE}
 cutoff20_n = 100000 * (inflation  %>%  filter(year==24))$indexed
 cutoff20 = paste("$", prettyNum(round(cutoff20_n, digits = 0), big.mark = ","), sep = "")
 
