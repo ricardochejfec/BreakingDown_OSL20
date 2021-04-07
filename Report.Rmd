@@ -76,7 +76,7 @@ What follows is a descriptive analysis of the Ontario Sunshine List. The main se
 
 A *sunshine list* is the name commonly given to the public disclosure of employee compensation. In 1996, then premier Mike Harris, introduced the first [Ontario Sunshine List](https://www.ontario.ca/page/public-sector-salary-disclosure-2020-all-sectors-and-seconded-employees), intending to disclose the salaries and benefits of all employees on the provincial government payroll who were considered high earners. Setting the floor at a salary of \$100,000, the province reported `r count96` high earners that year, with an average salary of `r salavg96`. Dictated by the [Public Sector Salary Disclosure Act](https://www.ontario.ca/laws/statute/96p01a) (1996), the government has required ever since that organizations that receive public funding from the Province of Ontario disclose by March 31 the names, positions, salaries and total taxable benefits of employees paid \$100,000 or more in a calendar year.
 
-To the criticism of many, the list's cut-off has remained the same since 1996, failing to account for inflation. While these renders the list a poor comparison to its earliest iterations in terms of purchasing power, it remains a useful tool to track broad changes in compensation trends accross the public sector.
+To the [criticism of many](https://amapceo.on.ca/sunshine-list-stuck-in-past), the list's cut-off has remained the same since 1996, failing to account for inflation (see Appendix A). While these renders the list a poor comparison to its earliest iterations in terms of purchasing power, it remains a useful tool to track broad changes in compensation trends across the public sector.
 
 ### Uninterrupted Growth
 
@@ -86,7 +86,7 @@ The number of people in the Ontario Sunshine List has increased with every relea
 
 ### Recorded by Government Sector
 
-The data provided is categorized by government sector. While these sectors change slightly year-to-year as a result of administrative changes and operational restructuring (See Appendix B for a full list), we can functionally group all employees reported in 9 independent groups. The following figure shows the number of people in the list through time divided by sector.
+The data provided is categorized by government sector. While these sectors change slightly year-to-year as a result of administrative changes and operational restructuring (See Appendix B for a full list), we can functionally classify all employees reported in 9 independent groups. The following figure shows the number of people in the list through time divided by sector.
 
 While the size of sectors vary, Municipalities, School Boards, Hospitals, and Universities, have captured the lion share of high earners for most of the list's existence.
 
@@ -94,7 +94,7 @@ While the size of sectors vary, Municipalities, School Boards, Hospitals, and Un
 
 ## 2020 in Review
 
-The last release of the OSL reported an increase in members by a total of `r chg1920` members and a reduction in the average salary by `r chg1920_d`.
+The last release of the OSL reported an increase in members by a total of `r chg1920` employees and a reduction in the average salary by `r chg1920_d`.
 
 ### Municipalities, School-Boards and Hospitals
 

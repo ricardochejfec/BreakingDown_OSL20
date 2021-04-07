@@ -45,11 +45,13 @@ from the Province of Ontario disclose by March 31 the names, positions,
 salaries and total taxable benefits of employees paid $100,000 or more
 in a calendar year.
 
-To the criticism of many, the list’s cut-off has remained the same since
-1996, failing to account for inflation. While these renders the list a
-poor comparison to its earliest iterations in terms of purchasing power,
-it remains a useful tool to track broad changes in compensation trends
-accross the public sector.
+To the [criticism of
+many](https://amapceo.on.ca/sunshine-list-stuck-in-past), the list’s
+cut-off has remained the same since 1996, failing to account for
+inflation (see Appendix A). While these renders the list a poor
+comparison to its earliest iterations in terms of purchasing power, it
+remains a useful tool to track broad changes in compensation trends
+across the public sector.
 
 ### Uninterrupted Growth
 
@@ -68,7 +70,7 @@ salary close to the floor.
 The data provided is categorized by government sector. While these
 sectors change slightly year-to-year as a result of administrative
 changes and operational restructuring (See Appendix B for a full list),
-we can functionally group all employees reported in 9 independent
+we can functionally classify all employees reported in 9 independent
 groups. The following figure shows the number of people in the list
 through time divided by sector.
 
@@ -81,7 +83,7 @@ earners for most of the list’s existence.
 ## 2020 in Review
 
 The last release of the OSL reported an increase in members by a total
-of 38,512 members and a reduction in the average salary by $1,523.196.
+of 38,512 employees and a reduction in the average salary by $1,523.196.
 
 ### Municipalities, School-Boards and Hospitals
 
