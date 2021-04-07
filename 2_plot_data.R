@@ -336,7 +336,11 @@ p_longsum_pred <- ggplot(
 ) +
   geom_point() +
   xlim(1996, 2020) +
-  stat_smooth(method = "gam", fullrange = TRUE, color = "brown") +
+  stat_smooth(
+    method = "gam",
+    formula = y ~ s(x, k=9),
+    fullrange = TRUE,
+    color = "brown") +
   geom_point(
     data = longsum %>% filter(lbl_year > 2019),
     aes(x = lbl_year, y = sec_frq),
@@ -348,13 +352,17 @@ p_longsum_pred <- ggplot(
   ylab("Count")
 
 p_longsum_pred
+
 p_longsum_pred_sec <- ggplot(
   secsum %>% filter(lbl_year <= 2019),
   aes(x = lbl_year, y = sec_frq)
 ) +
   geom_point() +
   xlim(1996, 2020) +
-  stat_smooth(method = "gam", fullrange = TRUE, color = "brown") +
+  stat_smooth(method = "gam",
+              formula = y ~ s(x, k=9),
+              fullrange = TRUE, 
+              color = "brown") +
   geom_point(
     data = secsum %>% filter(lbl_year == 2020),
     aes(x = lbl_year, y = sec_frq),

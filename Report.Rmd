@@ -277,7 +277,7 @@ diff20_p = round(adj20_n/count20_n*100, digits = 1)
 
 The OSL is criticized for using the same cut-off at \$100K that it began with, instead of adjusting for inflation. Any analysis that intends to learn more about Ontario's highest earners, needs to account for the difference in purchasing power between 1996 and 2020. If we were to adjust for inflation, the floor today should sit at `r cutoff20`.
 
-### Only 12% Remain
+### Only 22% Remain
 
 By adjusting all salaries to 1996 dollars (using Ontario CPI All-items values from [Stats Can](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000413)), we can identify how the list would have changed in the presence of a moving floor. While the list containing all years available houses `r all` recorded salaries, when adjusting for inflation only `r adj` remain, or the equivalent to `r diff_p`%.
 
