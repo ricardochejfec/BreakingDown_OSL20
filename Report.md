@@ -74,7 +74,7 @@ we can functionally classify all employees reported in 9 independent
 groups. The following figure shows the number of people in the list
 through time divided by sector.
 
-The size of sectors vary, but Municipalities have captured the highest
+The size of sectors vary but Municipalities have captured the highest
 share of high earners for most of the list’s existence.
 
 ![Long Summary by Sector](plots/p_longsecsum.png)
