@@ -88,7 +88,7 @@ The number of people in the Ontario Sunshine List has increased with every relea
 
 The data provided is categorized by government sector. While these sectors change slightly year-to-year as a result of administrative changes and operational restructuring (See Appendix B for a full list), we can functionally classify all employees reported in 9 independent groups. The following figure shows the number of people in the list through time divided by sector.
 
-The size of sectors vary, but Municipalities have captured the lion share of high earners for most of the list's existence.
+The size of sectors vary, but Municipalities have captured the highest share of high earners for most of the list's existence.
 
 ![Long Summary by Sector](plots/p_longsecsum.png)
 
