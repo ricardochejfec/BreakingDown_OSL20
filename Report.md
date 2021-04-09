@@ -12,7 +12,7 @@
     significantly larger than what the trend predicted.
 
 -   Led by nurses and teachers, the higher-than-expected surge can be
-    explained by a major compensation agreement in early 2020 and the
+    explained by major compensation agreements in early 2020 and the
     government’s efforts to combat the pandemic.
 
 ## This Report
@@ -74,9 +74,8 @@ we can functionally classify all employees reported in 9 independent
 groups. The following figure shows the number of people in the list
 through time divided by sector.
 
-The size of sectors vary, but Municipalities, School Boards, Hospitals,
-and Universities, have captured the lion share of high earners for most
-of the list’s existence.
+The size of sectors vary, but Municipalities have captured the lion
+share of high earners for most of the list’s existence.
 
 ![Long Summary by Sector](plots/p_longsecsum.png)
 
@@ -95,7 +94,7 @@ the total.
 
 **Municipalities**
 
--   Police constables ($118k), managers ($129), and firefighters
+-   Police constables ($118k), managers ($129k), and firefighters
     ($117k), constituted almost a third of the job titles in
     Municipalities in 2020.
 
@@ -109,7 +108,7 @@ was School Boards and Hospitals that saw the biggest change.
 **School Boards**
 
 -   Teachers ($103k) dominated the School Board sector in 2020, making
-    up 97% of jobs in the sector.
+    up 97% of jobs in the group.
 
 -   The average salary was $109,083.8. The highest paid positions were
     *Legal Counsel* ($382k), *Director of Education* ($334k), and
@@ -200,9 +199,9 @@ higher-than-predicted growth warrants a closer look.
         difficulties returning to work.
 
     -   While I found no evidence to confirm this, I presume part of the
-        increase in Managers and Specialists, occured due to a hightened
-        need for logistics and planning, and the hazardous nature of the
-        pandemic on workplaces, respectively.
+        increase in Managers and Specialists, occurred due to a
+        heightened need for logistics and planning, and the hazardous
+        nature of the pandemic on workplaces, respectively.
 
 ![Crown Job Change](tables/crown_change.png)
 
@@ -228,11 +227,11 @@ higher-than-predicted growth warrants a closer look.
         benefits (given retroactively) and were negotiated with all five
         relevant
         [unions](https://news.ontario.ca/en/backgrounder/56838/ocew-central-agreement-now-ratified)
-        Ontario Council of Educational Workers (OCEW), (Canadian Union
+        (Ontario Council of Educational Workers (OCEW), Canadian Union
         of Public Employees (CUPE), Education Workers’ Alliance of
         Ontario (EWAO), Ontario English Catholic Teachers’ Association
         (OECTA), and the Elementary Teachers’ Federation of Ontario
-        (ETFO).
+        (ETFO)).
 
     -   Apart from the raise, it is likely that overtime and teachers
         filling in in administrative positions also contributed to the
@@ -287,7 +286,7 @@ release, focuses seldomly on the individuals earning the highest
 salaries (like
 [CTV](https://toronto.ctvnews.ca/ontario-s-2020-sunshine-list-revealed-here-are-the-people-who-got-paid-the-most-1.5354551)
 or
-[CBC](https://www.cbc.ca/news/canada/toronto/ontario-2020-sunshine-list-1.5957158).
+[CBC](https://www.cbc.ca/news/canada/toronto/ontario-2020-sunshine-list-1.5957158)).
 This is important information, but one that fails to give us any
 valuable big-picture insights.
 
@@ -332,7 +331,7 @@ This analysis shows that at the higher cut-off, universities dominate
 the list and have done so for quite some time. This is likely due to the
 nature of the sector, where the majority of its members are professors.
 The average salary of an Ontario Professor in the 2020 OSL is $167k
-compared to nurses at $110 and teachers at $103k
+compared to nurses at $110k and teachers at $103k
 
 ![Sector Summary 2020 Adjusted for Inflation](plots/p_secsum_20_adj.png)
 
