@@ -17,7 +17,7 @@
 
 ## This Report
 
-What follows is a descriptive analysis of the Ontario Sunshine List. The
+[This report](https://github.com/ricardochejfec/BreakingDown_OSL20/blob/main/Report.md) is a descriptive analysis of the Ontario Sunshine List. The
 main section is my attempt to shed some light on the effects of 2020 on
 Ontario’s high earners. Appendix A considers what would happen if the
 list’s cut-off salary was adjusted for inflation and Appendix B includes
